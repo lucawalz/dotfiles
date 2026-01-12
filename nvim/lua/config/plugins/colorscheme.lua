@@ -1,11 +1,8 @@
 return {
-	"catppuccin/nvim",
-	name = "catppuccin",
+	"Mofiqul/vscode.nvim",
+	name = "vscode",
 	priority = 1000,
-	opts = {
-		flavour = "mocha", --frappe, macchiato, mocha, latte
-	},
 	config = function()
-		vim.cmd.colorscheme("catppuccin-mocha")
+		vim.cmd.colorscheme("vscode")
 	end,
 }

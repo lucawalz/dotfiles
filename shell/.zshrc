@@ -1,21 +1,18 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-# Powerlevel10k theme
-source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# Enable autocomplete
+autoload -Uz compinit
+compinit
 
 # Zsh plugins
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# History setup
+# Basic PATH setup
+export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
+export PATH="/Applications/Ollama.app/Contents/Resources:$PATH"
+export PATH="$HOME/agenix:$PATH"
+export SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt
+
+# history setup
 HISTFILE=$HOME/.zhistory
 SAVEHIST=1000
 HISTSIZE=999
@@ -24,21 +21,20 @@ setopt hist_expire_dups_first
 setopt hist_ignore_dups
 setopt hist_verify
 
-# History search with arrow keys
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 
-# Modern CLI tools
-alias ls="eza --icons=always"
-alias cd="z"
+# File colors
+export LS_COLORS="$(vivid generate vscode)"
 
-# Initialize zoxide (smart cd)
+alias ls="eza --icons=always"
+
 eval "$(zoxide init zsh)"
 
-# ========================================
-# Custom aliases and PATH additions below
-# ========================================
-# Add personal/project-specific configurations here
-# Example:
-# export PATH="$HOME/myproject:$PATH"
-# alias myalias='some command'
+alias cd="z"
+
+# Added by Antigravity
+export PATH="/Users/luca/.antigravity/antigravity/bin:$PATH"
+
+#starship
+eval "$(starship init zsh)"
