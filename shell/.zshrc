@@ -6,11 +6,8 @@ compinit
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Basic PATH setup
-export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
-export PATH="/Applications/Ollama.app/Contents/Resources:$PATH"
-export PATH="$HOME/agenix:$PATH"
-export SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt
+# Add your custom PATH entries here
+# export PATH="/custom/path:$PATH"
 
 # history setup
 HISTFILE=$HOME/.zhistory
@@ -25,7 +22,7 @@ bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 
 # File colors
-export LS_COLORS="$(vivid generate vscode)"
+export LS_COLORS="$(vivid generate one-dark)"
 
 alias ls="eza --icons=always"
 
@@ -33,8 +30,7 @@ eval "$(zoxide init zsh)"
 
 alias cd="z"
 
-# Added by Antigravity
-export PATH="/Users/luca/.antigravity/antigravity/bin:$PATH"
+
 
 #starship
 eval "$(starship init zsh)"
