@@ -2,26 +2,7 @@
 
 add_newline = false
 
-palette = "oxocarbon"
-
-format = """
-$username\
-$directory\
-$git_branch\
-$git_status\
-$fill\
-$golang\
-$python\
-$nodejs\
-$rust\
-$java\
-$lua\
-$nix_shell\
-$kubernetes\
-$cmd_duration\
-$time\
-$line_break\
-$character"""
+palette = 'oxocarbon'
 
 [palettes.oxocarbon]
 bg = '#161616'
@@ -41,36 +22,8 @@ green = '#42be65'
 purple = '#be95ff'
 pale_blue = '#82cfff'
 
-[fill]
-symbol = " "
-style = "fg:comment"
-
-[username]
-show_always = false
-style_user = "fg:teal"
-style_root = "fg:magenta"
-format = "[$user ]($style)"
-
-[character]
-success_symbol = "[❯](fg:green)"
-error_symbol = "[❯](fg:magenta)"
-vimcmd_symbol = "[❮](fg:purple)"
-vimcmd_replace_symbol = "[❮](fg:pink)"
-vimcmd_replace_one_symbol = "[❮](fg:pink)"
-vimcmd_visual_symbol = "[❮](fg:blue)"
-
-[cmd_duration]
-min_time = 2000
-style = "fg:comment"
-format = "[  $duration ]($style)"
-
-[time]
-disabled = false
-time_format = "%R"
-style = "fg:comment"
-format = "[ 󰥔 $time ]($style)"
-
 [aws]
+style = 'bold teal'
 symbol = " "
 
 [buf]
@@ -101,20 +54,11 @@ symbol = " "
 symbol = " "
 
 [directory]
+style = 'bold blue'
 read_only = " 󰌾"
-read_only_style = "fg:magenta bg:surface"
-truncation_length = 3
-truncation_symbol = "…/"
-style = "fg:blue bg:surface"
-format = "[](fg:surface)[ $path]($style)[$read_only]($read_only_style)[ ]($style)[](fg:surface)"
-
-[directory.substitutions]
-Documents = "󰈙 "
-Downloads = " "
-Music = "󰝚 "
-Pictures = " "
 
 [docker_context]
+style = 'bold light_blue'
 symbol = " "
 
 [elixir]
@@ -133,24 +77,19 @@ symbol = " "
 symbol = " "
 
 [gcloud]
+style = 'bold teal'
 symbol = " "
 
 [git_branch]
+style = 'bold purple'
 symbol = " "
-style = "fg:purple"
-format = "[ $symbol$branch ]($style)"
-
-[git_status]
-style = "fg:pink"
-format = "[$all_status$ahead_behind]($style)"
 
 [git_commit]
 tag_symbol = '  '
 
 [golang]
+style = 'bold light_blue'
 symbol = " "
-style = "fg:light_blue"
-format = "[ $symbol($version) ]($style)"
 
 [gradle]
 symbol = " "
@@ -171,9 +110,8 @@ symbol = " "
 ssh_symbol = " "
 
 [java]
+style = 'bold blue'
 symbol = " "
-style = "fg:blue"
-format = "[ $symbol($version) ]($style)"
 
 [julia]
 symbol = " "
@@ -181,16 +119,9 @@ symbol = " "
 [kotlin]
 symbol = " "
 
-[kubernetes]
-disabled = false
-symbol = "󱃾 "
-style = "fg:teal"
-format = "[ $symbol$context( \\($namespace\\)) ]($style)"
-
 [lua]
+style = 'bold blue'
 symbol = " "
-style = "fg:blue"
-format = "[ $symbol($version) ]($style)"
 
 [memory_usage]
 symbol = "󰍛 "
@@ -202,15 +133,13 @@ symbol = "󰔷 "
 symbol = "󰆥 "
 
 [nix_shell]
+style = 'bold purple'
 impure_msg = ""
 symbol = " "
-style = "fg:purple"
-format = "[ $symbol$state( \\($name\\)) ]($style)"
 
 [nodejs]
+style = 'bold green'
 symbol = " "
-style = "fg:green"
-format = "[ $symbol($version) ]($style)"
 
 [ocaml]
 symbol = " "
@@ -267,6 +196,7 @@ Windows = "󰍲 "
 Zorin = " "
 
 [package]
+style = 'bold fg_dim'
 symbol = "󰏗 "
 
 [perl]
@@ -282,9 +212,8 @@ symbol = " "
 symbol = "󰏗 "
 
 [python]
+style = 'bold pale_blue'
 symbol = " "
-style = "fg:pale_blue"
-format = "[ $symbol($version)( \\($virtualenv\\)) ]($style)"
 
 [rlang]
 symbol = "󰟔 "
@@ -293,9 +222,8 @@ symbol = "󰟔 "
 symbol = " "
 
 [rust]
+style = 'bold cyan'
 symbol = "󱘗 "
-style = "fg:cyan"
-format = "[ $symbol($version) ]($style)"
 
 [scala]
 symbol = " "
@@ -311,3 +239,14 @@ symbol = " "
 
 [zig]
 symbol = " "
+
+[character]
+success_symbol = '[❯](bold green)'
+error_symbol = '[❯](bold magenta)'
+vicmd_symbol = '[❮](bold purple)'
+
+[git_status]
+style = 'bold pink'
+
+[git_state]
+style = 'bold magenta'
