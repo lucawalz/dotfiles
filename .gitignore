@@ -5,12 +5,8 @@
 ._*
 
 # Neovim
-nvim/lazy-lock.json
-nvim/.luarc.json
+nvim/.config/nvim/.luarc.json
 *.log
-
-# Powerlevel10k
-.p10k.zsh
 
 # Shell history and cache
 *_history

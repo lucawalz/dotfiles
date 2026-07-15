@@ -1,18 +1,43 @@
-# Brewfile - Essential packages for shell setup
+# Brewfile - packages required by the configs in this repository
 
 # Taps
-tap "homebrew/cask-fonts"
+tap "FelixKratz/formulae"
 
-# Terminal & Shell
-brew "neovim"
+# Deployment
+brew "stow"
+
+# Shell
 brew "starship"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
-brew "zoxide"          # Smart cd replacement
-brew "eza"             # Modern ls replacement
-brew "vivid"           # LS_COLORS manager
-brew "ripgrep"         # Fast grep (for Neovim telescope)
+brew "atuin"
+brew "direnv"
+brew "fzf"
+brew "zoxide"
+
+# CLI tools
+brew "bat"
+brew "eza"
+brew "fd"
+brew "ripgrep"
+brew "git-delta"
+brew "yazi"
+brew "sesh"
+
+# Editor
+brew "neovim"
+
+# System
+brew "btop"
+brew "fastfetch"
+
+# Desktop
+brew "borders"
+brew "sketchybar"
+
+# Terminal
+cask "ghostty"
 
 # Fonts
-cask "font-meslo-lg-nerd-font"
-cask "ghostty"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-sf-pro"
