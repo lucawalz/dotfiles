@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+
+CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+source "$CONFIG_DIR/colors.sh"
+
+FONT_LABEL=".AppleSystemUIFont"
+FONT_ICON="JetBrainsMono Nerd Font"
+
+BAR_HEIGHT=36
+BAR_MARGIN=10
+BAR_Y_OFFSET=6
+BAR_CORNER_RADIUS=12
+BAR_BLUR_RADIUS=30
+BAR_PADDING=10
+
+CPU_UPDATE_FREQ=5
+CLOCK_UPDATE_FREQ=1
+BATTERY_UPDATE_FREQ=120
+
+sketchybar --bar \
+  height="$BAR_HEIGHT" \
+  position=top \
+  sticky=on \
+  topmost=off \
+  color="$BAR_COLOR" \
+  blur_radius="$BAR_BLUR_RADIUS" \
+  corner_radius="$BAR_CORNER_RADIUS" \
+  margin="$BAR_MARGIN" \
+  y_offset="$BAR_Y_OFFSET" \
+  padding_left="$BAR_PADDING" \
+  padding_right="$BAR_PADDING" \
+  shadow=on
+
+sketchybar --default \
+  icon.font="$FONT_ICON:Regular:14.0" \
+  icon.color="$FOREGROUND" \
+  icon.padding_left=8 \
+  icon.padding_right=5 \
+  label.font="$FONT_LABEL:Semibold:13.0" \
+  label.color="$FOREGROUND" \
+  label.padding_left=0 \
+  label.padding_right=8 \
+  padding_left=2 \
+  padding_right=2
+
+sketchybar --add item apple left \
+  --set apple \
+  icon="" \
+  icon.font="$FONT_ICON:Regular:16.0" \
+  icon.color="$FOREGROUND" \
+  label.drawing=off
+
+sketchybar --add item front_app left \
+  --set front_app \
+  icon.drawing=off \
+  label.font="$FONT_LABEL:Bold:13.0" \
+  label.color="$ACCENT" \
+  script="$PLUGIN_DIR/front_app.sh" \
+  --subscribe front_app front_app_switched
+
+sketchybar --add item clock right \
+  --set clock \
+  icon="󰥔" \
+  icon.color="$FOREGROUND_DIM" \
+  label.color="$FOREGROUND" \
+  update_freq="$CLOCK_UPDATE_FREQ" \
+  script="$PLUGIN_DIR/clock.sh"
+
+sketchybar --add item battery right \
+  --set battery \
+  update_freq="$BATTERY_UPDATE_FREQ" \
+  script="$PLUGIN_DIR/battery.sh" \
+  --subscribe battery power_source_change system_woke
+
+sketchybar --add item wifi right \
+  --set wifi \
+  script="$PLUGIN_DIR/wifi.sh" \
+  --subscribe wifi wifi_change system_woke
+
+sketchybar --add item cpu right \
+  --set cpu \
+  update_freq="$CPU_UPDATE_FREQ" \
+  script="$PLUGIN_DIR/cpu.sh"
+
+sketchybar --update
