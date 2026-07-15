@@ -1,7 +1,7 @@
 autoload -Uz compinit
 compinit
 
-source ~/.config/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
+source /opt/homebrew/share/fzf-tab/fzf-tab.zsh
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:*' fzf-flags --color=fg:#f2f4f8,bg:-1,hl:#78a9ff,fg+:#ffffff,bg+:#393939,hl+:#3ddbd9
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons=always $realpath'
