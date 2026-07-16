@@ -20,6 +20,10 @@ CPU_UPDATE_FREQ=5
 CLOCK_UPDATE_FREQ=1
 BATTERY_UPDATE_FREQ=120
 
+POPUP_WIDTH=180
+POPUP_CORNER_RADIUS=8
+POPUP_Y_OFFSET=4
+
 SPACE_HEIGHT=24
 SPACE_CORNER_RADIUS=6
 
@@ -55,7 +59,34 @@ sketchybar --add item apple left \
   icon="" \
   icon.font="$FONT_ICON:Regular:16.0" \
   icon.color="$FOREGROUND" \
-  label.drawing=off
+  label.drawing=off \
+  popup.background.color="$BAR_COLOR" \
+  popup.background.corner_radius="$POPUP_CORNER_RADIUS" \
+  popup.background.border_width=1 \
+  popup.background.border_color="$SELECTION" \
+  popup.y_offset="$POPUP_Y_OFFSET" \
+  click_script="sketchybar --set apple popup.drawing=toggle" \
+  script="$PLUGIN_DIR/apple.sh" \
+  --subscribe apple mouse.exited.global
+
+apple_menu() {
+  sketchybar --add item "apple.$1" popup.apple \
+    --set "apple.$1" \
+      icon="$2" \
+      icon.font="$FONT_ICON:Regular:13.0" \
+      icon.color="$3" \
+      icon.padding_left=12 \
+      label="$4" \
+      label.padding_right=16 \
+      width="$POPUP_WIDTH" \
+      click_script="$5; sketchybar --set apple popup.drawing=off"
+}
+
+apple_menu settings "󰒓" "$FOREGROUND" "System Settings" "open -a 'System Settings'"
+apple_menu lock     "󰌾" "$FOREGROUND" "Lock Screen"     "pmset displaysleepnow"
+apple_menu sleep    "󰒲" "$IDLE"       "Sleep"           "pmset sleepnow"
+apple_menu restart  "󰜉" "$WARNING"    "Restart"         "osascript -e 'tell app \"System Events\" to restart'"
+apple_menu shutdown "󰐥" "$CRITICAL"   "Shut Down"       "osascript -e 'tell app \"System Events\" to shut down'"
 
 for space in $(yabai -m query --spaces 2>/dev/null | sed -n 's/.*"index":\([0-9]*\).*/\1/p'); do
   sketchybar --add space "space.$space" left \
