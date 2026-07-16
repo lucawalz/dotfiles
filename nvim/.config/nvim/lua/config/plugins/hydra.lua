@@ -67,5 +67,33 @@ return {
         { "<Esc>", nil, { exit = true, nowait = true } },
       },
     })
+
+    local resize_hint = [[
+                  Resize
+    _h_: narrower   _j_: shorter
+    _l_: wider      _k_: taller
+  ^
+    _b_: balance    _<Esc>_: exit
+]]
+
+    Hydra({
+      name = "Resize",
+      hint = resize_hint,
+      config = {
+        color = "red",
+        invoke_on_body = true,
+        hint = { position = "middle", float_opts = { border = "solid" } },
+      },
+      mode = "n",
+      body = "<leader>sr",
+      heads = {
+        { "h", "<C-w>3<", { desc = "narrower" } },
+        { "j", "<C-w>2-", { desc = "shorter" } },
+        { "k", "<C-w>2+", { desc = "taller" } },
+        { "l", "<C-w>3>", { desc = "wider" } },
+        { "b", "<C-w>=", { desc = "balance" } },
+        { "<Esc>", nil, { exit = true, nowait = true } },
+      },
+    })
   end,
 }
