@@ -1,9 +1,11 @@
 autoload -Uz compinit
 compinit
 
+FZF_COLORS="fg:#f2f4f8,bg:-1,hl:#78a9ff,fg+:#ffffff,bg+:#393939,hl+:#3ddbd9"
+
 source /opt/homebrew/share/fzf-tab/fzf-tab.zsh
 zstyle ':completion:*' menu no
-zstyle ':fzf-tab:*' fzf-flags --color=fg:#f2f4f8,bg:-1,hl:#78a9ff,fg+:#ffffff,bg+:#393939,hl+:#3ddbd9
+zstyle ':fzf-tab:*' fzf-flags --color=$FZF_COLORS
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons=always $realpath'
 zstyle ':fzf-tab:complete:*:*' fzf-preview 'bat --color=always --style=numbers $realpath 2>/dev/null || eza -1 --color=always --icons=always $realpath 2>/dev/null'
 
@@ -35,7 +37,6 @@ export PATH="/Users/luca/.antigravity/antigravity/bin:$PATH"
 
 eval "$(starship init zsh)"
 
-export PATH="/Users/luca/.antigravity/antigravity/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(/usr/libexec/path_helper)"
 
@@ -50,7 +51,7 @@ source <(fzf --zsh)
 export FZF_DEFAULT_COMMAND="fd --type f --hidden --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --type d --hidden --exclude .git"
-export FZF_DEFAULT_OPTS="--height 60% --layout=reverse --border --color=fg:#f2f4f8,bg:-1,hl:#78a9ff,fg+:#ffffff,bg+:#393939,hl+:#3ddbd9,info:#be95ff,prompt:#ee5396,pointer:#ff7eb6,marker:#42be65,spinner:#08bdba,header:#33b1ff"
+export FZF_DEFAULT_OPTS="--height 60% --layout=reverse --border --color=$FZF_COLORS,info:#be95ff,prompt:#ee5396,pointer:#ff7eb6,marker:#42be65,spinner:#08bdba,header:#33b1ff"
 
 export BAT_THEME="base16"
 
