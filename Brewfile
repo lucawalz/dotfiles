@@ -1,13 +1,8 @@
-# Brewfile - packages required by the configs in this repository
-
-# Taps
 tap "FelixKratz/formulae"
-tap "koekeishiya/formulae"
+tap "nikitabobko/tap"
 
-# Deployment
 brew "stow"
 
-# Shell
 brew "starship"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
@@ -17,7 +12,6 @@ brew "direnv"
 brew "fzf"
 brew "zoxide"
 
-# CLI tools
 brew "bat"
 brew "eza"
 brew "fd"
@@ -25,22 +19,21 @@ brew "ripgrep"
 brew "git-delta"
 brew "yazi"
 brew "sesh"
+brew "kubecolor"
+brew "kubernetes-cli"
 
-# Editor
 brew "neovim"
 
-# System
 brew "btop"
 brew "fastfetch"
 
-# Desktop
 brew "borders"
 brew "sketchybar"
-brew "koekeishiya/formulae/yabai"
-brew "koekeishiya/formulae/skhd"
+cask "nikitabobko/tap/aerospace"
+cask "leader-key"
+cask "karabiner-elements"
 
-# Terminal
 cask "ghostty"
 
-# Fonts
 cask "font-jetbrains-mono-nerd-font"
+cask "font-sketchybar-app-font"
