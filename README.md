@@ -13,7 +13,7 @@ A GNU Stow deployed macOS terminal environment, themed end to end with Oxocarbon
 
 dotfiles holds the configuration for a single Apple Silicon Mac: the terminal, the shell, the editor, and the desktop furniture around them. Every package is a GNU Stow package, so the files under `~` are symlinks back into this repository and the working copy is the live configuration rather than a snapshot of it.
 
-The environment is Ghostty as the terminal, zsh with starship as the shell, and Neovim as the editor, with btop and fastfetch alongside and SketchyBar and JankyBorders on the desktop. One palette, the canonical base16 Oxocarbon dark palette, runs through all of them.
+The environment is Ghostty as the terminal, zsh with starship as the shell, and Neovim as the editor, with btop and fastfetch alongside and AeroSpace, SketchyBar, and JankyBorders on the desktop. One palette, the canonical base16 Oxocarbon dark palette, runs through all of them.
 
 ### Features
 
@@ -21,7 +21,7 @@ The environment is Ghostty as the terminal, zsh with starship as the shell, and 
 - A single Oxocarbon palette applied across Ghostty, starship, btop, Neovim, fzf, `LS_COLORS`, SketchyBar, and JankyBorders.
 - Ghostty with split and tab keybindings on the command key, a vendored cursor warp shader, and a background at 0.85 opacity with blur.
 - Neovim on lazy.nvim with 46 plugin specification files, oxocarbon.nvim as the colorscheme, and a space leader.
-- yabai tiling with binary space partitioning, gaps, and the status bar strip reserved, all with System Integrity Protection left enabled.
+- AeroSpace tiling with display-pinned workspaces, Leader Key sequences for the rarer window commands, and a single focus gesture that walks Neovim splits, windows, and displays, all with System Integrity Protection left enabled.
 - A SketchyBar status bar and JankyBorders window borders, both driven from the same palette.
 - A Brewfile that installs every dependency the configurations need, including `stow` itself.
 - Secret scanning and shellcheck in CI, with gitleaks rules for age, SOPS, and SSH private keys.
@@ -67,7 +67,7 @@ Install the dependencies, then link the packages:
 
 ```
 brew bundle
-stow -t ~ ghostty starship btop fastfetch nvim zsh sketchybar borders yabai skhd
+stow -t ~ ghostty starship btop fastfetch nvim zsh sketchybar borders aerospace karabiner leader-key
 ```
 
 Stow refuses to overwrite a real file that already exists at a target path. Move or delete any pre-existing configuration first, then restow. Verify a link with `ls -l ~/.config/ghostty`, which should resolve into the clone.
@@ -79,6 +79,8 @@ To remove a package, run `stow -D -t ~ <package>`. To relink after adding files,
 ## Usage
 
 After stowing, the configuration is live. Open a new shell to pick up `.zshrc`.
+
+One grammar runs through every layer, so a binding is derived rather than memorised. The modifier names the layer: `cmd` acts inside the current application (Ghostty tabs and splits, close, save), `alt` acts on windows and workspaces (`alt` moves, `alt shift` focuses), Caps Lock opens the command layer for launching and rarer window operations, and inside Neovim space leads commands while `ctrl` moves between splits. Directions are always `h j k l`, workspaces and tabs are always digits, `r` always enters a resize mode with the same keys inside, and `b` always balances.
 
 ### Ghostty
 
@@ -110,6 +112,7 @@ The leader key is space. A selection of the core maps:
 | `<C-h>` `<C-j>` `<C-k>` `<C-l>` | Move between windows |
 | `<leader>sv` / `<leader>sh` | Split vertically or horizontally |
 | `<leader>sx` | Close split |
+| `<leader>sr` | Resize mode: `h` `j` `k` `l` resize, `b` balances, `esc` leaves |
 | `<S-h>` / `<S-l>` | Previous or next buffer |
 | `<leader>bd` | Delete buffer |
 | `<leader>q` / `<leader>Q` | Quit window or quit all |
@@ -120,28 +123,23 @@ Plugin-specific maps live next to their specifications under `nvim/.config/nvim/
 
 ### Windows
 
-yabai tiles automatically and skhd binds the keys. The modifier is `alt`.
+AeroSpace tiles windows into virtual workspaces, Leader Key holds the window commands that do not deserve a global hotkey, and Karabiner turns Caps Lock into the Leader Key trigger. The modifier is `alt`.
 
 | Keybinding | Action |
 |-----------|--------|
-| `alt` `h` `j` `k` `l` | Move focus left, down, up, right |
-| `alt` `⇧` `h` `j` `k` `l` | Warp the window across the partition |
-| `alt` `↩` | Open a Ghostty window |
-| `alt` `q` | Close the window |
-| `alt` `f` | Toggle fullscreen zoom |
-| `alt` `v` | Toggle floating, centred on a grid |
-| `alt` `e` | Toggle the split direction |
-| `alt` `r` / `alt` `⇧` `r` | Rotate the tree |
-| `alt` `x` / `alt` `⇧` `x` | Mirror on the y or x axis |
-| `alt` `b` | Balance the split ratios |
-| `alt` `u` `i` `o` `p` | Resize the window |
-| `alt` `1` to `alt` `9` | Focus a space |
-| `alt` `⇧` `1` to `alt` `⇧` `9` | Send the window to a space and follow it |
-| `alt` `⇥` | Return to the previous space |
+| `alt` `h` `j` `k` `l` | Move the window through the layout |
+| `alt` `⇧` `h` `j` `k` `l` | Focus left, down, up, right, across Neovim splits, windows, and displays |
+| `alt` `1` to `alt` `5` | Focus a workspace |
+| `alt` `⇧` `1` to `alt` `⇧` `5` | Send the window to a workspace |
+| `alt` `⇥` | Return to the previous workspace |
+| `alt` `r` | Resize mode: directions resize, `b` balances, `esc` leaves |
+| `caps lock` | Leader Key |
 
-Partitioning splits the focused window along its longer axis, so opening four windows in a row gives a spiral rather than a grid. Warping a window with `alt` `⇧` and a direction rearranges the partition, which is how a two by two grid is reached.
+Leader Key sequences: `t`, `b`, `o`, and `z` launch Ghostty, Zen, Obsidian, and Zed. Under `w` sit join (`j` and a direction), layout (`l` then tiles, accordion, or floating), fullscreen (`f`), balance (`b`), flatten (`F`), and AeroSpace config reload (`r`).
 
-Focusing a space and sending a window to one both work without the scripting addition. Creating a space does not, so spaces are added through Mission Control and the bindings then address the ones that exist. Both yabai and skhd need Accessibility permission under System Settings, Privacy and Security.
+Workspaces exist lazily and are pinned to displays, 1, 3, and 5 on the primary and 2 and 4 on the second, so a workspace number always means the same screen. Focus movement crosses Neovim split boundaries through a small RPC bridge, `nvim/lua/config/aerospace-focus.lua` and `aerospace/scripts/focus.sh`, so one gesture walks from a split to the next window to the other display.
+
+Karabiner remaps Caps Lock to F19 as the Leader Key trigger and swaps command and option on the external keyboard, since macOS modifier remapping does not survive Karabiner's virtual keyboard. Its DriverKit extension needs one manual approval under System Settings, and AeroSpace needs Accessibility permission.
 
 ### Shell
 
@@ -151,14 +149,15 @@ Focusing a space and sending a window to one both work without the scripting add
 
 SketchyBar and JankyBorders run as background services and are started with `brew services start sketchybar` and `brew services start borders`. SketchyBar reloads with `sketchybar --reload` after a config change. Every SketchyBar colour comes from `sketchybar/.config/sketchybar/colors.sh`, so a palette change belongs there rather than in an individual plugin. JankyBorders takes its two colours as arguments in `borders/.config/borders/bordersrc`, since it has no configuration file of its own.
 
-SketchyBar draws below the macOS menu bar rather than replacing it. Hiding the system menu bar under System Settings, Control Center, Automatically hide and show the menu bar, leaves a single bar on screen. yabai reserves the strip it occupies through `external_bar`, so tiled windows start below it.
+SketchyBar draws below the macOS menu bar rather than replacing it. Hiding the system menu bar under System Settings, Control Center, Automatically hide and show the menu bar, leaves a single bar on screen. AeroSpace reserves the strip it occupies through the top outer gap, so tiled windows start below it.
 
 ## Repository layout
 
 ```
 ghostty/      Ghostty config, ANSI palette, and cursor warp shader
-yabai/        yabai tiling, gaps, and window rules
-skhd/         hotkeys for yabai
+aerospace/    AeroSpace tiling, workspace pins, gaps, and the focus bridge script
+karabiner/    Karabiner caps lock and modifier remaps
+leader-key/   Leader Key launcher and window command sequences
 starship/     starship prompt and Oxocarbon palette
 btop/         btop config and Oxocarbon theme
 fastfetch/    fastfetch config and dragon logo
@@ -180,7 +179,7 @@ Open an issue on the [GitHub repository](https://github.com/lucawalz/dotfiles/is
 
 ## Authors and acknowledgment
 
-Built and maintained by Luca Walz. The palette is [base16-oxocarbon](https://github.com/nyoom-engineering/base16-oxocarbon) by Nyoom Engineering, and the editor colorscheme is [oxocarbon.nvim](https://github.com/nyoom-engineering/oxocarbon.nvim) from the same authors. The cursor warp shader is vendored from [sahaj-b/ghostty-cursor-shaders](https://github.com/sahaj-b/ghostty-cursor-shaders) under the MIT License, with the original license retained at [`ghostty/.config/ghostty/shaders/LICENSE`](ghostty/.config/ghostty/shaders/LICENSE).
+Built and maintained by Luca Walz. The palette is [base16-oxocarbon](https://github.com/nyoom-engineering/base16-oxocarbon) by Nyoom Engineering, and the editor colorscheme is [oxocarbon.nvim](https://github.com/nyoom-engineering/oxocarbon.nvim) from the same authors. The cursor warp shader is vendored from [sahaj-b/ghostty-cursor-shaders](https://github.com/sahaj-b/ghostty-cursor-shaders) under the MIT License, with the original license retained at [`ghostty/.config/ghostty/shaders/LICENSE`](ghostty/.config/ghostty/shaders/LICENSE). The workspace app icons use [sketchybar-app-font](https://github.com/kvndrsslr/sketchybar-app-font) and its generated `icon_map.sh` lookup table.
 
 ## License
 

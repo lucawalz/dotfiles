@@ -14,7 +14,7 @@ Clone the repository to a stable path, install the dependencies, and link the pa
 git clone https://github.com/lucawalz/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 brew bundle
-stow -t ~ ghostty starship btop fastfetch nvim zsh sketchybar borders
+stow -t ~ ghostty starship btop fastfetch nvim zsh sketchybar borders aerospace karabiner leader-key
 ```
 
 Stow refuses to overwrite an existing real file. Move any pre-existing configuration out of the way before linking.
@@ -40,7 +40,8 @@ shellcheck -x -e SC1091 \
   sketchybar/.config/sketchybar/sketchybarrc \
   sketchybar/.config/sketchybar/colors.sh \
   sketchybar/.config/sketchybar/plugins/*.sh \
-  borders/.config/borders/bordersrc
+  borders/.config/borders/bordersrc \
+  aerospace/.config/aerospace/scripts/focus.sh
 ```
 
 Adding a new tool means adding a new Stow package whose interior mirrors the target path under `~`, adding its dependency to the `Brewfile`, and documenting it in the repository layout.
