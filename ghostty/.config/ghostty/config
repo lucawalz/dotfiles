@@ -19,7 +19,7 @@ palette = 14=#ff7eb6
 palette = 15=#ffffff
 
 background-opacity = 0.85
-background-blur-radius = 40
+background-blur-radius = 20
 window-colorspace = display-p3
 minimum-contrast = 1.1
 bold-is-bright = true
