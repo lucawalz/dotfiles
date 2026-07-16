@@ -12,7 +12,8 @@ BAR_HEIGHT=36
 BAR_MARGIN=10
 BAR_Y_OFFSET=6
 BAR_CORNER_RADIUS=12
-BAR_BLUR_RADIUS=30
+# blur is drawn as a rectangle and ignores corner_radius, leaving a visible edge outside the rounded bar
+BAR_BLUR_RADIUS=0
 BAR_PADDING=10
 
 CPU_UPDATE_FREQ=5
@@ -57,19 +58,20 @@ sketchybar --add item apple left \
   label.drawing=off
 
 for space in $(yabai -m query --spaces 2>/dev/null | sed -n 's/.*"index":\([0-9]*\).*/\1/p'); do
-  sketchybar --add item "space.$space" left \
+  sketchybar --add space "space.$space" left \
     --set "space.$space" \
-      label="$space" \
-      label.font="$FONT_LABEL:Bold:13.0" \
-      label.padding_left=8 \
-      label.padding_right=8 \
-      icon.drawing=off \
+      space="$space" \
+      icon="$space" \
+      icon.font="$FONT_LABEL:Bold:13.0" \
+      icon.padding_left=8 \
+      icon.padding_right=8 \
+      label.drawing=off \
       background.corner_radius="$SPACE_CORNER_RADIUS" \
       background.height="$SPACE_HEIGHT" \
       background.color="$SELECTION" \
       background.drawing=off \
-      script="$PLUGIN_DIR/space.sh $space" \
-    --subscribe "space.$space" space_change display_change
+      click_script="yabai -m space --focus $space" \
+      script="$PLUGIN_DIR/space.sh"
 done
 
 sketchybar --add item front_app left \
