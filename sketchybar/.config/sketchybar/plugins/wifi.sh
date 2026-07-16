@@ -7,11 +7,6 @@ readonly ICON_DISCONNECTED="󰖪"
 readonly FALLBACK_LABEL="Wi-Fi"
 readonly OFFLINE_LABEL="Offline"
 
-if [ "$SENDER" = "mouse.exited.global" ]; then
-  sketchybar --set "$NAME" popup.drawing=off
-  exit 0
-fi
-
 INTERFACE="$(networksetup -listallhardwareports | awk '/Wi-Fi/ {getline; print $2}')"
 
 if [ -z "$INTERFACE" ] || [ "$(ifconfig "$INTERFACE" 2>/dev/null | awk '/status:/ {print $2}')" != "active" ]; then

@@ -22,7 +22,8 @@ BATTERY_UPDATE_FREQ=120
 
 POPUP_WIDTH=180
 POPUP_CORNER_RADIUS=8
-POPUP_Y_OFFSET=4
+# popup sits flush against the bar
+POPUP_Y_OFFSET=0
 
 SPACE_HEIGHT=24
 SPACE_CORNER_RADIUS=6
@@ -85,9 +86,7 @@ for did in $(seq 1 "$DISPLAY_COUNT"); do
       popup.background.border_width=1 \
       popup.background.border_color="$SELECTION" \
       popup.y_offset="$POPUP_Y_OFFSET" \
-      click_script="sketchybar --set $name popup.drawing=toggle" \
-      script="$PLUGIN_DIR/apple.sh" \
-    --subscribe "$name" mouse.exited.global
+      click_script="sketchybar --set $name popup.drawing=toggle"
 
   apple_menu_entry "$name" settings "󰒓" "$FOREGROUND" "System Settings" "open -a 'System Settings'"
   apple_menu_entry "$name" lock     "󰌾" "$FOREGROUND" "Lock Screen"     "pmset displaysleepnow"
@@ -148,7 +147,7 @@ for did in $(seq 1 "$DISPLAY_COUNT"); do
       popup.align=right \
       click_script="sketchybar --set $name popup.drawing=toggle" \
       script="$PLUGIN_DIR/wifi.sh" \
-    --subscribe "$name" wifi_change system_woke mouse.exited.global
+    --subscribe "$name" wifi_change system_woke
 
   sketchybar --add item "$name.ssid" popup."$name" \
     --set "$name.ssid" \
