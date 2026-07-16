@@ -101,8 +101,16 @@ done
 sketchybar --add event aerospace_workspace_change \
   --add event aerospace_mode_changed
 for space in 1 2 3 4 5; do
+  space_display=all
+  if [ "$DISPLAY_COUNT" -ge 2 ]; then
+    case "$space" in
+      1 | 3 | 5) space_display=1 ;;
+      *) space_display=2 ;;
+    esac
+  fi
   sketchybar --add item "space.$space" left \
     --set "space.$space" \
+      display="$space_display" \
       icon="$space" \
       icon.font="$FONT_LABEL:Bold:13.0" \
       icon.padding_left=8 \
