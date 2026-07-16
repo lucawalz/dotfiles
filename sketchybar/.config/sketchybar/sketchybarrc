@@ -54,39 +54,47 @@ sketchybar --default \
   padding_left=2 \
   padding_right=2
 
-sketchybar --add item apple left \
-  --set apple \
-  icon="" \
-  icon.font="$FONT_ICON:Regular:16.0" \
-  icon.color="$FOREGROUND" \
-  label.drawing=off \
-  popup.background.color="$BAR_COLOR" \
-  popup.background.corner_radius="$POPUP_CORNER_RADIUS" \
-  popup.background.border_width=1 \
-  popup.background.border_color="$SELECTION" \
-  popup.y_offset="$POPUP_Y_OFFSET" \
-  click_script="sketchybar --set apple popup.drawing=toggle" \
-  script="$PLUGIN_DIR/apple.sh" \
-  --subscribe apple mouse.exited.global
+DISPLAY_COUNT="$(yabai -m query --displays 2>/dev/null | grep -c '"index"')"
+[ -z "$DISPLAY_COUNT" ] || [ "$DISPLAY_COUNT" -lt 1 ] && DISPLAY_COUNT=1
 
-apple_menu() {
-  sketchybar --add item "apple.$1" popup.apple \
-    --set "apple.$1" \
-      icon="$2" \
+apple_menu_entry() {
+  sketchybar --add item "$1.$2" popup."$1" \
+    --set "$1.$2" \
+      icon="$3" \
       icon.font="$FONT_ICON:Regular:13.0" \
-      icon.color="$3" \
+      icon.color="$4" \
       icon.padding_left=12 \
-      label="$4" \
+      label="$5" \
       label.padding_right=16 \
       width="$POPUP_WIDTH" \
-      click_script="$5; sketchybar --set apple popup.drawing=off"
+      click_script="$6; sketchybar --set $1 popup.drawing=off"
 }
 
-apple_menu settings "󰒓" "$FOREGROUND" "System Settings" "open -a 'System Settings'"
-apple_menu lock     "󰌾" "$FOREGROUND" "Lock Screen"     "pmset displaysleepnow"
-apple_menu sleep    "󰒲" "$IDLE"       "Sleep"           "pmset sleepnow"
-apple_menu restart  "󰜉" "$WARNING"    "Restart"         "osascript -e 'tell app \"System Events\" to restart'"
-apple_menu shutdown "󰐥" "$CRITICAL"   "Shut Down"       "osascript -e 'tell app \"System Events\" to shut down'"
+# one apple item per display, since a single item shared across bars anchors its popup to only one of them
+for did in $(seq 1 "$DISPLAY_COUNT"); do
+  name="apple.$did"
+  sketchybar --add item "$name" left \
+    --set "$name" \
+      display="$did" \
+      icon="" \
+      icon.font="$FONT_ICON:Regular:16.0" \
+      icon.color="$FOREGROUND" \
+      label.drawing=off \
+      popup.background.color="$BAR_COLOR" \
+      popup.background.corner_radius="$POPUP_CORNER_RADIUS" \
+      popup.background.border_width=1 \
+      popup.background.border_color="$SELECTION" \
+      popup.y_offset="$POPUP_Y_OFFSET" \
+      click_script="sketchybar --set $name popup.drawing=toggle" \
+      script="$PLUGIN_DIR/apple.sh" \
+    --subscribe "$name" mouse.exited.global
+
+  apple_menu_entry "$name" settings "󰒓" "$FOREGROUND" "System Settings" "open -a 'System Settings'"
+  apple_menu_entry "$name" lock     "󰌾" "$FOREGROUND" "Lock Screen"     "pmset displaysleepnow"
+  apple_menu_entry "$name" sleep    "󰒲" "$IDLE"       "Sleep"           "pmset sleepnow"
+  apple_menu_entry "$name" restart  "󰜉" "$WARNING"    "Restart"         "osascript -e 'tell app \\"System Events\\" to restart'"
+  apple_menu_entry "$name" shutdown "󰐥" "$CRITICAL"   "Shut Down"       "osascript -e 'tell app \\"System Events\\" to shut down'"
+done
 
 for space in $(yabai -m query --spaces 2>/dev/null | sed -n 's/.*"index":\([0-9]*\).*/\1/p'); do
   sketchybar --add space "space.$space" left \
@@ -127,10 +135,53 @@ sketchybar --add item battery right \
   script="$PLUGIN_DIR/battery.sh" \
   --subscribe battery power_source_change system_woke
 
-sketchybar --add item wifi right \
-  --set wifi \
-  script="$PLUGIN_DIR/wifi.sh" \
-  --subscribe wifi wifi_change system_woke
+for did in $(seq 1 "$DISPLAY_COUNT"); do
+  name="wifi.$did"
+  sketchybar --add item "$name" right \
+    --set "$name" \
+      display="$did" \
+      popup.background.color="$BAR_COLOR" \
+      popup.background.corner_radius="$POPUP_CORNER_RADIUS" \
+      popup.background.border_width=1 \
+      popup.background.border_color="$SELECTION" \
+      popup.y_offset="$POPUP_Y_OFFSET" \
+      popup.align=right \
+      click_script="sketchybar --set $name popup.drawing=toggle" \
+      script="$PLUGIN_DIR/wifi.sh" \
+    --subscribe "$name" wifi_change system_woke mouse.exited.global
+
+  sketchybar --add item "$name.ssid" popup."$name" \
+    --set "$name.ssid" \
+      icon="󰖩" \
+      icon.font="$FONT_ICON:Regular:13.0" \
+      icon.color="$NETWORK" \
+      icon.padding_left=12 \
+      label="Wi-Fi" \
+      label.padding_right=16 \
+      width="$POPUP_WIDTH"
+
+  sketchybar --add item "$name.ip" popup."$name" \
+    --set "$name.ip" \
+      icon="󰈀" \
+      icon.font="$FONT_ICON:Regular:13.0" \
+      icon.color="$FOREGROUND" \
+      icon.padding_left=12 \
+      label="-" \
+      label.padding_right=16 \
+      width="$POPUP_WIDTH" \
+      click_script="sketchybar --set $name.ip label.highlight=on"
+
+  sketchybar --add item "$name.settings" popup."$name" \
+    --set "$name.settings" \
+      icon="󰒓" \
+      icon.font="$FONT_ICON:Regular:13.0" \
+      icon.color="$FOREGROUND" \
+      icon.padding_left=12 \
+      label="Network Settings" \
+      label.padding_right=16 \
+      width="$POPUP_WIDTH" \
+      click_script="open 'x-apple.systempreferences:com.apple.Network-Settings.extension'; sketchybar --set $name popup.drawing=off"
+done
 
 sketchybar --add item cpu right \
   --set cpu \
