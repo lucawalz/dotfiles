@@ -18,7 +18,6 @@ brew "fd"
 brew "ripgrep"
 brew "git-delta"
 brew "yazi"
-brew "sesh"
 brew "kubecolor"
 brew "kubernetes-cli"
 

@@ -73,5 +73,3 @@ source <(kubectl completion zsh)
 compdef kubecolor=kubectl
 alias kubectl="kubecolor"
 alias k="kubecolor"
-
-alias ss='sesh connect "$(sesh list | fzf --height 40% --reverse)"'
