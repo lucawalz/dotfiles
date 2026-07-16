@@ -1,0 +1,101 @@
+{
+  "type": "group",
+  "actions": [
+    {
+      "key": "t",
+      "type": "application",
+      "value": "/Applications/Ghostty.app"
+    },
+    {
+      "key": "b",
+      "type": "application",
+      "value": "/Applications/Zen.app"
+    },
+    {
+      "key": "o",
+      "type": "application",
+      "value": "/Applications/Obsidian.app"
+    },
+    {
+      "key": "z",
+      "type": "application",
+      "value": "/Applications/Zed.app"
+    },
+    {
+      "key": "w",
+      "type": "group",
+      "label": "Window",
+      "actions": [
+        {
+          "key": "j",
+          "type": "group",
+          "label": "Join",
+          "actions": [
+            {
+              "key": "h",
+              "type": "command",
+              "value": "/opt/homebrew/bin/aerospace join-with left"
+            },
+            {
+              "key": "j",
+              "type": "command",
+              "value": "/opt/homebrew/bin/aerospace join-with down"
+            },
+            {
+              "key": "k",
+              "type": "command",
+              "value": "/opt/homebrew/bin/aerospace join-with up"
+            },
+            {
+              "key": "l",
+              "type": "command",
+              "value": "/opt/homebrew/bin/aerospace join-with right"
+            }
+          ]
+        },
+        {
+          "key": "l",
+          "type": "group",
+          "label": "Layout",
+          "actions": [
+            {
+              "key": "t",
+              "type": "command",
+              "value": "/opt/homebrew/bin/aerospace layout tiles horizontal vertical"
+            },
+            {
+              "key": "a",
+              "type": "command",
+              "value": "/opt/homebrew/bin/aerospace layout accordion horizontal vertical"
+            },
+            {
+              "key": "f",
+              "type": "command",
+              "value": "/opt/homebrew/bin/aerospace layout floating tiling"
+            }
+          ]
+        },
+        {
+          "key": "f",
+          "type": "command",
+          "value": "/opt/homebrew/bin/aerospace fullscreen"
+        },
+        {
+          "key": "F",
+          "type": "command",
+          "value": "/opt/homebrew/bin/aerospace flatten-workspace-tree"
+        },
+        {
+          "key": "b",
+          "type": "command",
+          "value": "/opt/homebrew/bin/aerospace balance-sizes"
+        },
+        {
+          "key": "r",
+          "type": "command",
+          "value": "/opt/homebrew/bin/aerospace reload-config"
+        }
+      ]
+    }
+  ]
+}
