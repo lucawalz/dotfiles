@@ -26,7 +26,6 @@ yabai -m config focus_follows_mouse off
 yabai -m rule --add app="^System Settings$" manage=off
 yabai -m rule --add app="^Finder$" title="(Info|Copy|Move|Delete|Preferences)$" manage=off
 yabai -m rule --add app="^Raycast" manage=off
-yabai -m rule --add app="^Claude$" manage=off
 yabai -m rule --add app="^Zoom$" manage=off
 yabai -m rule --add app="^Tailscale$" manage=off
 yabai -m rule --add app="^(Calculator|System Information|Archive Utility|App Store)$" manage=off
