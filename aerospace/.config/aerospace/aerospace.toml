@@ -1,0 +1,82 @@
+config-version = 2
+
+after-startup-command = ['exec-and-forget brew services restart sketchybar']
+start-at-login = true
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+automatically-unhide-macos-hidden-apps = true
+
+exec-on-workspace-change = ['/bin/bash', '-c',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE']
+on-focus-changed = ['exec-and-forget sketchybar --trigger aerospace_mode_changed']
+
+[key-mapping]
+preset = 'qwerty'
+
+[workspace-to-monitor-force-assignment]
+1 = 'XG2431'
+3 = 'XG2431'
+5 = 'XG2431'
+2 = '32-QHD-144-C'
+4 = '32-QHD-144-C'
+
+[gaps]
+inner.horizontal = 12
+inner.vertical = 12
+outer.left = 12
+outer.right = 12
+outer.bottom = 12
+outer.top = [{ monitor."main" = 54 }, 54]
+
+[mode.main.binding]
+alt-h = 'move left'
+alt-j = 'move down'
+alt-k = 'move up'
+alt-l = 'move right'
+
+alt-shift-h = 'exec-and-forget ~/.config/aerospace/scripts/focus.sh left'
+alt-shift-j = 'exec-and-forget ~/.config/aerospace/scripts/focus.sh down'
+alt-shift-k = 'exec-and-forget ~/.config/aerospace/scripts/focus.sh up'
+alt-shift-l = 'exec-and-forget ~/.config/aerospace/scripts/focus.sh right'
+
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-tab = 'workspace-back-and-forth'
+
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-5 = 'move-node-to-workspace 5'
+
+alt-r = 'mode resize'
+
+[mode.resize.binding]
+h = 'resize width -50'
+j = 'resize height +50'
+k = 'resize height -50'
+l = 'resize width +50'
+minus = 'resize smart -50'
+equal = 'resize smart +50'
+b = 'balance-sizes'
+enter = 'mode main'
+esc = 'mode main'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'layout floating'
+[[on-window-detected]]
+if.app-id = 'com.raycast.macos'
+run = 'layout floating'
+[[on-window-detected]]
+if.app-id = 'us.zoom.xos'
+run = 'layout floating'
