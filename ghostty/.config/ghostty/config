@@ -19,12 +19,12 @@ palette = 14=#ff7eb6
 palette = 15=#ffffff
 
 background-opacity = 0.85
-background-blur-radius = 70
+background-blur-radius = 40
 window-colorspace = display-p3
 minimum-contrast = 1.1
 bold-is-bright = true
 
-font-family = JetBrainsMonoNL Nerd Font 
+font-family = JetBrainsMonoNL Nerd Font
 font-size = 13
 cursor-style = block
 cursor-style-blink = false
