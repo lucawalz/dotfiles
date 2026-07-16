@@ -4,4 +4,5 @@ These records capture the design decisions behind this configuration: how it rea
 
 - [0001. Deploy configurations with GNU Stow](0001-deploy-configs-with-gnu-stow.md) (accepted)
 - [0002. Derive Oxocarbon theming from the base16 palette](0002-derive-oxocarbon-theming-from-base16.md) (accepted)
-- [0003. Tile windows with yabai without the scripting addition](0003-tile-windows-with-yabai-without-the-scripting-addition.md) (accepted)
+- [0003. Tile windows with yabai without the scripting addition](0003-tile-windows-with-yabai-without-the-scripting-addition.md) (superseded by 0004)
+- [0004. Adopt AeroSpace with Leader Key and Karabiner](0004-adopt-aerospace-with-leader-key-and-karabiner.md) (accepted)

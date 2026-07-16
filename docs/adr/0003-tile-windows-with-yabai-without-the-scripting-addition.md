@@ -1,9 +1,11 @@
 ---
-status: accepted
+status: superseded by 0004
 date: 2026-07-16
 ---
 
 # 0003. Tile windows with yabai without the scripting addition
+
+Superseded by [ADR 0004](0004-adopt-aerospace-with-leader-key-and-karabiner.md).
 
 ## Context
 
