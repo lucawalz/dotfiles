@@ -33,4 +33,4 @@ jobs:
             sketchybar/.config/sketchybar/colors.sh \
             sketchybar/.config/sketchybar/plugins/*.sh \
             borders/.config/borders/bordersrc \
-            yabai/.config/yabai/yabairc
+            aerospace/.config/aerospace/scripts/focus.sh
