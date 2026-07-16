@@ -22,7 +22,6 @@ BATTERY_UPDATE_FREQ=120
 
 POPUP_WIDTH=180
 POPUP_CORNER_RADIUS=8
-# popup sits flush against the bar
 POPUP_Y_OFFSET=0
 
 SPACE_HEIGHT=24
@@ -55,8 +54,12 @@ sketchybar --default \
   padding_left=2 \
   padding_right=2
 
-DISPLAY_COUNT="$(yabai -m query --displays 2>/dev/null | grep -c '"index"')"
+DISPLAY_COUNT="$(aerospace list-monitors 2>/dev/null | grep -c '|')"
 [ -z "$DISPLAY_COUNT" ] || [ "$DISPLAY_COUNT" -lt 1 ] && DISPLAY_COUNT=1
+
+sketchybar --add item display_watcher left \
+  --set display_watcher drawing=off script="$PLUGIN_DIR/displays.sh $DISPLAY_COUNT" \
+  --subscribe display_watcher display_change
 
 apple_menu_entry() {
   sketchybar --add item "$1.$2" popup."$1" \
@@ -95,30 +98,51 @@ for did in $(seq 1 "$DISPLAY_COUNT"); do
   apple_menu_entry "$name" shutdown "󰐥" "$CRITICAL"   "Shut Down"       "osascript -e 'tell app \\"System Events\\" to shut down'"
 done
 
-for space in $(yabai -m query --spaces 2>/dev/null | sed -n 's/.*"index":\([0-9]*\).*/\1/p'); do
-  sketchybar --add space "space.$space" left \
+sketchybar --add event aerospace_workspace_change \
+  --add event aerospace_mode_changed
+for space in 1 2 3 4 5; do
+  sketchybar --add item "space.$space" left \
     --set "space.$space" \
-      space="$space" \
       icon="$space" \
       icon.font="$FONT_LABEL:Bold:13.0" \
       icon.padding_left=8 \
-      icon.padding_right=8 \
+      icon.padding_right=4 \
+      label.font="sketchybar-app-font:Regular:15.0" \
+      label.color="$FOREGROUND" \
+      label.padding_right=8 \
       label.drawing=off \
       background.corner_radius="$SPACE_CORNER_RADIUS" \
       background.height="$SPACE_HEIGHT" \
       background.color="$SELECTION" \
       background.drawing=off \
-      click_script="yabai -m space --focus $space" \
-      script="$PLUGIN_DIR/space.sh"
+      click_script="aerospace workspace $space" \
+      script="$PLUGIN_DIR/aerospace.sh $space" \
+    --subscribe "space.$space" aerospace_workspace_change aerospace_mode_changed front_app_switched
 done
+
+sketchybar --add bracket spaces '/space\..*/' \
+  --set spaces \
+    background.color="$BASE01" \
+    background.corner_radius="$SPACE_CORNER_RADIUS" \
+    background.height="$SPACE_HEIGHT"
 
 sketchybar --add item front_app left \
   --set front_app \
   icon.drawing=off \
   label.font="$FONT_LABEL:Bold:13.0" \
   label.color="$ACCENT" \
+  label.padding_left=14 \
   script="$PLUGIN_DIR/front_app.sh" \
   --subscribe front_app front_app_switched
+
+sketchybar --add item front_app_layout left \
+  --set front_app_layout \
+  icon.font="$FONT_ICON:Regular:13.0" \
+  icon.color="$FOREGROUND_DIM" \
+  label.drawing=off \
+  click_script="aerospace layout tiles accordion" \
+  script="$PLUGIN_DIR/front_app.sh" \
+  --subscribe front_app_layout front_app_switched aerospace_mode_changed
 
 sketchybar --add item clock right \
   --set clock \
@@ -126,13 +150,23 @@ sketchybar --add item clock right \
   icon.color="$FOREGROUND_DIM" \
   label.color="$FOREGROUND" \
   update_freq="$CLOCK_UPDATE_FREQ" \
+  click_script="open -a Calendar" \
   script="$PLUGIN_DIR/clock.sh"
 
 sketchybar --add item battery right \
   --set battery \
   update_freq="$BATTERY_UPDATE_FREQ" \
+  click_script="open 'x-apple.systempreferences:com.apple.Battery-Settings.extension'" \
   script="$PLUGIN_DIR/battery.sh" \
   --subscribe battery power_source_change system_woke
+
+sketchybar --add item volume right \
+  --set volume \
+  icon.color="$FOREGROUND_DIM" \
+  label.color="$FOREGROUND" \
+  click_script="osascript -e 'set volume output muted (not output muted of (get volume settings))'" \
+  script="$PLUGIN_DIR/volume.sh" \
+  --subscribe volume volume_change
 
 for did in $(seq 1 "$DISPLAY_COUNT"); do
   name="wifi.$did"
@@ -185,6 +219,9 @@ done
 sketchybar --add item cpu right \
   --set cpu \
   update_freq="$CPU_UPDATE_FREQ" \
+  click_script="open -a 'Activity Monitor'" \
   script="$PLUGIN_DIR/cpu.sh"
 
 sketchybar --update
+sketchybar --trigger aerospace_workspace_change \
+  FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused 2>/dev/null)"
