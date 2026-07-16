@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-readonly GAP=8
+readonly GAP=14
 readonly BAR_OFFSET=42
 
 yabai -m config layout bsp
