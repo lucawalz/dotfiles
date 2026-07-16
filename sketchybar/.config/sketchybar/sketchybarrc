@@ -19,9 +19,13 @@ CPU_UPDATE_FREQ=5
 CLOCK_UPDATE_FREQ=1
 BATTERY_UPDATE_FREQ=120
 
+SPACE_HEIGHT=24
+SPACE_CORNER_RADIUS=6
+
 sketchybar --bar \
   height="$BAR_HEIGHT" \
   position=top \
+  display=all \
   sticky=on \
   topmost=off \
   color="$BAR_COLOR" \
@@ -51,6 +55,22 @@ sketchybar --add item apple left \
   icon.font="$FONT_ICON:Regular:16.0" \
   icon.color="$FOREGROUND" \
   label.drawing=off
+
+for space in $(yabai -m query --spaces 2>/dev/null | sed -n 's/.*"index":\([0-9]*\).*/\1/p'); do
+  sketchybar --add item "space.$space" left \
+    --set "space.$space" \
+      label="$space" \
+      label.font="$FONT_LABEL:Bold:13.0" \
+      label.padding_left=8 \
+      label.padding_right=8 \
+      icon.drawing=off \
+      background.corner_radius="$SPACE_CORNER_RADIUS" \
+      background.height="$SPACE_HEIGHT" \
+      background.color="$SELECTION" \
+      background.drawing=off \
+      script="$PLUGIN_DIR/space.sh $space" \
+    --subscribe "space.$space" space_change display_change
+done
 
 sketchybar --add item front_app left \
   --set front_app \

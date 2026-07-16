@@ -21,7 +21,8 @@ The environment is Ghostty as the terminal, zsh with starship as the shell, and 
 - A single Oxocarbon palette applied across Ghostty, starship, btop, Neovim, fzf, `LS_COLORS`, SketchyBar, and JankyBorders.
 - Ghostty with split and tab keybindings on the command key, a vendored cursor warp shader, and a background at 0.85 opacity with blur.
 - Neovim on lazy.nvim with 46 plugin specification files, oxocarbon.nvim as the colorscheme, and a space leader.
-- A SketchyBar status bar and JankyBorders window borders, both driven from the same palette through a shared `colors.sh`.
+- yabai tiling with binary space partitioning, gaps, and the status bar strip reserved, all with System Integrity Protection left enabled.
+- A SketchyBar status bar and JankyBorders window borders, both driven from the same palette.
 - A Brewfile that installs every dependency the configurations need, including `stow` itself.
 - Secret scanning and shellcheck in CI, with gitleaks rules for age, SOPS, and SSH private keys.
 
@@ -66,7 +67,7 @@ Install the dependencies, then link the packages:
 
 ```
 brew bundle
-stow -t ~ ghostty starship btop fastfetch nvim zsh sketchybar borders
+stow -t ~ ghostty starship btop fastfetch nvim zsh sketchybar borders yabai skhd
 ```
 
 Stow refuses to overwrite a real file that already exists at a target path. Move or delete any pre-existing configuration first, then restow. Verify a link with `ls -l ~/.config/ghostty`, which should resolve into the clone.
@@ -117,6 +118,31 @@ The leader key is space. A selection of the core maps:
 
 Plugin-specific maps live next to their specifications under `nvim/.config/nvim/lua/config/plugins/`, and `which-key` lists them at runtime.
 
+### Windows
+
+yabai tiles automatically and skhd binds the keys. The modifier is `alt`.
+
+| Keybinding | Action |
+|-----------|--------|
+| `alt` `h` `j` `k` `l` | Move focus left, down, up, right |
+| `alt` `⇧` `h` `j` `k` `l` | Warp the window across the partition |
+| `alt` `↩` | Open a Ghostty window |
+| `alt` `q` | Close the window |
+| `alt` `f` | Toggle fullscreen zoom |
+| `alt` `v` | Toggle floating, centred on a grid |
+| `alt` `e` | Toggle the split direction |
+| `alt` `r` / `alt` `⇧` `r` | Rotate the tree |
+| `alt` `x` / `alt` `⇧` `x` | Mirror on the y or x axis |
+| `alt` `b` | Balance the split ratios |
+| `alt` `u` `i` `o` `p` | Resize the window |
+| `alt` `1` to `alt` `9` | Focus a space |
+| `alt` `⇧` `1` to `alt` `⇧` `9` | Send the window to a space and follow it |
+| `alt` `⇥` | Return to the previous space |
+
+Partitioning splits the focused window along its longer axis, so opening four windows in a row gives a spiral rather than a grid. Warping a window with `alt` `⇧` and a direction rearranges the partition, which is how a two by two grid is reached.
+
+Focusing a space and sending a window to one both work without the scripting addition. Creating a space does not, so spaces are added through Mission Control and the bindings then address the ones that exist. Both yabai and skhd need Accessibility permission under System Settings, Privacy and Security.
+
 ### Shell
 
 `.zshrc` sets up fzf-tab completion, atuin history, zoxide, direnv, and starship. `y` opens yazi and changes to the directory it exits in. `ls` is aliased to eza, and `kubectl` and `k` are aliased to kubecolor.
@@ -125,12 +151,14 @@ Plugin-specific maps live next to their specifications under `nvim/.config/nvim/
 
 SketchyBar and JankyBorders run as background services and are started with `brew services start sketchybar` and `brew services start borders`. SketchyBar reloads with `sketchybar --reload` after a config change. Every SketchyBar colour comes from `sketchybar/.config/sketchybar/colors.sh`, so a palette change belongs there rather than in an individual plugin. JankyBorders takes its two colours as arguments in `borders/.config/borders/bordersrc`, since it has no configuration file of its own.
 
-SketchyBar draws below the macOS menu bar rather than replacing it. Hiding the system menu bar under System Settings, Control Center, Automatically hide and show the menu bar, leaves a single bar on screen.
+SketchyBar draws below the macOS menu bar rather than replacing it. Hiding the system menu bar under System Settings, Control Center, Automatically hide and show the menu bar, leaves a single bar on screen. yabai reserves the strip it occupies through `external_bar`, so tiled windows start below it.
 
 ## Repository layout
 
 ```
 ghostty/      Ghostty config, ANSI palette, and cursor warp shader
+yabai/        yabai tiling, gaps, and window rules
+skhd/         hotkeys for yabai
 starship/     starship prompt and Oxocarbon palette
 btop/         btop config and Oxocarbon theme
 fastfetch/    fastfetch config and dragon logo

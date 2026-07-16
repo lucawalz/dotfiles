@@ -32,4 +32,5 @@ jobs:
             sketchybar/.config/sketchybar/sketchybarrc \
             sketchybar/.config/sketchybar/colors.sh \
             sketchybar/.config/sketchybar/plugins/*.sh \
-            borders/.config/borders/bordersrc
+            borders/.config/borders/bordersrc \
+            yabai/.config/yabai/yabairc

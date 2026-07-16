@@ -2,6 +2,7 @@
 
 # Taps
 tap "FelixKratz/formulae"
+tap "koekeishiya/formulae"
 
 # Deployment
 brew "stow"
@@ -35,10 +36,11 @@ brew "fastfetch"
 # Desktop
 brew "borders"
 brew "sketchybar"
+brew "koekeishiya/formulae/yabai"
+brew "koekeishiya/formulae/skhd"
 
 # Terminal
 cask "ghostty"
 
 # Fonts
 cask "font-jetbrains-mono-nerd-font"
-cask "font-sf-pro"
