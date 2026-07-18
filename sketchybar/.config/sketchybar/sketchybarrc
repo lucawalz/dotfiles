@@ -1,235 +1,27 @@
-#!/usr/bin/env bash
+#!/usr/bin/env lua
 
-CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PLUGIN_DIR="$CONFIG_DIR/plugins"
+-- Build the SbarLua module on first run (fresh machine bootstrap)
+os.execute("[ -f \"$HOME/.local/share/sketchybar_lua/sketchybar.so\" ] || (git clone https://github.com/FelixKratz/SbarLua.git /tmp/SbarLua && cd /tmp/SbarLua && make install && rm -rf /tmp/SbarLua)")
 
-source "$CONFIG_DIR/colors.sh"
+-- Locate the compiled SbarLua module and this config's lua files
+package.cpath = package.cpath .. ";" .. os.getenv("HOME") .. "/.local/share/sketchybar_lua/?.so"
+package.path = package.path .. ";" .. os.getenv("CONFIG_DIR") .. "/?.lua"
 
-FONT_LABEL=".AppleSystemUIFont"
-FONT_ICON="JetBrainsMono Nerd Font"
+sbar = require("sketchybar")
 
-BAR_HEIGHT=36
-BAR_MARGIN=10
-BAR_Y_OFFSET=6
-BAR_CORNER_RADIUS=12
-# blur is drawn as a rectangle and ignores corner_radius, leaving a visible edge outside the rounded bar
-BAR_BLUR_RADIUS=0
-BAR_PADDING=10
+-- Bundle the whole initial config into one message for a fast startup
+sbar.begin_config()
+require("bar")
+require("default")
+require("init")
+sbar.hotload(true)
+sbar.end_config()
 
-CPU_UPDATE_FREQ=5
-CLOCK_UPDATE_FREQ=1
-BATTERY_UPDATE_FREQ=120
+-- Drop the bar in from above on launch
+sbar.bar({ y_offset = -40 })
+sbar.animate("sin", 25, function()
+  sbar.bar({ y_offset = 6 })
+end)
 
-POPUP_WIDTH=180
-POPUP_CORNER_RADIUS=8
-POPUP_Y_OFFSET=0
-
-SPACE_HEIGHT=24
-SPACE_CORNER_RADIUS=6
-
-sketchybar --bar \
-  height="$BAR_HEIGHT" \
-  position=top \
-  display=all \
-  sticky=on \
-  topmost=off \
-  color="$BAR_COLOR" \
-  blur_radius="$BAR_BLUR_RADIUS" \
-  corner_radius="$BAR_CORNER_RADIUS" \
-  margin="$BAR_MARGIN" \
-  y_offset="$BAR_Y_OFFSET" \
-  padding_left="$BAR_PADDING" \
-  padding_right="$BAR_PADDING" \
-  shadow=on
-
-sketchybar --default \
-  icon.font="$FONT_ICON:Regular:14.0" \
-  icon.color="$FOREGROUND" \
-  icon.padding_left=8 \
-  icon.padding_right=5 \
-  label.font="$FONT_LABEL:Semibold:13.0" \
-  label.color="$FOREGROUND" \
-  label.padding_left=0 \
-  label.padding_right=8 \
-  padding_left=2 \
-  padding_right=2
-
-DISPLAY_COUNT="$(aerospace list-monitors 2>/dev/null | grep -c '|')"
-[ -z "$DISPLAY_COUNT" ] || [ "$DISPLAY_COUNT" -lt 1 ] && DISPLAY_COUNT=1
-
-sketchybar --add item display_watcher left \
-  --set display_watcher drawing=off script="$PLUGIN_DIR/displays.sh $DISPLAY_COUNT" \
-  --subscribe display_watcher display_change
-
-apple_menu_entry() {
-  sketchybar --add item "$1.$2" popup."$1" \
-    --set "$1.$2" \
-      icon="$3" \
-      icon.font="$FONT_ICON:Regular:13.0" \
-      icon.color="$4" \
-      icon.padding_left=12 \
-      label="$5" \
-      label.padding_right=16 \
-      width="$POPUP_WIDTH" \
-      click_script="$6; sketchybar --set $1 popup.drawing=off"
-}
-
-# one apple item per display, since a single item shared across bars anchors its popup to only one of them
-for did in $(seq 1 "$DISPLAY_COUNT"); do
-  name="apple.$did"
-  sketchybar --add item "$name" left \
-    --set "$name" \
-      display="$did" \
-      icon="" \
-      icon.font="$FONT_ICON:Regular:16.0" \
-      icon.color="$FOREGROUND" \
-      label.drawing=off \
-      popup.background.color="$BAR_COLOR" \
-      popup.background.corner_radius="$POPUP_CORNER_RADIUS" \
-      popup.background.border_width=1 \
-      popup.background.border_color="$SELECTION" \
-      popup.y_offset="$POPUP_Y_OFFSET" \
-      click_script="sketchybar --set $name popup.drawing=toggle"
-
-  apple_menu_entry "$name" settings "󰒓" "$FOREGROUND" "System Settings" "open -a 'System Settings'"
-  apple_menu_entry "$name" lock     "󰌾" "$FOREGROUND" "Lock Screen"     "pmset displaysleepnow"
-  apple_menu_entry "$name" sleep    "󰒲" "$IDLE"       "Sleep"           "pmset sleepnow"
-  apple_menu_entry "$name" restart  "󰜉" "$WARNING"    "Restart"         "osascript -e 'tell app \\"System Events\\" to restart'"
-  apple_menu_entry "$name" shutdown "󰐥" "$CRITICAL"   "Shut Down"       "osascript -e 'tell app \\"System Events\\" to shut down'"
-done
-
-sketchybar --add event aerospace_workspace_change \
-  --add event aerospace_mode_changed
-for space in 1 2 3 4 5; do
-  space_display=all
-  if [ "$DISPLAY_COUNT" -ge 2 ]; then
-    case "$space" in
-      1 | 3 | 5) space_display=1 ;;
-      *) space_display=2 ;;
-    esac
-  fi
-  sketchybar --add item "space.$space" left \
-    --set "space.$space" \
-      display="$space_display" \
-      icon="$space" \
-      icon.font="$FONT_LABEL:Bold:13.0" \
-      icon.padding_left=8 \
-      icon.padding_right=4 \
-      label.font="sketchybar-app-font:Regular:15.0" \
-      label.color="$FOREGROUND" \
-      label.padding_right=8 \
-      label.drawing=off \
-      background.corner_radius="$SPACE_CORNER_RADIUS" \
-      background.height="$SPACE_HEIGHT" \
-      background.color="$SELECTION" \
-      background.drawing=off \
-      click_script="aerospace workspace $space" \
-      script="$PLUGIN_DIR/aerospace.sh $space" \
-    --subscribe "space.$space" aerospace_workspace_change aerospace_mode_changed front_app_switched
-done
-
-sketchybar --add bracket spaces '/space\..*/' \
-  --set spaces \
-    background.color="$BASE01" \
-    background.corner_radius="$SPACE_CORNER_RADIUS" \
-    background.height="$SPACE_HEIGHT"
-
-sketchybar --add item front_app left \
-  --set front_app \
-  icon.drawing=off \
-  label.font="$FONT_LABEL:Bold:13.0" \
-  label.color="$ACCENT" \
-  label.padding_left=14 \
-  script="$PLUGIN_DIR/front_app.sh" \
-  --subscribe front_app front_app_switched
-
-sketchybar --add item front_app_layout left \
-  --set front_app_layout \
-  icon.font="$FONT_ICON:Regular:13.0" \
-  icon.color="$FOREGROUND_DIM" \
-  label.drawing=off \
-  click_script="aerospace layout tiles accordion" \
-  script="$PLUGIN_DIR/front_app.sh" \
-  --subscribe front_app_layout front_app_switched aerospace_mode_changed
-
-sketchybar --add item clock right \
-  --set clock \
-  icon="󰥔" \
-  icon.color="$FOREGROUND_DIM" \
-  label.color="$FOREGROUND" \
-  update_freq="$CLOCK_UPDATE_FREQ" \
-  click_script="open -a Calendar" \
-  script="$PLUGIN_DIR/clock.sh"
-
-sketchybar --add item battery right \
-  --set battery \
-  update_freq="$BATTERY_UPDATE_FREQ" \
-  click_script="open 'x-apple.systempreferences:com.apple.Battery-Settings.extension'" \
-  script="$PLUGIN_DIR/battery.sh" \
-  --subscribe battery power_source_change system_woke
-
-sketchybar --add item volume right \
-  --set volume \
-  icon.color="$FOREGROUND_DIM" \
-  label.color="$FOREGROUND" \
-  click_script="osascript -e 'set volume output muted (not output muted of (get volume settings))'" \
-  script="$PLUGIN_DIR/volume.sh" \
-  --subscribe volume volume_change
-
-for did in $(seq 1 "$DISPLAY_COUNT"); do
-  name="wifi.$did"
-  sketchybar --add item "$name" right \
-    --set "$name" \
-      display="$did" \
-      popup.background.color="$BAR_COLOR" \
-      popup.background.corner_radius="$POPUP_CORNER_RADIUS" \
-      popup.background.border_width=1 \
-      popup.background.border_color="$SELECTION" \
-      popup.y_offset="$POPUP_Y_OFFSET" \
-      popup.align=right \
-      click_script="sketchybar --set $name popup.drawing=toggle" \
-      script="$PLUGIN_DIR/wifi.sh" \
-    --subscribe "$name" wifi_change system_woke
-
-  sketchybar --add item "$name.ssid" popup."$name" \
-    --set "$name.ssid" \
-      icon="󰖩" \
-      icon.font="$FONT_ICON:Regular:13.0" \
-      icon.color="$NETWORK" \
-      icon.padding_left=12 \
-      label="Wi-Fi" \
-      label.padding_right=16 \
-      width="$POPUP_WIDTH"
-
-  sketchybar --add item "$name.ip" popup."$name" \
-    --set "$name.ip" \
-      icon="󰈀" \
-      icon.font="$FONT_ICON:Regular:13.0" \
-      icon.color="$FOREGROUND" \
-      icon.padding_left=12 \
-      label="-" \
-      label.padding_right=16 \
-      width="$POPUP_WIDTH" \
-      click_script="sketchybar --set $name.ip label.highlight=on"
-
-  sketchybar --add item "$name.settings" popup."$name" \
-    --set "$name.settings" \
-      icon="󰒓" \
-      icon.font="$FONT_ICON:Regular:13.0" \
-      icon.color="$FOREGROUND" \
-      icon.padding_left=12 \
-      label="Network Settings" \
-      label.padding_right=16 \
-      width="$POPUP_WIDTH" \
-      click_script="open 'x-apple.systempreferences:com.apple.Network-Settings.extension'; sketchybar --set $name popup.drawing=off"
-done
-
-sketchybar --add item cpu right \
-  --set cpu \
-  update_freq="$CPU_UPDATE_FREQ" \
-  click_script="open -a 'Activity Monitor'" \
-  script="$PLUGIN_DIR/cpu.sh"
-
-sketchybar --update
-sketchybar --trigger aerospace_workspace_change \
-  FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused 2>/dev/null)"
+-- Keep the process alive so subscribe() callbacks fire
+sbar.event_loop()
