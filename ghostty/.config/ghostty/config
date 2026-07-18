@@ -78,7 +78,7 @@ keybind = super+k=goto_split:up
 keybind = super+l=goto_split:right
 
 custom-shader = shaders/cursor_warp.glsl
-custom-shader-animation = always
+custom-shader-animation = true
 
 window-height = 41
 window-width = 149
