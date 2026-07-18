@@ -15,4 +15,5 @@ local function update()
 end
 
 cal:subscribe({ "routine", "forced" }, update)
+update()
 require("helpers.hover")(cal)
