@@ -22,10 +22,3 @@ regex = '''-----BEGIN (RSA|DSA|EC|OPENSSH) PRIVATE KEY-----'''
 id = "api-key-generic"
 description = "Generic API key"
 regex = '''(?i)(api[_-]?key|apikey)['":\s]*[=:]\s*['"][a-zA-Z0-9]{16,}['"]'''
-
-[allowlist]
-description = "Allowlist for false positives"
-paths = [
-  '''\.md$''',  # Markdown files (documentation)
-  '''README''',
-]
