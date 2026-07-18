@@ -1,9 +1,11 @@
 ---
-status: accepted
+status: superseded by 0006
 date: 2026-07-16
 ---
 
 # 0002. Derive Oxocarbon theming from the base16 palette
+
+Superseded by [ADR 0006](0006-adopt-carbonfox-theme.md).
 
 ## Context
 

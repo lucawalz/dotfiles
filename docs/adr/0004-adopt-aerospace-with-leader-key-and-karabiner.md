@@ -1,9 +1,11 @@
 ---
-status: accepted
+status: superseded by 0005
 date: 2026-07-16
 ---
 
 # 0004. Adopt AeroSpace with Leader Key and Karabiner
+
+Superseded by [ADR 0005](0005-adopt-aerospace-with-raycast-and-sketchybar-via-sbarlua.md).
 
 Supersedes [ADR 0003](0003-tile-windows-with-yabai-without-the-scripting-addition.md).
 
