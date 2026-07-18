@@ -29,8 +29,6 @@ jobs:
       - uses: actions/checkout@v7
       - run: |
           shellcheck -x -e SC1091 \
-            sketchybar/.config/sketchybar/sketchybarrc \
-            sketchybar/.config/sketchybar/colors.sh \
-            sketchybar/.config/sketchybar/plugins/*.sh \
+            sketchybar/.config/sketchybar/helpers/cpu.sh \
             borders/.config/borders/bordersrc \
             aerospace/.config/aerospace/scripts/focus.sh
