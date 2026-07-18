@@ -11,17 +11,16 @@ automatically-unhide-macos-hidden-apps = true
 
 exec-on-workspace-change = ['/bin/bash', '-c',
   'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE']
-on-focus-changed = ['exec-and-forget sketchybar --trigger aerospace_mode_changed']
 
 [key-mapping]
 preset = 'qwerty'
 
 [workspace-to-monitor-force-assignment]
-1 = 'XG2431'
-3 = 'XG2431'
-5 = 'XG2431'
-2 = '32-QHD-144-C'
-4 = '32-QHD-144-C'
+1 = 'main'
+2 = 'main'
+3 = 'main'
+4 = 'secondary'
+5 = 'secondary'
 
 [gaps]
 inner.horizontal = 12
@@ -49,13 +48,14 @@ alt-4 = 'workspace 4'
 alt-5 = 'workspace 5'
 alt-tab = 'workspace-back-and-forth'
 
-alt-shift-1 = 'move-node-to-workspace 1'
-alt-shift-2 = 'move-node-to-workspace 2'
-alt-shift-3 = 'move-node-to-workspace 3'
-alt-shift-4 = 'move-node-to-workspace 4'
-alt-shift-5 = 'move-node-to-workspace 5'
+alt-shift-1 = ['move-node-to-workspace 1', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+alt-shift-2 = ['move-node-to-workspace 2', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+alt-shift-3 = ['move-node-to-workspace 3', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+alt-shift-4 = ['move-node-to-workspace 4', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+alt-shift-5 = ['move-node-to-workspace 5', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
 
-alt-r = 'mode resize'
+alt-shift-r = ['mode resize', 'exec-and-forget sketchybar --trigger aerospace_mode MODE=resize']
+alt-shift-semicolon = ['mode service', 'exec-and-forget sketchybar --trigger aerospace_mode MODE=service']
 
 [mode.resize.binding]
 h = 'resize width -50'
@@ -65,8 +65,23 @@ l = 'resize width +50'
 minus = 'resize smart -50'
 equal = 'resize smart +50'
 b = 'balance-sizes'
-enter = 'mode main'
-esc = 'mode main'
+enter = ['mode main', 'exec-and-forget sketchybar --trigger aerospace_mode MODE=main']
+esc = ['mode main', 'exec-and-forget sketchybar --trigger aerospace_mode MODE=main']
+
+[mode.service.binding]
+h = 'join-with left'
+j = 'join-with down'
+k = 'join-with up'
+l = 'join-with right'
+t = 'layout tiles horizontal vertical'
+a = 'layout accordion horizontal vertical'
+s = 'layout floating tiling'
+f = 'fullscreen'
+b = 'balance-sizes'
+r = 'flatten-workspace-tree'
+c = 'reload-config'
+enter = ['mode main', 'exec-and-forget sketchybar --trigger aerospace_mode MODE=main']
+esc = ['mode main', 'exec-and-forget sketchybar --trigger aerospace_mode MODE=main']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.systempreferences'
