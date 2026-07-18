@@ -178,7 +178,6 @@ nvim/         Neovim config, lazy.nvim plugin specs, and lockfile
 zsh/          zsh config, aliases, and tool initialisation
 sketchybar/   SketchyBar Lua config, shared palette, and item modules
 borders/      JankyBorders window border config
-macos/        curated system defaults script, run only on request
 Makefile      orchestrates brew, stow, and the bootstrap reminders
 Brewfile      Homebrew dependencies for every package above
 docs/adr/     architecture decision records

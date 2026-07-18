@@ -13,7 +13,7 @@ The two copies drifted for roughly six months. By the time the drift was measure
 
 ## Decision
 
-Each top-level directory becomes a GNU Stow package whose interior mirrors the path it targets under `~`. `ghostty/.config/ghostty/config` links to `~/.config/ghostty/config`, and `zsh/.zshrc` links to `~/.zshrc`. Deployment is `brew bundle && stow -t ~ ghostty starship btop fastfetch nvim zsh sketchybar borders`, and `stow` itself is a Brewfile entry.
+Each top-level directory becomes a GNU Stow package whose interior mirrors the path it targets under `~`. `ghostty/.config/ghostty/config` links to `~/.config/ghostty/config`, and `zsh/.zshrc` links to `~/.zshrc`. Deployment is `brew bundle && stow -t ~ aerospace ghostty starship btop fastfetch nvim zsh sketchybar borders`, and `stow` itself is a Brewfile entry.
 
 The live files are the repository files. Editing `~/.config/nvim/init.lua` edits the repository through the symlink, and `git status` in the clone reports the change. No copy step exists, so no copy step can be skipped, and drift is not a risk to manage but a state the layout cannot represent.
 
