@@ -1,22 +1,4 @@
-theme = Oxocarbon
-
-# ghostty ships a more saturated Oxocarbon; realign ANSI to canonical base16 so LS_COLORS, fzf and bat agree
-palette = 0=#161616
-palette = 1=#3ddbd9
-palette = 2=#78a9ff
-palette = 3=#ee5396
-palette = 4=#42be65
-palette = 5=#be95ff
-palette = 6=#ff7eb6
-palette = 7=#f2f4f8
-palette = 8=#525252
-palette = 9=#3ddbd9
-palette = 10=#78a9ff
-palette = 11=#ee5396
-palette = 12=#42be65
-palette = 13=#be95ff
-palette = 14=#ff7eb6
-palette = 15=#ffffff
+theme = Carbonfox
 
 background-opacity = 0.85
 background-blur-radius = 20
@@ -51,6 +33,8 @@ notify-on-command-finish-action = notify
 notify-on-command-finish-after = 10s
 
 keybind = super+i=inspector:toggle
+
+keybind = super+enter=text:\n
 
 keybind = super+grave_accent=toggle_quick_terminal
 
