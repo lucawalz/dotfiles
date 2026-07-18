@@ -3,6 +3,8 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CACHE_HOME="$HOME/.cache"
 
+mkdir -p "$XDG_STATE_HOME"/{zsh,less,node,python} "$XDG_DATA_HOME"/mysql "$XDG_CACHE_HOME"/zsh
+
 typeset -U path PATH
 
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"

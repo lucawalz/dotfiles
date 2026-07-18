@@ -1,7 +1,9 @@
 [[ -n $ZSHRC_PROFILE ]] && zmodload zsh/zprof
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 autoload -Uz compinit
-compinit
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
 
 FZF_COLORS="fg:#f2f4f8,bg:-1,hl:#78a9ff,fg+:#f2f4f8,bg+:#353535,hl+:#3ddbd9"
 
@@ -12,11 +14,10 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons=alway
 zstyle ':fzf-tab:complete:*:*' fzf-preview 'bat --color=always --style=numbers $realpath 2>/dev/null || eza -1 --color=always --icons=always $realpath 2>/dev/null'
 
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 HISTFILE="$XDG_STATE_HOME/zsh/history"
-SAVEHIST=1000
-HISTSIZE=999
+SAVEHIST=10000
+HISTSIZE=10000
 setopt share_history
 setopt hist_expire_dups_first
 setopt hist_ignore_dups
@@ -45,7 +46,6 @@ alias ssh='TERM=xterm-256color ssh'
 eval "$(starship init zsh)"
 
 export PATH="$HOME/.local/bin:$PATH"
-eval "$(/usr/libexec/path_helper)"
 
 eval "$(direnv hook zsh)"
 
@@ -77,5 +77,7 @@ alias kubectl="kubecolor"
 alias k="kubecolor"
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 [[ -n $ZSHRC_PROFILE ]] && zprof
