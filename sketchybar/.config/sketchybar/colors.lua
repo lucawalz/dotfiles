@@ -27,9 +27,7 @@ return {
   nominal = 0xff25be6a,
   warning = 0xffff7eb6,
   critical = 0xffee5396,
-  idle = 0xff08bdba,
   elevated = 0xff33b1ff,
-  network = 0xff52bdff,
 
   bar = {
     color = 0x59161616,
