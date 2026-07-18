@@ -2,25 +2,25 @@
 
 add_newline = false
 
-palette = 'oxocarbon'
+palette = 'carbonfox'
 
-[palettes.oxocarbon]
+[palettes.carbonfox]
 bg = '#161616'
-surface = '#262626'
-selection = '#393939'
-comment = '#525252'
-fg_dim = '#dde1e6'
+surface = '#252525'
+selection = '#353535'
+comment = '#484848'
+fg_dim = '#b6b8bb'
 fg = '#f2f4f8'
-fg_bright = '#ffffff'
+fg_bright = '#f2f4f8'
 teal = '#08bdba'
 cyan = '#3ddbd9'
 blue = '#78a9ff'
 magenta = '#ee5396'
 light_blue = '#33b1ff'
 pink = '#ff7eb6'
-green = '#42be65'
+green = '#25be6a'
 purple = '#be95ff'
-pale_blue = '#82cfff'
+pale_blue = '#52bdff'
 
 [aws]
 style = 'bold teal'
