@@ -37,9 +37,7 @@ return {
     })
 
     vim.lsp.config("ruff", {
-      on_attach = function(client)
-        client.server_capabilities.hoverProvider = false
-      end,
+      on_attach = function(client) client.server_capabilities.hoverProvider = false end,
     })
 
     if vim.fn.executable("nixd") == 1 then

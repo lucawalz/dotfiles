@@ -14,7 +14,11 @@ return {
     { "<F10>", function() require("dap").step_over() end, desc = "Debug: step over" },
     { "<F11>", function() require("dap").step_into() end, desc = "Debug: step into" },
     { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle breakpoint" },
-    { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input("Condition: ")) end, desc = "Conditional breakpoint" },
+    {
+      "<leader>dB",
+      function() require("dap").set_breakpoint(vim.fn.input("Condition: ")) end,
+      desc = "Conditional breakpoint",
+    },
     { "<leader>dc", function() require("dap").continue() end, desc = "Continue" },
     { "<leader>di", function() require("dap").step_into() end, desc = "Step into" },
     { "<leader>do", function() require("dap").step_over() end, desc = "Step over" },

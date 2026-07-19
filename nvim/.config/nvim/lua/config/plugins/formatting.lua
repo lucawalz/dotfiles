@@ -34,12 +34,17 @@ return {
       },
     })
 
-    vim.keymap.set({ "n", "v" }, "<leader>cf", function()
-      conform.format({
-        lsp_format = "fallback",
-        async = false,
-        timeout_ms = 1000,
-      })
-    end, { desc = "Format file or range" })
+    vim.keymap.set(
+      { "n", "v" },
+      "<leader>cf",
+      function()
+        conform.format({
+          lsp_format = "fallback",
+          async = false,
+          timeout_ms = 1000,
+        })
+      end,
+      { desc = "Format file or range" }
+    )
   end,
 }

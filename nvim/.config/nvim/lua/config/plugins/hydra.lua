@@ -41,20 +41,28 @@ return {
       mode = { "n", "x" },
       body = "<leader>g",
       heads = {
-        { "J", function()
-          if vim.wo.diff then
-            return "]c"
-          end
-          vim.schedule(function() gs.next_hunk() end)
-          return "<Ignore>"
-        end, { expr = true, desc = "next hunk" } },
-        { "K", function()
-          if vim.wo.diff then
-            return "[c"
-          end
-          vim.schedule(function() gs.prev_hunk() end)
-          return "<Ignore>"
-        end, { expr = true, desc = "prev hunk" } },
+        {
+          "J",
+          function()
+            if vim.wo.diff then
+              return "]c"
+            end
+            vim.schedule(function() gs.next_hunk() end)
+            return "<Ignore>"
+          end,
+          { expr = true, desc = "next hunk" },
+        },
+        {
+          "K",
+          function()
+            if vim.wo.diff then
+              return "[c"
+            end
+            vim.schedule(function() gs.prev_hunk() end)
+            return "<Ignore>"
+          end,
+          { expr = true, desc = "prev hunk" },
+        },
         { "s", ":Gitsigns stage_hunk<CR>", { silent = true, desc = "stage hunk" } },
         { "u", function() gs.undo_stage_hunk() end, { desc = "undo last stage" } },
         { "S", function() gs.stage_buffer() end, { desc = "stage buffer" } },

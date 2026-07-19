@@ -2,7 +2,6 @@ local keymap = vim.keymap
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
-
     local opts = { buffer = ev.buf, silent = true }
 
     opts.desc = "Show LSP references"
@@ -27,14 +26,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
     keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 
     opts.desc = "Go to previous diagnostic"
-    keymap.set("n", "[d", function()
-      vim.diagnostic.jump({ count = -1, float = true })
-    end, opts)
+    keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
 
     opts.desc = "Go to next diagnostic"
-    keymap.set("n", "]d", function()
-      vim.diagnostic.jump({ count = 1, float = true })
-    end, opts)
+    keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
 
     opts.desc = "Show documentation for what is under cursor"
     keymap.set("n", "K", vim.lsp.buf.hover, opts)

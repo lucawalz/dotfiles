@@ -70,9 +70,12 @@ return {
       local move = require("nvim-treesitter-textobjects.move")
 
       local function sel(key, obj)
-        vim.keymap.set({ "x", "o" }, key, function()
-          select.select_textobject(obj, "textobjects")
-        end, { silent = true, desc = "Select " .. obj })
+        vim.keymap.set(
+          { "x", "o" },
+          key,
+          function() select.select_textobject(obj, "textobjects") end,
+          { silent = true, desc = "Select " .. obj }
+        )
       end
 
       sel("af", "@function.outer")
@@ -83,9 +86,7 @@ return {
       sel("ia", "@parameter.inner")
 
       local function mv(key, fn, obj)
-        vim.keymap.set({ "n", "x", "o" }, key, function()
-          fn(obj, "textobjects")
-        end, { silent = true, desc = obj })
+        vim.keymap.set({ "n", "x", "o" }, key, function() fn(obj, "textobjects") end, { silent = true, desc = obj })
       end
 
       mv("]f", move.goto_next_start, "@function.outer")
