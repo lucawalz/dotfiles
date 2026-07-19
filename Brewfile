@@ -75,7 +75,6 @@ brew "tree-sitter-cli"
 brew "yq"
 brew "yt-dlp"
 brew "tealdeer"
-brew "vivid"
 brew "unar"
 brew "xdg-ninja"
 
