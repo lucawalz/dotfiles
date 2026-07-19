@@ -1,9 +1,13 @@
 [[ -n $ZSHRC_PROFILE ]] && zmodload zsh/zprof
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
 autoload -Uz compinit
-compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
+_zcompdump="$XDG_CACHE_HOME/zsh/zcompdump"
+if [[ -n $_zcompdump(#qNmh-24) ]]; then
+  compinit -C -d "$_zcompdump"
+else
+  compinit -d "$_zcompdump"
+fi
+unset _zcompdump
 
 FZF_COLORS="fg:#f2f4f8,bg:-1,hl:#78a9ff,fg+:#f2f4f8,bg+:#353535,hl+:#3ddbd9"
 
@@ -45,8 +49,6 @@ alias ssh='TERM=xterm-256color ssh'
 
 eval "$(starship init zsh)"
 
-export PATH="$HOME/.local/bin:$PATH"
-
 eval "$(direnv hook zsh)"
 
 source <(fzf --zsh)
@@ -71,8 +73,15 @@ function y() {
   rm -f -- "$tmp"
 }
 
-source <(kubectl completion zsh)
-compdef kubecolor=kubectl
+if command -v kubectl &>/dev/null; then
+  _kubectl_cache="$XDG_CACHE_HOME/zsh/kubectl_completion.zsh"
+  if [[ ! -s $_kubectl_cache || $commands[kubectl] -nt $_kubectl_cache ]]; then
+    kubectl completion zsh >| "$_kubectl_cache"
+  fi
+  source "$_kubectl_cache"
+  compdef kubecolor=kubectl
+  unset _kubectl_cache
+fi
 alias kubectl="kubecolor"
 alias k="kubecolor"
 
