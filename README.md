@@ -150,7 +150,7 @@ AeroSpace tiles windows into virtual workspaces, and its own bindings hold the w
 
 Resize mode maps `h` `j` `k` `l` to resize the focused window, `-` and `=` to resize smart, `b` to balance, and `enter` or `esc` to return to the main mode. Service mode offers join (`h` `j` `k` `l` join with that direction), layout (`t` tiles, `a` accordion, `s` floating), fullscreen (`f`), balance (`b`), flatten (`r`), and config reload (`c`), staying active until `enter` or `esc` returns to the main mode.
 
-Workspaces exist lazily and are pinned to displays, 1, 2, and 3 on the primary and 4 and 5 on the second, so a workspace number always means the same screen. Focus movement crosses Neovim split boundaries through a small RPC bridge, `nvim/lua/config/aerospace-focus.lua` and `aerospace/scripts/focus.sh`, so one gesture walks from a split to the next window to the other display.
+Workspaces exist lazily and are pinned to displays, 1, 2, and 3 on the primary and 4 and 5 on the second, so a workspace number always means the same screen. Focus movement crosses Neovim split boundaries through a small RPC bridge, `nvim/.config/nvim/lua/config/aerospace-focus.lua` and `aerospace/.config/aerospace/scripts/focus.sh`, so one gesture walks from a split to the next window to the other display.
 
 AeroSpace needs Accessibility permission, granted through System Settings. The command and option swap for the external keyboard lives in System Settings, Keyboard, Modifier Keys.
 
@@ -164,7 +164,7 @@ SketchyBar runs as a background service and is started with `brew services start
 
 SketchyBar draws below the macOS menu bar rather than replacing it. Hiding the system menu bar under System Settings, Control Center, Automatically hide and show the menu bar, leaves a single bar on screen. AeroSpace reserves the strip it occupies through the top outer gap, so tiled windows start below it.
 
-JankyBorders draws a rounded border around the focused window and runs as a background service, started with `brew services start borders`. Its two colours live in `borders/.config/borders/bordersrc`, active in base09 blue and inactive in base02 grey. It needs Accessibility permission, granted under System Settings, Privacy and Security, Accessibility, to track and draw around windows.
+JankyBorders draws a rounded border around the focused window and runs as a background service, started with `brew services start borders`. Its two colours live in `borders/.config/borders/bordersrc`, active in base08 teal and inactive in base02 grey. It needs Accessibility permission, granted under System Settings, Privacy and Security, Accessibility, to track and draw around windows.
 
 ## Repository layout
 
