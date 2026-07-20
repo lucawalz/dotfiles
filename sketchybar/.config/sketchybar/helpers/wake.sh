@@ -8,21 +8,24 @@ ORB_BORDER=0xff3ddbd9
 GLOW_BORDER=0xfff2f4f8
 CLEAR=0x00000000
 
-DROP_FROM=${DROP_FROM:--45}
+HIDDEN_OFFSET=${HIDDEN_OFFSET:-80}
+DROP_FROM=${DROP_FROM:-45}
 PULSES=${PULSES:-2}
 PULSE_TICKS=${PULSE_TICKS:-14}
 PULSE_HOLD=${PULSE_HOLD:-0.24}
 OPEN_FROM=${OPEN_FROM:-1000}
 
 restore() {
-  $SB --set '/.*/' drawing=on
+  $SB --set '/.*/' y_offset=0
+  $SB --set media drawing=on
   $SB --set wake.orb drawing=off y_offset=0
   $SB --bar margin=10 corner_radius=12 y_offset=6 \
     color=$REST_COLOR border_color=$REST_BORDER border_width=1
 }
 trap restore EXIT
 
-$SB --set '/.*/' drawing=off
+$SB --set '/.*/' y_offset="$HIDDEN_OFFSET"
+$SB --set media drawing=off
 $SB --bar margin=10 corner_radius=12 y_offset=6 color=$CLEAR border_width=0
 $SB --set wake.orb drawing=on y_offset="$DROP_FROM" background.border_color=$ORB_BORDER
 sleep 0.2
@@ -42,7 +45,8 @@ $SB --bar margin="$OPEN_FROM" border_color=$GLOW_BORDER border_width=1
 $SB --animate sin 28 --bar margin=10 color=$REST_COLOR border_color=$REST_BORDER
 sleep 0.52
 
-$SB --set '/.*/' drawing=on
+$SB --set '/.*/' y_offset=0
+$SB --set media drawing=on
 $SB --set wake.orb drawing=off y_offset=0
 $SB --bar margin=10 corner_radius=12 y_offset=6 \
   color=$REST_COLOR border_color=$REST_BORDER border_width=1

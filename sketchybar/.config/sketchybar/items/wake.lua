@@ -5,14 +5,13 @@ local icons = require("icons")
 sbar.add("item", "wake.orb", {
   position = "center",
   drawing = false,
-  width = 40,
   icon = {
     string = icons.apple,
     font = settings.font .. ":Bold:16.0",
     color = colors.fg,
     align = "center",
-    padding_left = 0,
-    padding_right = 0,
+    padding_left = 14,
+    padding_right = 14,
   },
   label = { drawing = false },
   background = {
