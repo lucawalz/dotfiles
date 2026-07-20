@@ -49,6 +49,6 @@ local function update()
 end
 
 require("helpers.poll")(wifi, update, { "wifi_change" })
-wifi:subscribe("mouse.clicked", function() wifi:set({ popup = { drawing = "toggle" } }) end)
+require("helpers.popup")(wifi)
 
 require("helpers.hover")(wifi)

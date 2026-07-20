@@ -49,6 +49,6 @@ local function update()
 end
 
 require("helpers.poll")(battery, update, { "power_source_change" })
-battery:subscribe("mouse.clicked", function() battery:set({ popup = { drawing = "toggle" } }) end)
+require("helpers.popup")(battery)
 
 require("helpers.hover")(battery)
