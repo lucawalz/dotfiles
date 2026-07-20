@@ -7,7 +7,7 @@ local brew = sbar.add("item", "brew", {
   position = "right",
   icon = { string = icons.package, font = settings.font .. ":Bold:15.0", color = colors.fg_dim },
   label = { drawing = false },
-  update_freq = 3600,
+  update_freq = 1800,
   click_script = "open -a Ghostty",
 })
 
@@ -28,7 +28,6 @@ local function update()
   end)
 end
 
-brew:subscribe({ "routine", "forced" }, update)
-update()
+require("helpers.poll")(brew, update)
 
 require("helpers.hover")(brew)

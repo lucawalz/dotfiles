@@ -16,7 +16,7 @@ local weather = sbar.add("item", "weather", {
   position = "right",
   icon = { string = icons.thermometer, font = settings.font .. ":Bold:15.0", color = colors.accent },
   label = { string = "--", color = colors.white },
-  update_freq = 1800,
+  update_freq = 900,
   click_script = "open -a Weather",
 })
 
@@ -30,6 +30,5 @@ local function update()
   end)
 end
 
-weather:subscribe({ "routine", "forced" }, update)
+require("helpers.poll")(weather, update)
 require("helpers.hover")(weather)
-update()

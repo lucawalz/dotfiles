@@ -14,6 +14,5 @@ local function update()
   cal:set({ label = os.date("%a %d %b  %H:%M") })
 end
 
-cal:subscribe({ "routine", "forced" }, update)
-update()
+require("helpers.poll")(cal, update)
 require("helpers.hover")(cal)

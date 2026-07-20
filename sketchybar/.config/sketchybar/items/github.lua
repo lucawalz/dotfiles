@@ -7,7 +7,7 @@ local github = sbar.add("item", "github", {
   position = "right",
   icon = { string = icons.bell, font = settings.font .. ":Bold:15.0", color = colors.fg_dim },
   label = { drawing = false },
-  update_freq = 180,
+  update_freq = 60,
   click_script = "open https://github.com/notifications",
 })
 
@@ -28,7 +28,6 @@ local function update()
   end)
 end
 
-github:subscribe({ "routine", "forced" }, update)
-update()
+require("helpers.poll")(github, update)
 
 require("helpers.hover")(github)

@@ -48,7 +48,6 @@ local function update()
   end)
 end
 
-media:subscribe({ "routine", "forced" }, update)
+require("helpers.poll")(media, update)
 media:subscribe("mouse.entered", function() media:set({ popup = { drawing = true } }) end)
 media:subscribe("mouse.exited", function() media:set({ popup = { drawing = false } }) end)
-update()

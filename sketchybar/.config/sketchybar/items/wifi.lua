@@ -46,8 +46,7 @@ local function update()
   end)
 end
 
-wifi:subscribe({ "wifi_change", "system_woke", "routine", "forced" }, update)
+require("helpers.poll")(wifi, update, { "wifi_change" })
 wifi:subscribe("mouse.clicked", function() wifi:set({ popup = { drawing = "toggle" } }) end)
-update()
 
 require("helpers.hover")(wifi)
