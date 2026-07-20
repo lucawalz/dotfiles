@@ -18,5 +18,9 @@ return {
   music = "󰎇",
   media = { back = "󰒮", play = "󰐊", pause = "󰏤", forward = "󰒭" },
   apple = "",
+  lock = "󰌾",
+  sleep = "󰒲",
+  restart = "󰜉",
+  power = "󰐥",
   thermometer = "󰔏",
 }
