@@ -13,7 +13,7 @@ The setup recorded in ADR 0004 leaned on two auxiliary tools to reach the rarer 
 
 JankyBorders draws a colored border around the focused window from the shared palette. It flickered on space switches under the earlier yabai setup, but AeroSpace uses its own virtual workspaces rather than native macOS spaces, so the border stays steady. It is retained as a clear focus cue drawn from the same palette as the rest of the desktop.
 
-SketchyBar had grown past what a shell configuration expresses cleanly. The bar carries thirteen items, covering workspaces, the focused application, an AeroSpace mode indicator, media, and a set of clock, weather, system, and pending-update readouts, and the branching and state that logic needs read poorly as sketchybarrc shell. SbarLua exposes the same bar through a Lua API, which turns event handlers and item definitions into ordinary functions and tables.
+SketchyBar had grown past what a shell configuration expresses cleanly. The bar carries workspaces, the focused application, an AeroSpace mode indicator, media, and a set of clock, weather, system, and pending-update readouts, and the branching and state that logic needs read poorly as sketchybarrc shell. SbarLua exposes the same bar through a Lua API, which turns event handlers and item definitions into ordinary functions and tables.
 
 ADR 0003 rejected Raycast for window management and recorded that Raycast was no longer needed for anything. That reasoning held only while Raycast was being judged as a tiler. As a launcher on Cmd-Space it replaces the role Leader Key played for launching applications, so the earlier claim no longer describes the machine.
 
