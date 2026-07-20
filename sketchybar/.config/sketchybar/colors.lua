@@ -25,7 +25,8 @@ return {
   accent = 0xff3ddbd9,
 
   nominal = 0xff25be6a,
-  warning = 0xffff7eb6,
+  -- Carbonfox has no warm hue, so this comes from IBM Carbon, its parent design system
+  warning = 0xfff1c21b,
   critical = 0xffee5396,
   elevated = 0xff33b1ff,
 

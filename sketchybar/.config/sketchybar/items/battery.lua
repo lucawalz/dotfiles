@@ -2,7 +2,20 @@ local colors = require("colors")
 local settings = require("settings")
 local icons = require("icons")
 
-local BATTERY_LOW, BATTERY_MID = 20, 50
+local LEVELS = {
+  { min = 90, icon = icons.battery.full, color = colors.nominal },
+  { min = 60, icon = icons.battery.high, color = colors.nominal },
+  { min = 30, icon = icons.battery.mid, color = colors.warning },
+  { min = 10, icon = icons.battery.low, color = colors.critical },
+  { min = 0, icon = icons.battery.empty, color = colors.critical },
+}
+
+local function level_for(pct)
+  for _, level in ipairs(LEVELS) do
+    if pct >= level.min then return level end
+  end
+  return LEVELS[#LEVELS]
+end
 
 local battery = sbar.add("item", "battery", {
   position = "right",
@@ -25,31 +38,9 @@ local function update()
     local pct = tonumber(result:match("(%d+)%%"))
     if not pct then return end
     local charging = result:find("AC Power") ~= nil
-    local icon
-    if charging then
-      icon = icons.battery.charging
-    elseif pct >= 90 then
-      icon = icons.battery.full
-    elseif pct >= 60 then
-      icon = icons.battery.high
-    elseif pct >= 30 then
-      icon = icons.battery.mid
-    elseif pct >= 10 then
-      icon = icons.battery.low
-    else
-      icon = icons.battery.empty
-    end
-    local icolor
-    if charging then
-      icolor = colors.white
-    elseif pct < BATTERY_LOW then
-      icolor = colors.critical
-    elseif pct <= BATTERY_MID then
-      icolor = colors.warning
-    else
-      icolor = colors.nominal
-    end
-    battery:set({ icon = { string = icon, color = icolor }, label = pct .. "%" })
+    local level = level_for(pct)
+    local icon = charging and icons.battery.charging or level.icon
+    battery:set({ icon = { string = icon, color = level.color }, label = pct .. "%" })
 
     local remaining = result:match("(%d+:%d+) remaining")
     local status = charging and "Charging" or "On battery"
@@ -57,8 +48,7 @@ local function update()
   end)
 end
 
-battery:subscribe({ "routine", "power_source_change", "system_woke", "forced" }, update)
+require("helpers.poll")(battery, update, { "power_source_change" })
 battery:subscribe("mouse.clicked", function() battery:set({ popup = { drawing = "toggle" } }) end)
-update()
 
 require("helpers.hover")(battery)
