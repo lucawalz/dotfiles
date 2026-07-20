@@ -10,8 +10,8 @@ sbar.add("item", "wake.orb", {
     font = settings.font .. ":Bold:16.0",
     color = colors.fg,
     align = "center",
-    padding_left = 14,
-    padding_right = 14,
+    padding_left = 15,
+    padding_right = 13,
   },
   label = { drawing = false },
   background = {
