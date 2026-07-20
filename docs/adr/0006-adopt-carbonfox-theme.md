@@ -17,6 +17,8 @@ Carbonfox, the IBM Carbon variant of nightfox.nvim, removes that seam. nightfox 
 
 The theme is Carbonfox. Neovim loads it through nightfox.nvim with `colorscheme carbonfox`, and Ghostty runs its bundled `theme = Carbonfox`, which is identical to nightfox's export, so no ANSI override is needed. starship, btop, SketchyBar, JankyBorders, fzf, and LS_COLORS have no Carbonfox port, so they name Carbonfox's base16 values directly. bat, delta, eza, and fastfetch carry no theme of their own and inherit the terminal palette. No tool uses a hand-invented approximation.
 
+One exception exists. The Carbonfox palette holds no warm hue: its `yellow` key is #08BDBA, a teal, and its `orange` key is #3DDBD9, a cyan already bound as `accent` in the SketchyBar colours. The battery charge ramp needs a mid band that separates cleanly from green `nominal` (#25be6a) and red `critical` (#ee5396), and the pink #ff7eb6 used before sat too close to `critical` to read at bar glyph size. The `warning` key in `sketchybar/.config/sketchybar/colors.lua` is therefore #f1c21b, taken from IBM Carbon, the design system Carbonfox itself derives from, and is the single colour in the repository not sourced from the nightfox Carbonfox palette.
+
 ## Consequences
 
 The Ghostty ANSI override from ADR 0002 is gone: one source drives the terminal and the editor with no seam. The tools without a port still carry hand-written hex, but from the exact Carbonfox base16 values rather than an eyeballed approximation, and they no longer disagree with what the terminal inherits. Switching themes later means changing the nightfox variant and re-deriving that same handful of port-less files. Oxocarbon leaves, and the base16 derivation approach of ADR 0002 is superseded.
