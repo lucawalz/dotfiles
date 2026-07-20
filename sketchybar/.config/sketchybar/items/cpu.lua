@@ -6,7 +6,7 @@ local cpu = sbar.add("item", "cpu", {
   position = "right",
   icon = { string = icons.cpu, font = settings.icon_font .. ":Bold:15.0", color = colors.white },
   label = { color = colors.white },
-  update_freq = 2,
+  update_freq = 5,
 })
 
 local function update()
@@ -16,7 +16,6 @@ local function update()
   end)
 end
 
-cpu:subscribe({ "routine", "forced" }, update)
-update()
+require("helpers.poll")(cpu, update)
 
 require("helpers.hover")(cpu)

@@ -1,8 +1,4 @@
 #!/bin/bash
 
-CORE_COUNT="$(sysctl -n machdep.cpu.thread_count)"
-CPU_INFO="$(ps -eo pcpu,user)"
-CPU_SYS="$(echo "$CPU_INFO" | grep -v "$(whoami)" | sed "s/[^ 0-9\.]//g" | awk "{sum+=\$1} END {print sum/(100.0 * $CORE_COUNT)}")"
-CPU_USER="$(echo "$CPU_INFO" | grep "$(whoami)" | sed "s/[^ 0-9\.]//g" | awk "{sum+=\$1} END {print sum/(100.0 * $CORE_COUNT)}")"
-
-echo "$CPU_SYS $CPU_USER" | awk '{printf "%.0f", ($1 + $2) * 100}'
+# iostat's first sample covers uptime, so only the second reflects current load
+/usr/sbin/iostat -c 2 | awk 'END { printf "%.0f", $(NF-5) + $(NF-4) }'
