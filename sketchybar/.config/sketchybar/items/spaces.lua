@@ -2,6 +2,7 @@ local colors = require("colors")
 local settings = require("settings")
 local icons = require("icons")
 local app_icons = require("icon_map")
+local bin = require("bin")
 
 sbar.add("event", "aerospace_workspace_change")
 
@@ -12,12 +13,12 @@ local function shell(c)
   return r
 end
 
-local display_count = tonumber(shell("aerospace list-monitors 2>/dev/null | grep -c '|'")) or 1
+local display_count = tonumber(shell(bin.aerospace .. " list-monitors 2>/dev/null | grep -c '|'")) or 1
 
 local COLOR_FRAMES, MORPH_FRAMES = 15, 12
 
 local function render_apps(space, sid, is_focused)
-  sbar.exec("aerospace list-windows --workspace " .. sid .. " --format '%{app-name}' | sort -u", function(apps_str)
+  sbar.exec(bin.aerospace .. " list-windows --workspace " .. sid .. " --format '%{app-name}' | sort -u", function(apps_str)
     local glyphs = {}
     for app in (apps_str or ""):gmatch("[^\r\n]+") do
       local name = app:gsub("^%s*(.-)%s*$", "%1")
@@ -38,7 +39,7 @@ local function render_apps(space, sid, is_focused)
 end
 
 local function update_space(space, sid)
-  sbar.exec("aerospace list-workspaces --focused", function(focused)
+  sbar.exec(bin.aerospace .. " list-workspaces --focused", function(focused)
     focused = (focused or ""):gsub("%s", "")
     local is_focused = (focused == tostring(sid))
     sbar.animate("tanh", COLOR_FRAMES, function()
@@ -84,7 +85,7 @@ for sid = 1, 5 do
 
   space:subscribe("aerospace_workspace_change", function() update_space(space, sid) end)
   space:subscribe("front_app_switched", function() update_space(space, sid) end)
-  space:subscribe("mouse.clicked", function() sbar.exec("aerospace workspace " .. sid) end)
+  space:subscribe("mouse.clicked", function() sbar.exec(bin.aerospace .. " workspace " .. sid) end)
 
   update_space(space, sid)
 end

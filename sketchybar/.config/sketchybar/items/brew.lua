@@ -2,6 +2,7 @@ local colors = require("colors")
 local settings = require("settings")
 local icons = require("icons")
 local badge = require("helpers.badge")
+local bin = require("bin")
 
 local brew = sbar.add("item", "brew", {
   position = "right",
@@ -12,7 +13,7 @@ local brew = sbar.add("item", "brew", {
 })
 
 local function update()
-  sbar.exec("/opt/homebrew/bin/brew outdated --quiet 2>/dev/null | grep -c .", function(r)
+  sbar.exec(bin.brew .. " outdated --quiet 2>/dev/null | grep -c .", function(r)
     local n = tonumber((r or ""):match("%d+"))
     if n and n > 0 then
       brew:set({

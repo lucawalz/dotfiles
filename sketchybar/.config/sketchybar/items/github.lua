@@ -2,6 +2,7 @@ local colors = require("colors")
 local settings = require("settings")
 local icons = require("icons")
 local badge = require("helpers.badge")
+local bin = require("bin")
 
 local github = sbar.add("item", "github", {
   position = "right",
@@ -12,7 +13,7 @@ local github = sbar.add("item", "github", {
 })
 
 local function update()
-  sbar.exec("/opt/homebrew/bin/gh api notifications --jq 'length' 2>/dev/null", function(r)
+  sbar.exec(bin.gh .. " api notifications --jq 'length' 2>/dev/null", function(r)
     local n = tonumber((r or ""):match("%d+"))
     if n and n > 0 then
       github:set({

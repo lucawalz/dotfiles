@@ -1,6 +1,7 @@
 local colors = require("colors")
 local settings = require("settings")
 local icons = require("icons")
+local bin = require("bin")
 
 local media = sbar.add("item", "media", {
   position = "center",
@@ -16,23 +17,23 @@ sbar.add("item", "media.back", {
   position = "popup." .. media.name,
   icon = { string = icons.media.back, color = colors.fg },
   label = { drawing = false },
-  click_script = "nowplaying-cli previous",
+  click_script = bin.nowplaying .. " previous",
 })
 sbar.add("item", "media.play", {
   position = "popup." .. media.name,
   icon = { string = icons.media.play, color = colors.accent },
   label = { drawing = false },
-  click_script = "nowplaying-cli togglePlayPause",
+  click_script = bin.nowplaying .. " togglePlayPause",
 })
 sbar.add("item", "media.next", {
   position = "popup." .. media.name,
   icon = { string = icons.media.forward, color = colors.fg },
   label = { drawing = false },
-  click_script = "nowplaying-cli next",
+  click_script = bin.nowplaying .. " next",
 })
 
 local function update()
-  sbar.exec("nowplaying-cli get title artist playbackRate 2>/dev/null", function(r)
+  sbar.exec(bin.nowplaying .. " get title artist playbackRate 2>/dev/null", function(r)
     local lines = {}
     for l in (r or ""):gmatch("[^\r\n]+") do lines[#lines + 1] = l end
     local title, artist, rate = lines[1], lines[2], lines[3]

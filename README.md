@@ -160,7 +160,7 @@ AeroSpace needs Accessibility permission, granted through System Settings. The c
 
 ### Desktop
 
-SketchyBar runs as a background service and is started with `brew services start sketchybar`. It reloads with `sketchybar --reload` after a config change. Its configuration is Lua loaded through SbarLua, so the bar, its items, and its event handlers live in `sketchybar/.config/sketchybar/` as Lua files. Every SketchyBar colour comes from `sketchybar/.config/sketchybar/colors.lua`, so a palette change belongs there rather than in an individual item.
+SketchyBar runs as a background service and is started with `brew services start sketchybar`. It reloads with `sketchybar --reload` after a config change. Its configuration is Lua loaded through SbarLua, so the bar, its items, and its event handlers live in `sketchybar/.config/sketchybar/` as Lua files. Every SketchyBar colour comes from `sketchybar/.config/sketchybar/colors.lua`, so a palette change belongs there rather than in an individual item. The bar runs its commands without the login PATH, so binaries that sit outside the default search path are named absolutely in `sketchybar/.config/sketchybar/bin.lua` and referenced from there rather than invoked bare.
 
 SketchyBar draws below the macOS menu bar rather than replacing it. Hiding the system menu bar under System Settings, Control Center, Automatically hide and show the menu bar, leaves a single bar on screen. AeroSpace reserves the strip it occupies through the top outer gap, so tiled windows start below it.
 
