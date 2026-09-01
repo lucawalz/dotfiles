@@ -1,13 +1,16 @@
 .DEFAULT_GOAL := help
 PACKAGES := $(patsubst %/,%,$(filter-out docs/,$(wildcard */)))
 
-.PHONY: help brew stow unstow restow lint bootstrap
+.PHONY: help brew brew-personal stow unstow restow lint bootstrap
 
 help:
-	@echo "targets: brew stow unstow restow lint bootstrap"
+	@echo "targets: brew brew-personal stow unstow restow lint bootstrap"
 
 brew:
 	brew bundle
+
+brew-personal:
+	brew bundle --file=Brewfile.personal
 
 stow:
 	stow -t ~ $(PACKAGES)
