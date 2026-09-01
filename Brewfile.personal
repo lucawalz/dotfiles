@@ -1,0 +1,29 @@
+brew "postgresql@17"
+brew "mosquitto"
+
+brew "tailscale"
+brew "wireguard-tools"
+
+brew "pandoc"
+brew "hugo"
+brew "graphviz"
+brew "pdfpc"
+
+brew "yq"
+brew "yt-dlp"
+brew "unar"
+brew "xdg-ninja"
+brew "alejandra"
+brew "rtk"
+
+cask "cursor"
+cask "zed"
+cask "obsidian"
+cask "affinity"
+
+cask "appcleaner"
+cask "dockdoor"
+cask "displaylink"
+cask "orcaslicer"
+
+cask "mactex-no-gui"

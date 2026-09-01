@@ -1,5 +1,7 @@
 tap "FelixKratz/formulae"
 tap "nikitabobko/tap"
+tap "hashicorp/tap"
+tap "fluxcd/tap"
 
 brew "stow"
 
@@ -18,6 +20,7 @@ brew "fd"
 brew "ripgrep"
 brew "git-delta"
 brew "yazi"
+brew "tealdeer"
 
 brew "gh"
 brew "glab"
@@ -27,14 +30,15 @@ brew "just"
 brew "act"
 brew "actionlint"
 brew "golangci-lint"
+brew "shellcheck"
 
 brew "neovim"
+brew "tree-sitter-cli"
+brew "node"
 
 brew "btop"
 brew "fastfetch"
 
-brew "node"
-brew "postgresql@17"
 brew "maven"
 
 brew "kubecolor"
@@ -51,14 +55,14 @@ brew "popeye"
 brew "kyverno"
 brew "skopeo"
 brew "podman"
+brew "fluxcd/tap/flux"
 
 brew "awscli"
 brew "hcloud"
 brew "clusterawsadm"
 brew "ansible"
 brew "cloudflared"
-brew "tailscale"
-brew "wireguard-tools"
+brew "hashicorp/tap/terraform"
 
 brew "age"
 brew "sops"
@@ -66,42 +70,14 @@ brew "gitleaks"
 brew "trufflehog"
 brew "pwgen"
 
-brew "pandoc"
-brew "hugo"
-brew "graphviz"
-brew "pdfpc"
-brew "tree-sitter-cli"
-
-brew "yq"
-brew "yt-dlp"
-brew "tealdeer"
-brew "unar"
-brew "xdg-ninja"
-
-brew "alejandra"
-
-brew "mosquitto"
-
 brew "lua"
 brew "nowplaying-cli"
 brew "borders"
 brew "sketchybar"
 
-brew "rtk"
-
 cask "nikitabobko/tap/aerospace"
 cask "raycast"
 cask "ghostty"
-
-cask "cursor"
-cask "zed"
-cask "obsidian"
-cask "affinity"
-cask "appcleaner"
-cask "displaylink"
-cask "dockdoor"
-cask "orcaslicer"
-cask "mactex-no-gui"
 
 cask "font-jetbrains-mono-nerd-font"
 cask "font-sketchybar-app-font"
