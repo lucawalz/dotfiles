@@ -9,3 +9,4 @@ These records capture the design decisions behind this configuration: how it rea
 - [0005. Adopt AeroSpace with Raycast and SketchyBar via SbarLua](0005-adopt-aerospace-with-raycast-and-sketchybar-via-sbarlua.md) (accepted)
 - [0006. Adopt Carbonfox as the theme](0006-adopt-carbonfox-theme.md) (accepted)
 - [0007. Orchestrate setup with a Makefile](0007-orchestrate-setup-with-a-makefile.md) (accepted)
+- [0008. Split the Brewfile into core and personal layers](0008-split-the-brewfile-into-core-and-personal-layers.md) (accepted)

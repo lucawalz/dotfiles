@@ -15,7 +15,7 @@ Orchestrating the existing steps is a different thing from copying configuration
 
 ## Decision
 
-A root Makefile orchestrates deployment. It auto-discovers the Stow packages from the top-level directories, excluding `docs`, so adding a package needs no edit to an install list. It exposes `brew`, `stow`, `unstow`, `restow`, `lint`, and `bootstrap`, where `bootstrap` runs `brew` and `stow` and then prints the manual steps Homebrew cannot perform.
+A root Makefile orchestrates deployment. It auto-discovers the Stow packages from the top-level directories, excluding `docs`, so adding a package needs no edit to an install list. It exposes `brew`, `brew-personal`, `stow`, `unstow`, `restow`, `lint`, and `bootstrap`, where `bootstrap` runs `brew` and `stow` and then prints the manual steps Homebrew cannot perform.
 
 Stow still owns the symlinks. The Makefile calls `stow -t ~` rather than moving files itself, so the live configuration remains a set of links into the repository.
 
