@@ -22,10 +22,9 @@ restow:
 	stow -R -t ~ $(PACKAGES)
 
 lint:
-	shellcheck -x -e SC1091 sketchybar/.config/sketchybar/helpers/cpu.sh borders/.config/borders/bordersrc aerospace/.config/aerospace/scripts/focus.sh
+	shellcheck -x -e SC1091 borders/.config/borders/bordersrc aerospace/.config/aerospace/scripts/focus.sh
 
 bootstrap: brew stow
 	@echo "Remaining manual steps:"
-	@echo "  1. Build SbarLua from source (needs lua and clang)."
-	@echo "  2. Install SF Pro into ~/Library/Fonts."
-	@echo "  3. Grant Accessibility to AeroSpace and borders in System Settings."
+	@echo "  1. Grant Accessibility to AeroSpace and borders in System Settings."
+	@echo "  2. Disable automatic menu bar hiding in System Settings."
