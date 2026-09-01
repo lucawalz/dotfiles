@@ -71,14 +71,10 @@ brew "gitleaks"
 brew "trufflehog"
 brew "pwgen"
 
-brew "lua"
-brew "nowplaying-cli"
 brew "borders"
-brew "sketchybar"
 
 cask "nikitabobko/tap/aerospace"
 cask "raycast"
 cask "ghostty"
 
 cask "font-jetbrains-mono-nerd-font"
-cask "font-sketchybar-app-font"
