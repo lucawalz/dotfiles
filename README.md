@@ -11,7 +11,7 @@ A GNU Stow deployed macOS terminal environment, themed end to end with Carbonfox
 
 ## Description
 
-dotfiles holds the configuration for a single Apple Silicon Mac: the terminal, the shell, the editor, and the desktop furniture around them. Every package is a GNU Stow package, so the files under `~` are symlinks back into this repository and the working copy is the live configuration rather than a snapshot of it.
+dotfiles holds the configuration for an Apple Silicon Mac: the terminal, the shell, the editor, and the desktop furniture around them. Every package is a GNU Stow package, so the files under `~` are symlinks back into this repository and the working copy is the live configuration rather than a snapshot of it. The Homebrew manifest is split in two so a second Apple Silicon Mac, a work machine for example, can take the terminal environment without the personal desktop applications. That is the extent of the portability: the configuration still assumes Apple Silicon.
 
 The environment is Ghostty as the terminal, zsh with starship as the shell, and Neovim as the editor, with btop and fastfetch alongside and AeroSpace, SketchyBar, JankyBorders, and Raycast on the desktop. One palette, Carbonfox, runs through all of them.
 
@@ -23,7 +23,7 @@ The environment is Ghostty as the terminal, zsh with starship as the shell, and 
 - Neovim on lazy.nvim with 46 plugin specification files, Carbonfox through nightfox.nvim as the colorscheme, and a space leader.
 - AeroSpace tiling with display-pinned workspaces, native resize and service modes for the rarer window commands, and a single focus gesture that walks Neovim splits, windows, and displays, all with System Integrity Protection left enabled.
 - A SketchyBar status bar in Lua through SbarLua and JankyBorders window borders, both driven from the same palette, with Raycast as the launcher.
-- A Brewfile that installs every dependency the configurations need, including `stow` itself.
+- A core `Brewfile` holding the dependencies the configurations need, including `stow` itself, alongside the development toolchain wanted on any machine, and a `Brewfile.personal` layer of desktop applications and extras that is not installed by default.
 - Secret scanning and shellcheck in CI, with gitleaks rules for age, SOPS, and SSH private keys.
 
 ### Background
@@ -50,8 +50,8 @@ flowchart LR
 
 ## Requirements
 
-- macOS on Apple Silicon. The configuration is developed against macOS Tahoe and is not portable to Linux as written.
-- [Homebrew](https://brew.sh), which installs most dependencies through the [`Brewfile`](Brewfile), including `lua`, `nowplaying-cli` for the SketchyBar media widget, and the Raycast cask.
+- macOS on Apple Silicon. The configuration is developed against macOS Tahoe and is not portable to Linux as written. `zsh/.zshrc`, `aerospace/.config/aerospace/scripts/focus.sh`, and two SketchyBar items name the `/opt/homebrew` prefix directly, so Apple Silicon is a requirement rather than a default.
+- [Homebrew](https://brew.sh), which installs most dependencies through the core [`Brewfile`](Brewfile), including `lua`, `nowplaying-cli` for the SketchyBar media widget, and the Raycast cask. [`Brewfile.personal`](Brewfile.personal) adds the personal machine layer and stays out of the default install.
 - GNU Stow, installed by the Brewfile, for deployment.
 - A Nerd Font. The Ghostty config asks for JetBrainsMonoNL Nerd Font, and starship and fastfetch depend on the glyphs.
 - SF Pro, which SketchyBar renders in. Apple does not ship it through a cask, so it is downloaded from Apple and installed by hand into `~/Library/Fonts`.
@@ -66,12 +66,14 @@ git clone https://github.com/lucawalz/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ```
 
-The one-command path is `make bootstrap`, which runs `brew bundle`, links every Stow package, and prints the remaining manual steps (building SbarLua, installing SF Pro, and granting Accessibility). To run those stages by hand instead, install the dependencies, then link the packages:
+The one-command path for any machine is `make bootstrap`, which installs the core `Brewfile`, links every Stow package, and prints the remaining manual steps (building SbarLua, installing SF Pro, and granting Accessibility). On the personal machine, follow it with `make brew-personal` for the desktop applications and extras in `Brewfile.personal`. A work machine stops after `make bootstrap`. To run those stages by hand instead, install the dependencies, then link the packages:
 
 ```
 brew bundle
 stow -t ~ ghostty starship btop fastfetch nvim zsh sketchybar aerospace borders
 ```
+
+Both manifests are deliberately a subset of what the machine has installed, so never run `brew bundle cleanup` against either one. Cleanup treats anything missing from the file as unwanted and uninstalls it, which here means every untracked package.
 
 Stow refuses to overwrite a real file that already exists at a target path. Move or delete any pre-existing configuration first, then restow. Verify a link with `ls -l ~/.config/ghostty`, which should resolve into the clone.
 
@@ -169,18 +171,19 @@ JankyBorders draws a rounded border around the focused window and runs as a back
 ## Repository layout
 
 ```
-ghostty/      Ghostty config, ANSI palette, and cursor warp shader
-aerospace/    AeroSpace tiling, workspace pins, gaps, and the focus bridge script
-starship/     starship prompt and Carbonfox palette
-btop/         btop config and Carbonfox theme
-fastfetch/    fastfetch config and dragon logo
-nvim/         Neovim config, lazy.nvim plugin specs, and lockfile
-zsh/          zsh config, aliases, and tool initialisation
-sketchybar/   SketchyBar Lua config, shared palette, and item modules
-borders/      JankyBorders window border config
-Makefile      orchestrates brew, stow, and the bootstrap reminders
-Brewfile      Homebrew dependencies for every package above
-docs/adr/     architecture decision records
+ghostty/           Ghostty config, ANSI palette, and cursor warp shader
+aerospace/         AeroSpace tiling, workspace pins, gaps, and the focus bridge script
+starship/          starship prompt and Carbonfox palette
+btop/              btop config and Carbonfox theme
+fastfetch/         fastfetch config and dragon logo
+nvim/              Neovim config, lazy.nvim plugin specs, and lockfile
+zsh/               zsh config, aliases, and tool initialisation
+sketchybar/        SketchyBar Lua config, shared palette, and item modules
+borders/           JankyBorders window border config
+Makefile           orchestrates brew, stow, and the bootstrap reminders
+Brewfile           core Homebrew dependencies for every package above
+Brewfile.personal  personal machine layer, installed with make brew-personal
+docs/adr/          architecture decision records
 ```
 
 ## Contributing
@@ -201,4 +204,4 @@ Released under the MIT License. See [LICENSE](LICENSE).
 
 ## Project status
 
-Actively maintained and tracks the machine it runs on.
+Actively maintained and tracks the machines it runs on.
