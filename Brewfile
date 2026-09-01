@@ -39,6 +39,7 @@ brew "node"
 brew "btop"
 brew "fastfetch"
 
+brew "go"
 brew "maven"
 
 brew "kubecolor"
