@@ -16,14 +16,11 @@ brew "xdg-ninja"
 brew "alejandra"
 brew "rtk"
 
-cask "cursor"
 cask "zed"
 cask "obsidian"
-cask "affinity"
 
 cask "appcleaner"
 cask "dockdoor"
 cask "displaylink"
-cask "orcaslicer"
 
 cask "mactex-no-gui"
