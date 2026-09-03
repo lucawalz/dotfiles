@@ -11,3 +11,4 @@ These records capture the design decisions behind this configuration: how it rea
 - [0007. Orchestrate setup with a Makefile](0007-orchestrate-setup-with-a-makefile.md) (accepted)
 - [0008. Split the Brewfile into core and personal layers](0008-split-the-brewfile-into-core-and-personal-layers.md) (accepted)
 - [0009. Remove SketchyBar and use the native menu bar](0009-remove-sketchybar-and-use-the-native-menu-bar.md) (accepted)
+- [0010. Balance workspaces evenly across two displays](0010-balance-workspaces-across-two-displays.md) (accepted)
