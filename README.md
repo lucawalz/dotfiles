@@ -132,8 +132,8 @@ AeroSpace tiles windows into virtual workspaces, and its own bindings hold the w
 |-----------|--------|
 | `alt` `h` `j` `k` `l` | Move the window through the layout |
 | `alt` `⇧` `h` `j` `k` `l` | Focus left, down, up, right, across Neovim splits, windows, and displays |
-| `alt` `1` to `alt` `5` | Focus a workspace |
-| `alt` `⇧` `1` to `alt` `⇧` `5` | Send the window to a workspace |
+| `alt` `1` to `alt` `8` | Focus a workspace |
+| `alt` `⇧` `1` to `alt` `⇧` `8` | Send the window to a workspace |
 | `alt` `⇥` | Return to the previous workspace |
 | `alt` `⇧` `r` | Resize mode |
 | `alt` `⇧` `;` | Service mode |
@@ -141,7 +141,7 @@ AeroSpace tiles windows into virtual workspaces, and its own bindings hold the w
 
 Resize mode maps `h` `j` `k` `l` to resize the focused window, `-` and `=` to resize smart, `b` to balance, and `enter` or `esc` to return to the main mode. Service mode offers join (`h` `j` `k` `l` join with that direction), layout (`t` tiles, `a` accordion, `s` floating), fullscreen (`f`), balance (`b`), flatten (`r`), and config reload (`c`), staying active until `enter` or `esc` returns to the main mode.
 
-Workspaces exist lazily and are pinned to displays, 1, 2, and 3 on the primary and 4 and 5 on the second, so a workspace number always means the same screen. Focus movement crosses Neovim split boundaries through a small RPC bridge, `nvim/.config/nvim/lua/config/aerospace-focus.lua` and `aerospace/.config/aerospace/scripts/focus.sh`, so one gesture walks from a split to the next window to the other display.
+Workspaces exist lazily and are pinned to displays in two even halves, 1 to 4 on the display carrying the menu bar and 5 to 8 on the other, so a workspace number always means the same screen. The pins name no monitor, only AeroSpace's `main` and `secondary` patterns, so the same halves apply to a laptop panel with one external and to two externals with the lid closed. Which physical display holds 1 to 4 is chosen by dragging the menu bar in System Settings, Displays. With a single display connected `secondary` matches nothing and every workspace opens on the one screen. Focus movement crosses Neovim split boundaries through a small RPC bridge, `nvim/.config/nvim/lua/config/aerospace-focus.lua` and `aerospace/.config/aerospace/scripts/focus.sh`, so one gesture walks from a split to the next window to the other display.
 
 AeroSpace needs Accessibility permission, granted through System Settings. The command and option swap for the external keyboard lives in System Settings, Keyboard, Modifier Keys.
 
