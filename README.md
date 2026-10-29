@@ -60,8 +60,8 @@ flowchart LR
 Clone the repository to a stable path, since Stow creates symlinks that point back into it and moving it later breaks them.
 
 ```
-git clone https://github.com/lucawalz/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+git clone https://github.com/lucawalz/dotfiles.git ~/code/dotfiles
+cd ~/code/dotfiles
 ```
 
 The one-command path for any machine is `make bootstrap`, which installs the core `Brewfile`, links every Stow package, and prints the remaining manual steps (granting Accessibility and turning off automatic menu bar hiding). On the personal machine, follow it with `make brew-personal` for the desktop applications and extras in `Brewfile.personal`. A work machine stops after `make bootstrap`. To run those stages by hand instead, install the dependencies, then link the packages:

@@ -11,8 +11,8 @@
 Clone the repository to a stable path, install the dependencies, and link the packages:
 
 ```bash
-git clone https://github.com/lucawalz/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+git clone https://github.com/lucawalz/dotfiles.git ~/code/dotfiles
+cd ~/code/dotfiles
 brew bundle
 stow -t ~ ghostty starship btop fastfetch nvim zsh aerospace borders
 ```
