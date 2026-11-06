@@ -31,7 +31,7 @@ Panes, windows, and the agents in them survive closing Ghostty. Windows restored
 
 Nothing is restored after a reboot, since tmux-resurrect and tmux-continuum are not installed. Conversations are reopened by hand with `claude --continue` or `claude --resume`. The plugins can be added later if the loss is felt.
 
-Ghostty's notify-on-command-finish may not work inside tmux, because the shell integration markers may not pass through. The loss is accepted.
+Ghostty's notify-on-command-finish is lost inside tmux. The loss is accepted.
 
 A literal `Ctrl+h`, `Ctrl+j`, `Ctrl+k`, or `Ctrl+l` typed in a shell pane moves between panes instead of reaching the shell. Prefix followed by the same key sends it through. The Backspace key is unaffected.
 
