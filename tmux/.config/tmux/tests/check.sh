@@ -38,10 +38,10 @@ BINDING_CONTENT=(
 
 # key:required-substring, root table
 ROOT_BINDING_CONTENT=(
-  'C-h:@pane-is-vim'
-  'C-j:@pane-is-vim'
-  'C-k:@pane-is-vim'
-  'C-l:@pane-is-vim'
+  'C-h:pane_at_left'
+  'C-j:pane_at_bottom'
+  'C-k:pane_at_top'
+  'C-l:pane_at_right'
   'C-Up:resize-pane -U 2'
   'C-Down:resize-pane -D 2'
   'C-Left:resize-pane -L 2'
@@ -90,6 +90,10 @@ done
 for entry in "${ROOT_BINDING_CONTENT[@]}"; do
   key=${entry%%:*} want=${entry#*:}
   grep -F -- "-T root $key " <<<"$keys" | grep -Fq -- "$want" || failures+=("binding root $key lacks '$want'")
+done
+
+for key in C-h C-j C-k C-l; do
+  grep -F -- "-T prefix $key " <<<"$keys" | grep -Fq -- "send-keys $key" || failures+=("binding prefix $key lacks passthrough")
 done
 
 grep -F -- "-T prefix x " <<<"$keys" | grep -Fq confirm-before && failures+=("binding prefix x still confirms")

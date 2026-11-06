@@ -1,6 +1,6 @@
 local RESIZE_STEP = 2
 
-require("smart-splits").setup({ default_amount = RESIZE_STEP })
+require("smart-splits").setup({ default_amount = RESIZE_STEP, at_edge = "stop" })
 
 local splits = require("smart-splits")
 local function map(lhs, fn, desc) vim.keymap.set("n", lhs, fn, { desc = desc, silent = true }) end
