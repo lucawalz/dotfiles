@@ -35,7 +35,6 @@ STUB
 stub nvim <<'STUB'
 exit "${STUB_NVIM_STATUS:-0}"
 STUB
-# display-message prints STUB_STATE: the zoomed flag, then the edge flag
 stub tmux <<'STUB'
 case $1 in
   list-clients)

@@ -6,7 +6,6 @@ CONF=${CONF:-$ROOT/tmux/.config/tmux/tmux.conf}
 SOCKET=dotfiles-test
 SESSION=check
 
-# scope:option:expected-substring; scope is g (session), s (server) or w (window)
 OPTIONS=(
   "g:allow-passthrough:on"
   "g:focus-events:on"
@@ -26,7 +25,6 @@ OPTIONS=(
 
 PREFIX_KEYS=('\%' '\"' c x E P 1 2 3 4 5 6 7 8 9)
 
-# key:required-substring
 BINDING_CONTENT=(
   '\%:pane_current_path'
   '\":pane_current_path'
@@ -36,7 +34,6 @@ BINDING_CONTENT=(
   'E:select-layout -E'
 )
 
-# key:required-substring, root table
 ROOT_BINDING_CONTENT=(
   'C-h:pane_at_left'
   'C-j:pane_at_bottom'
@@ -112,16 +109,21 @@ zsh -n "$ROOT/zsh/.zshrc" || failures+=("zsh syntax error in .zshrc")
 stub=$(cd -P "$(mktemp -d)" && pwd)
 printf '#!/bin/sh\necho "stub-tmux $*"\n' >"$stub/tmux"
 chmod +x "$stub/tmux"
-inside=$(env -i PATH="$stub:/usr/bin:/bin" TMUX=set TERM_PROGRAM=ghostty "$(command -v zsh)" -c "source <(sed -n '/^$GUARD_NAME() {/,/^}/p' '$ROOT/zsh/.zshrc'); $GUARD_NAME; echo returned")
+GUARD_RUN="source <(sed -n '/^$GUARD_NAME() {/,/^}/p' '$ROOT/zsh/.zshrc'); $GUARD_NAME; echo returned"
+guard_tty() { echo | script -q /dev/null env -i "$@" "$(command -v zsh)" -c "$GUARD_RUN" | tr -d "\r" | tail -n 1; }
+guard_pipe() { env -i "$@" "$(command -v zsh)" -c "$GUARD_RUN" | cat; }
+inside=$(guard_tty PATH="$stub:/usr/bin:/bin" TMUX=set TERM_PROGRAM=ghostty)
 [[ $inside == returned ]] || failures+=("guard inside tmux: want 'returned', got '$inside'")
-notmux=$(env -i PATH=/usr/bin:/bin TERM_PROGRAM=ghostty "$(command -v zsh)" -c "source <(sed -n '/^$GUARD_NAME() {/,/^}/p' '$ROOT/zsh/.zshrc'); $GUARD_NAME; echo returned")
+notmux=$(guard_tty PATH=/usr/bin:/bin TERM_PROGRAM=ghostty)
 [[ $notmux == returned ]] || failures+=("guard without tmux: want 'returned', got '$notmux'")
-other=$(env -i PATH="$stub:/usr/bin:/bin" TERM_PROGRAM=other "$(command -v zsh)" -c "source <(sed -n '/^$GUARD_NAME() {/,/^}/p' '$ROOT/zsh/.zshrc'); $GUARD_NAME; echo returned")
+other=$(guard_tty PATH="$stub:/usr/bin:/bin" TERM_PROGRAM=other)
 [[ $other == returned ]] || failures+=("guard outside ghostty: want 'returned', got '$other'")
+notty=$(guard_pipe PATH="$stub:/usr/bin:/bin" TERM_PROGRAM=ghostty)
+[[ $notty == returned ]] || failures+=("guard without tty: want 'returned', got '$notty'")
 mkdir -p "$stub/my.proj:x"
-named=$(cd "$stub/my.proj:x" && env -i PATH="$stub:/usr/bin:/bin" HOME=/nonexistent TERM_PROGRAM=ghostty "$(command -v zsh)" -c "source <(sed -n '/^$GUARD_NAME() {/,/^}/p' '$ROOT/zsh/.zshrc'); $GUARD_NAME; echo returned")
+named=$(cd "$stub/my.proj:x" && guard_tty PATH="$stub:/usr/bin:/bin" HOME=/nonexistent TERM_PROGRAM=ghostty)
 [[ $named == "stub-tmux new-session -A -s my_proj_x" ]] || failures+=("guard name: got '$named'")
-homed=$(cd "$stub" && env -i PATH="$stub:/usr/bin:/bin" HOME="$stub" TERM_PROGRAM=ghostty "$(command -v zsh)" -c "source <(sed -n '/^$GUARD_NAME() {/,/^}/p' '$ROOT/zsh/.zshrc'); $GUARD_NAME; echo returned")
+homed=$(cd "$stub" && guard_tty PATH="$stub:/usr/bin:/bin" HOME="$stub" TERM_PROGRAM=ghostty)
 [[ $homed == "stub-tmux new-session -A -s home" ]] || failures+=("guard home: got '$homed'")
 rm -rf "$stub"
 
