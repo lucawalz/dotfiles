@@ -23,6 +23,9 @@ brew "lazygit"
 brew "yazi"
 brew "tealdeer"
 
+brew "tmux"
+brew "sesh"
+
 brew "gh"
 brew "glab"
 brew "git-cliff"
