@@ -19,6 +19,7 @@ brew "eza"
 brew "fd"
 brew "ripgrep"
 brew "git-delta"
+brew "lazygit"
 brew "yazi"
 brew "tealdeer"
 
