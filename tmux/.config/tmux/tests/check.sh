@@ -49,12 +49,21 @@ ROOT_BINDING_CONTENT=(
 )
 
 GUARD_NAME=tmux_attach_project
+FOCUS_WAIT_TRIES=50
+FOCUS_WAIT_STEP=0.1
 
 tm() { tmux -L "$SOCKET" "$@"; }
 
-cleanup() { tm kill-server 2>/dev/null; }
+state=$(cd -P "$(mktemp -d)" && pwd)
+export XDG_STATE_HOME=$state
+focused_file=$state/tmux/focused-client
+
+cleanup() {
+  tm kill-server 2>/dev/null
+  rm -rf "$state"
+}
 trap cleanup EXIT
-cleanup
+tm kill-server 2>/dev/null
 
 failures=()
 
@@ -115,6 +124,50 @@ named=$(cd "$stub/my.proj:x" && env -i PATH="$stub:/usr/bin:/bin" HOME=/nonexist
 homed=$(cd "$stub" && env -i PATH="$stub:/usr/bin:/bin" HOME="$stub" TERM_PROGRAM=ghostty "$(command -v zsh)" -c "source <(sed -n '/^$GUARD_NAME() {/,/^}/p' '$ROOT/zsh/.zshrc'); $GUARD_NAME; echo returned")
 [[ $homed == "stub-tmux new-session -A -s home" ]] || failures+=("guard home: got '$homed'")
 rm -rf "$stub"
+
+hooks=$(tm show-hooks -g)
+for hook in client-focus-in client-focus-out; do
+  grep -F -- "$hook" <<<"$hooks" | grep -Fq focused-client || failures+=("hook $hook lacks focused-client")
+done
+
+wait_for_file() {
+  local want=$1 i
+  for ((i = 0; i < FOCUS_WAIT_TRIES; i++)); do
+    [[ $(cat "$focused_file" 2>/dev/null) == "$want" ]] && return 0
+    sleep "$FOCUS_WAIT_STEP"
+  done
+  return 1
+}
+
+await_flag() {
+  local i
+  for ((i = 0; i < FOCUS_WAIT_TRIES; i++)); do
+    [[ -e $state/$1 ]] && return 0
+    sleep "$FOCUS_WAIT_STEP"
+  done
+  return 1
+}
+
+# script(1) rejects a fifo on stdin, so focus reports are fed through a pipe gated by flag files
+{
+  await_flag focus-in && printf '\033[I'
+  await_flag focus-out && printf '\033[O'
+  await_flag finished
+} | TERM=xterm-256color script -q /dev/null tmux -L "$SOCKET" attach -t "$SESSION" >/dev/null 2>&1 &
+client=
+for ((i = 0; i < FOCUS_WAIT_TRIES && ${#client} == 0; i++)); do
+  client=$(tm list-clients -F '#{client_name}')
+  [[ -n $client ]] || sleep "$FOCUS_WAIT_STEP"
+done
+if [[ -z $client ]]; then
+  failures+=("focus hooks: test client did not attach")
+else
+  touch "$state/focus-in"
+  wait_for_file "$client" || failures+=("focus-in hook: want '$client' in $focused_file, got '$(cat "$focused_file" 2>&1)'")
+  touch "$state/focus-out"
+  wait_for_file "" || failures+=("focus-out hook: $focused_file still holds '$(cat "$focused_file" 2>&1)'")
+fi
+touch "$state/finished"
 
 if ((${#failures[@]})); then
   printf 'tmux: FAIL %s\n' "${failures[@]}" >&2

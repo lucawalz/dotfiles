@@ -4,12 +4,21 @@ set -u
 AEROSPACE_BIN=${AEROSPACE_BIN:-/opt/homebrew/bin/aerospace}
 NVIM_BIN=${NVIM_BIN:-/opt/homebrew/bin/nvim}
 TMUX_BIN=${TMUX_BIN:-/opt/homebrew/bin/tmux}
-LOCK=${XDG_STATE_HOME:-$HOME/.local/state}/nvim/aerospace-focus.lock
+STATE=${XDG_STATE_HOME:-$HOME/.local/state}
+LOCK=$STATE/nvim/aerospace-focus.lock
+FOCUSED_CLIENT=$STATE/tmux/focused-client
+GHOSTTY_BUNDLE_ID=com.mitchellh.ghostty
 NOT_ZOOMED_NOT_AT_EDGE=00
 
 usage() {
   echo "usage: focus.sh [--pane <tmux pane id, empty outside tmux>] <left|down|up|right>" >&2
   exit 1
+}
+
+aerospace_focus() {
+  exec "$AEROSPACE_BIN" focus \
+    --boundaries all-monitors-outer-frame \
+    --boundaries-action wrap-around-all-monitors "$direction"
 }
 
 from_nvim=
@@ -29,17 +38,26 @@ case $direction in
 esac
 
 if [[ -z $from_nvim ]]; then
-  if [[ -f $LOCK ]]; then
-    server=$(<"$LOCK")
-    if "$NVIM_BIN" --server "$server" \
-      --remote-expr "v:lua.require'config.aerospace-focus'.focus('$direction')" >/dev/null 2>&1; then
-      exit 0
-    fi
-    rm -f "$LOCK"
+  [[ $("$AEROSPACE_BIN" list-windows --focused --format '%{app-bundle-id}' 2>/dev/null) == "$GHOSTTY_BUNDLE_ID" ]] ||
+    aerospace_focus
+
+  pane=
+  client=$(cat "$FOCUSED_CLIENT" 2>/dev/null)
+  if [[ -n $client ]]; then
+    # display-message -c silently falls back to another client when the named one is gone
+    pane=$("$TMUX_BIN" list-clients -f "#{==:#{client_name},$client}" -F '#{pane_id}' 2>/dev/null)
   fi
-  # tmux keeps "focused" in client_flags from focus reports; a client counts as focused until its first focus-out, so the most recent activity breaks ties
-  pane=$("$TMUX_BIN" list-clients -f '#{m:*focused*,#{client_flags}}' -F '#{client_activity} #{pane_id}' 2>/dev/null |
-    sort -rn | head -n 1 | cut -d ' ' -f 2)
+
+  if [[ -f $LOCK ]]; then
+    { read -r server; read -r lock_pane; } <"$LOCK"
+    if [[ -z $lock_pane || $lock_pane == "$pane" ]]; then
+      if "$NVIM_BIN" --server "$server" \
+        --remote-expr "v:lua.require'config.aerospace-focus'.focus('$direction')" >/dev/null 2>&1; then
+        exit 0
+      fi
+      rm -f "$LOCK"
+    fi
+  fi
 fi
 
 if [[ -n $pane ]] &&
@@ -47,6 +65,4 @@ if [[ -n $pane ]] &&
   exec "$TMUX_BIN" select-pane -t "$pane" "$flag"
 fi
 
-exec "$AEROSPACE_BIN" focus \
-  --boundaries all-monitors-outer-frame \
-  --boundaries-action wrap-around-all-monitors "$direction"
+aerospace_focus

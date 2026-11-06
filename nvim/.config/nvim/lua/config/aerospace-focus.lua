@@ -25,7 +25,7 @@ local function claim()
   end
   local f = io.open(lock, "w")
   if f then
-    f:write(vim.v.servername)
+    f:write(vim.v.servername, "\n", vim.env.TMUX_PANE or "", "\n")
     f:close()
   end
 end
@@ -35,7 +35,7 @@ local function release()
   if not f then
     return
   end
-  local owner = f:read("*a")
+  local owner = f:read("*l")
   f:close()
   if owner == vim.v.servername then
     os.remove(lock)
