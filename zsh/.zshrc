@@ -1,5 +1,13 @@
 [[ -n $ZSHRC_PROFILE ]] && zmodload zsh/zprof
 
+tmux_attach_project() {
+  [[ -z $TMUX && $TERM_PROGRAM == ghostty && -x ${commands[tmux]:-} ]] || return 0
+  local name=home
+  [[ $PWD == $HOME ]] || name=${PWD:t}
+  exec tmux new-session -A -s "${${name:-root}//[.:]/_}"
+}
+tmux_attach_project
+
 autoload -Uz compinit
 _zcompdump="$XDG_CACHE_HOME/zsh/zcompdump"
 if [[ -n $_zcompdump(#qNmh-24) ]]; then
