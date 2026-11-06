@@ -1,3 +1,5 @@
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 vim.cmd("let g:netrw_liststyle = 3")
 
 local opt = vim.opt
@@ -38,3 +40,6 @@ opt.undofile = true
 opt.confirm = true
 
 opt.swapfile = false
+
+opt.laststatus = 3
+opt.winborder = "rounded"

@@ -32,67 +32,59 @@ local ensure_installed = {
   "terraform",
 }
 
-return {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    branch = "main",
-    lazy = false,
-    build = ":TSUpdate",
-    config = function()
-      require("nvim-treesitter").setup()
+require("nvim-treesitter").setup()
 
-      vim.treesitter.language.register("bash", "zsh")
+vim.treesitter.language.register("bash", "zsh")
 
-      require("nvim-treesitter").install(ensure_installed)
+require("nvim-treesitter").install(ensure_installed)
 
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function(args)
-          local buf = args.buf
-          local ok = pcall(vim.treesitter.start, buf)
-          if ok then
-            vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-          end
-        end,
-      })
-    end,
-  },
-  {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    branch = "main",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = function()
-      require("nvim-treesitter-textobjects").setup({
-        select = { lookahead = true },
-        move = { set_jumps = true },
-      })
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function(args)
+    local buf = args.buf
+    local ok = pcall(vim.treesitter.start, buf)
+    if ok then
+      vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+  end,
+})
 
-      local select = require("nvim-treesitter-textobjects.select")
-      local move = require("nvim-treesitter-textobjects.move")
+require("nvim-treesitter-textobjects").setup({
+  select = { lookahead = true },
+  move = { set_jumps = true },
+})
 
-      local function sel(key, obj)
-        vim.keymap.set(
-          { "x", "o" },
-          key,
-          function() select.select_textobject(obj, "textobjects") end,
-          { silent = true, desc = "Select " .. obj }
-        )
-      end
+local select = require("nvim-treesitter-textobjects.select")
+local move = require("nvim-treesitter-textobjects.move")
 
-      sel("af", "@function.outer")
-      sel("if", "@function.inner")
-      sel("ac", "@class.outer")
-      sel("ic", "@class.inner")
-      sel("aa", "@parameter.outer")
-      sel("ia", "@parameter.inner")
+local function sel(key, obj)
+  vim.keymap.set(
+    { "x", "o" },
+    key,
+    function() select.select_textobject(obj, "textobjects") end,
+    { silent = true, desc = "Select " .. obj }
+  )
+end
 
-      local function mv(key, fn, obj)
-        vim.keymap.set({ "n", "x", "o" }, key, function() fn(obj, "textobjects") end, { silent = true, desc = obj })
-      end
+sel("af", "@function.outer")
+sel("if", "@function.inner")
+sel("ac", "@class.outer")
+sel("ic", "@class.inner")
+sel("aa", "@parameter.outer")
+sel("ia", "@parameter.inner")
 
-      mv("]f", move.goto_next_start, "@function.outer")
-      mv("]c", move.goto_next_start, "@class.outer")
-      mv("[f", move.goto_previous_start, "@function.outer")
-      mv("[c", move.goto_previous_start, "@class.outer")
-    end,
-  },
-}
+local function mv(key, fn, obj)
+  vim.keymap.set({ "n", "x", "o" }, key, function()
+    if vim.wo.diff and (key == "]c" or key == "[c") then
+      vim.cmd.normal({ key, bang = true })
+      return
+    end
+    fn(obj, "textobjects")
+  end, { silent = true, desc = obj })
+end
+
+mv("]f", move.goto_next_start, "@function.outer")
+mv("]c", move.goto_next_start, "@class.outer")
+mv("[f", move.goto_previous_start, "@function.outer")
+mv("[c", move.goto_previous_start, "@class.outer")
+
+require("nvim-ts-autotag").setup()

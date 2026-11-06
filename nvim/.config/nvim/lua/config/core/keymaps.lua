@@ -31,12 +31,10 @@ map("n", "<leader>sh", "<C-w>s", "Split horizontally")
 map("n", "<leader>se", "<C-w>=", "Equalize splits")
 map("n", "<leader>sx", "<cmd>close<CR>", "Close split")
 
-map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", "Next buffer")
-map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", "Previous buffer")
+map("n", "<S-l>", "<cmd>bnext<CR>", "Next buffer")
+map("n", "<S-h>", "<cmd>bprevious<CR>", "Previous buffer")
 map("n", "<leader>bd", "<cmd>bdelete<CR>", "Delete buffer")
 map("n", "<leader>bb", "<cmd>e #<CR>", "Switch to other buffer")
-
-map("n", "<C-p>", "<cmd>Telescope find_files<CR>", "Find files")
 
 map("n", "<C-/>", "gcc", "Toggle comment", { remap = true })
 map("x", "<C-/>", "gc", "Toggle comment", { remap = true })
@@ -65,3 +63,5 @@ map({ "n", "i", "x" }, "<D-s>", "<Esc><cmd>write<CR>", "Save file")
 map({ "n", "x" }, "<D-z>", "u", "Undo")
 map("i", "<D-z>", "<C-o>u", "Undo")
 map({ "n", "x" }, "<D-Z>", "<C-r>", "Redo")
+
+map("n", "ZR", "<cmd>wa<CR><cmd>restart<CR>", "Write all and restart")
