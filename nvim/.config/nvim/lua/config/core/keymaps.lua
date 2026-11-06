@@ -16,16 +16,6 @@ map({ "n", "i", "x" }, "<C-s>", "<Esc><cmd>write<CR>", "Save file")
 map("n", "<leader>q", "<cmd>confirm quit<CR>", "Quit window")
 map("n", "<leader>Q", "<cmd>confirm qall<CR>", "Quit all")
 
-map("n", "<C-h>", "<C-w>h", "Go to left window")
-map("n", "<C-j>", "<C-w>j", "Go to lower window")
-map("n", "<C-k>", "<C-w>k", "Go to upper window")
-map("n", "<C-l>", "<C-w>l", "Go to right window")
-
-map("n", "<C-Up>", "<cmd>resize +2<CR>", "Increase window height")
-map("n", "<C-Down>", "<cmd>resize -2<CR>", "Decrease window height")
-map("n", "<C-Left>", "<cmd>vertical resize -2<CR>", "Decrease window width")
-map("n", "<C-Right>", "<cmd>vertical resize +2<CR>", "Increase window width")
-
 map("n", "<leader>sv", "<C-w>v", "Split vertically")
 map("n", "<leader>sh", "<C-w>s", "Split horizontally")
 map("n", "<leader>se", "<C-w>=", "Equalize splits")

@@ -36,6 +36,18 @@ BINDING_CONTENT=(
   'E:select-layout -E'
 )
 
+# key:required-substring, root table
+ROOT_BINDING_CONTENT=(
+  'C-h:@pane-is-vim'
+  'C-j:@pane-is-vim'
+  'C-k:@pane-is-vim'
+  'C-l:@pane-is-vim'
+  'C-Up:resize-pane -U 2'
+  'C-Down:resize-pane -D 2'
+  'C-Left:resize-pane -L 2'
+  'C-Right:resize-pane -R 2'
+)
+
 GUARD_NAME=tmux_attach_project
 
 tm() { tmux -L "$SOCKET" "$@"; }
@@ -73,6 +85,11 @@ done
 for entry in "${BINDING_CONTENT[@]}"; do
   key=${entry%:*} want=${entry##*:}
   grep -F -- "-T prefix $key " <<<"$keys" | grep -Fq -- "$want" || failures+=("binding prefix $key lacks '$want'")
+done
+
+for entry in "${ROOT_BINDING_CONTENT[@]}"; do
+  key=${entry%%:*} want=${entry#*:}
+  grep -F -- "-T root $key " <<<"$keys" | grep -Fq -- "$want" || failures+=("binding root $key lacks '$want'")
 done
 
 grep -F -- "-T prefix x " <<<"$keys" | grep -Fq confirm-before && failures+=("binding prefix x still confirms")

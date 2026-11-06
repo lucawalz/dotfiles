@@ -3,6 +3,7 @@ local specs = {
   { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
   { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
   "https://github.com/windwp/nvim-ts-autotag",
+  { src = "https://github.com/mrjones2014/smart-splits.nvim", version = "v2.1.1-final" },
   "https://github.com/folke/snacks.nvim",
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/b0o/incline.nvim",
@@ -55,3 +56,4 @@ require("config.plugins.treesitter")
 require("config.plugins.editor")
 require("config.plugins.lsp")
 require("config.plugins.git")
+require("config.plugins.nav")

@@ -121,6 +121,11 @@
       "rev": "8e8795368391036643b622875a6da6a51bcd33f4",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
+    "smart-splits.nvim": {
+      "rev": "ac11b8ed1efe7cca7bb3eae9c588163c926c6894",
+      "src": "https://github.com/mrjones2014/smart-splits.nvim",
+      "version": "'v2.1.1-final'"
+    },
     "smear-cursor.nvim": {
       "rev": "f6cb57c342268177f719acc3968b9d8de3ecc969",
       "src": "https://github.com/sphamba/smear-cursor.nvim"

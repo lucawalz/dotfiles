@@ -1,7 +1,8 @@
-local MAX_PLUGINS = 35
+local MAX_PLUGINS = 36
 
 local MODULES = {
   "nightfox",
+  "smart-splits",
   "config.aerospace-focus",
   "nvim-treesitter",
   "nvim-treesitter-textobjects",
