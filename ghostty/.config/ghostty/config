@@ -38,28 +38,53 @@ keybind = super+enter=text:\n
 
 keybind = super+grave_accent=toggle_quick_terminal
 
-keybind = super+t=new_tab
-keybind = super+w=close_surface
 keybind = super+n=new_window
 
-keybind = super+1=goto_tab:1
-keybind = super+2=goto_tab:2
-keybind = super+3=goto_tab:3
-keybind = super+4=goto_tab:4
-keybind = super+5=goto_tab:5
-keybind = super+6=goto_tab:6
-keybind = super+7=goto_tab:7
-keybind = super+8=goto_tab:8
-keybind = super+9=goto_tab:9
+keybind = super+d=text:\x02%
+keybind = super+shift+d=text:\x02\x22
+keybind = super+shift+e=text:\x02E
+keybind = super+t=text:\x02c
+keybind = super+w=text:\x02x
+keybind = super+p=text:\x02P
+keybind = super+1=text:\x021
+keybind = super+2=text:\x022
+keybind = super+3=text:\x023
+keybind = super+4=text:\x024
+keybind = super+5=text:\x025
+keybind = super+6=text:\x026
+keybind = super+7=text:\x027
+keybind = super+8=text:\x028
+keybind = super+9=text:\x029
+keybind = super+h=text:\x08
+keybind = super+j=text:\x0a
+keybind = super+k=text:\x0b
+keybind = super+l=text:\x0c
 
-keybind = super+d=new_split:right
-keybind = super+shift+d=new_split:down
-keybind = super+shift+e=equalize_splits
-
-keybind = super+h=goto_split:left
-keybind = super+j=goto_split:down
-keybind = super+k=goto_split:up
-keybind = super+l=goto_split:right
+keybind = ctrl+shift+tab=unbind
+keybind = ctrl+tab=unbind
+keybind = super+digit_1=unbind
+keybind = super+digit_2=unbind
+keybind = super+digit_3=unbind
+keybind = super+digit_4=unbind
+keybind = super+digit_5=unbind
+keybind = super+digit_6=unbind
+keybind = super+digit_7=unbind
+keybind = super+digit_8=unbind
+keybind = super+shift+enter=unbind
+keybind = super+alt+w=unbind
+keybind = super+shift+[=unbind
+keybind = super+shift+]=unbind
+keybind = super+[=unbind
+keybind = super+]=unbind
+keybind = super+alt+arrow_up=unbind
+keybind = super+alt+arrow_down=unbind
+keybind = super+alt+arrow_left=unbind
+keybind = super+alt+arrow_right=unbind
+keybind = super+ctrl+arrow_up=unbind
+keybind = super+ctrl+arrow_down=unbind
+keybind = super+ctrl+arrow_left=unbind
+keybind = super+ctrl+arrow_right=unbind
+keybind = super+ctrl+==unbind
 
 custom-shader = shaders/cursor_warp.glsl
 custom-shader-animation = true
