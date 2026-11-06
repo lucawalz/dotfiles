@@ -29,7 +29,7 @@ BINDING_CONTENT=(
   '\%:pane_current_path'
   '\":pane_current_path'
   'c:pane_current_path'
-  'P:sesh'
+  'P:scripts/pick.sh'
   'x:kill-pane'
   'E:select-layout -E'
 )

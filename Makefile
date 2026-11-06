@@ -22,7 +22,7 @@ restow:
 	stow -R -t ~ $(PACKAGES)
 
 lint:
-	shellcheck -x -e SC1091 borders/.config/borders/bordersrc aerospace/.config/aerospace/scripts/focus.sh aerospace/.config/aerospace/scripts/test-focus.sh tmux/.config/tmux/tests/check.sh ghostty/.config/ghostty/tests/check.sh
+	shellcheck -x -e SC1091 borders/.config/borders/bordersrc aerospace/.config/aerospace/scripts/focus.sh aerospace/.config/aerospace/scripts/test-focus.sh tmux/.config/tmux/scripts/pick.sh tmux/.config/tmux/tests/check.sh ghostty/.config/ghostty/tests/check.sh
 
 check-nvim:
 	XDG_CONFIG_HOME=$(CURDIR)/nvim/.config nvim --headless -c "lua local ok, e = pcall(dofile, 'nvim/.config/nvim/tests/smoke.lua') if not ok then io.stderr:write(tostring(e) .. '\\n') vim.cmd('cquit 1') end"
