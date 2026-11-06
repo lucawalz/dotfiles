@@ -34,7 +34,7 @@ notify-on-command-finish-after = 10s
 
 keybind = super+i=inspector:toggle
 
-keybind = super+enter=text:\n
+keybind = super+enter=csi:13;2u
 
 keybind = super+grave_accent=toggle_quick_terminal
 

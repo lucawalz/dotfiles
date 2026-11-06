@@ -17,7 +17,7 @@ EXPECTED=(
   'super+k=text:\x0b'
   'super+l=text:\x0c'
   'super+n=new_window'
-  'super+enter=text:\n'
+  'super+enter=csi:13;2u'
   'super+i=inspector:toggle'
   'super+backquote=toggle_quick_terminal'
 )
