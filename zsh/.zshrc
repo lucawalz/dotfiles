@@ -1,7 +1,7 @@
 [[ -n $ZSHRC_PROFILE ]] && zmodload zsh/zprof
 
 tmux_attach_project() {
-  [[ -z $TMUX && $TERM_PROGRAM == ghostty && -x ${commands[tmux]:-} ]] || return 0
+  [[ -z $TMUX && $TERM_PROGRAM == ghostty && -t 1 && -x ${commands[tmux]:-} ]] || return 0
   local name=home
   [[ $PWD == $HOME ]] || name=${PWD:t}
   exec tmux new-session -A -s "${${name:-root}//[.:]/_}"
