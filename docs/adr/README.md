@@ -13,3 +13,4 @@ These records capture the design decisions behind this configuration: how it rea
 - [0009. Remove SketchyBar and use the native menu bar](0009-remove-sketchybar-and-use-the-native-menu-bar.md) (accepted)
 - [0010. Balance workspaces evenly across two displays](0010-balance-workspaces-across-two-displays.md) (accepted)
 - [0011. Manage Neovim plugins with vim.pack](0011-manage-neovim-plugins-with-vim-pack.md) (accepted)
+- [0012. Adopt tmux for terminal splits](0012-adopt-tmux-for-terminal-splits.md) (accepted)

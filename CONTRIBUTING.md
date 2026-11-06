@@ -14,7 +14,7 @@ Clone the repository to a stable path, install the dependencies, and link the pa
 git clone https://github.com/lucawalz/dotfiles.git ~/code/dotfiles
 cd ~/code/dotfiles
 brew bundle
-stow -t ~ ghostty starship btop fastfetch nvim zsh aerospace borders lazygit
+stow -t ~ ghostty tmux starship btop fastfetch nvim zsh aerospace borders lazygit
 ```
 
 Stow refuses to overwrite an existing real file. Move any pre-existing configuration out of the way before linking.
@@ -33,14 +33,17 @@ ls -l ~/.config/<package>
 
 Then restart or reload the affected tool and confirm the change took effect. Ghostty reloads its config with `⌘` `⇧` `,`, zsh needs a new shell, and Neovim needs a restart for plugin changes.
 
-The Neovim package has a headless smoke test that loads every plugin module, checks the expected mappings, and enforces the plugin cap. Run it with `make check-nvim` after changing the Neovim config.
+The Neovim package has a headless smoke test that loads every plugin module, checks the expected mappings, and enforces the plugin cap. Run it with `make check-nvim` after changing the Neovim config. `make check-tmux`, `make check-focus`, and `make check-ghostty` do the same for the tmux settings, the AeroSpace focus script, and the Ghostty keybindings.
 
 Shell scripts are linted with shellcheck, which CI runs on every push:
 
 ```bash
 shellcheck -x -e SC1091 \
   borders/.config/borders/bordersrc \
-  aerospace/.config/aerospace/scripts/focus.sh
+  aerospace/.config/aerospace/scripts/focus.sh \
+  aerospace/.config/aerospace/scripts/test-focus.sh \
+  tmux/.config/tmux/tests/check.sh \
+  ghostty/.config/ghostty/tests/check.sh
 ```
 
 Adding a new tool means adding a new Stow package whose interior mirrors the target path under `~`, adding its dependency to the `Brewfile`, and documenting it in the repository layout.
@@ -68,7 +71,7 @@ dotfiles follows [Conventional Commits](https://www.conventionalcommits.org/).
 **Format**: `<type>[optional scope]: <description>`
 
 - Description: brief, imperative, lowercase, 7-12 words
-- Scope: package name (`ghostty`, `nvim`, `zsh`, `starship`, `btop`, `fastfetch`, `aerospace`, `borders`, `lazygit`)
+- Scope: package name (`ghostty`, `tmux`, `nvim`, `zsh`, `starship`, `btop`, `fastfetch`, `aerospace`, `borders`, `lazygit`)
 - No period at end of subject line
 - Subject line only, no body, no bullet points
 

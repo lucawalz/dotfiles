@@ -13,15 +13,16 @@ A GNU Stow deployed macOS terminal environment, themed end to end with Carbonfox
 
 dotfiles holds the configuration for an Apple Silicon Mac: the terminal, the shell, the editor, and the desktop furniture around them. Every package is a GNU Stow package, so the files under `~` are symlinks back into this repository and the working copy is the live configuration rather than a snapshot of it. The Homebrew manifest is split in two so a second Apple Silicon Mac, a work machine for example, can take the terminal environment without the personal desktop applications. That is the extent of the portability: the configuration still assumes Apple Silicon.
 
-The environment is Ghostty as the terminal, zsh with starship as the shell, and Neovim as the editor, with btop and fastfetch alongside and AeroSpace, JankyBorders, and Raycast on the desktop. One palette, Carbonfox, runs through all of them.
+The environment is Ghostty as the terminal with tmux for splits and windows, zsh with starship as the shell, and Neovim as the editor, with btop and fastfetch alongside and AeroSpace, JankyBorders, and Raycast on the desktop. One palette, Carbonfox, runs through all of them.
 
 ### Features
 
 - Stow-deployed packages: editing a file in the repository edits the live configuration, so the two cannot drift apart.
-- A single Carbonfox palette applied across Ghostty, starship, btop, Neovim, fzf, `LS_COLORS`, and JankyBorders.
-- Ghostty with split and tab keybindings on the command key, a vendored cursor warp shader, and a background at 0.85 opacity with blur.
-- Neovim on the built-in `vim.pack` with 35 plugins pinned by a committed lockfile, a braille dashboard, an nvim-tree sidebar, a transparent UI with noice, smear-cursor, tiny-inline-diagnostic, and bufferline, a review loop for agent changes through gitsigns, codediff.nvim, and lazygit, Carbonfox through nightfox.nvim as the colorscheme, and a space leader.
-- AeroSpace tiling with display-pinned workspaces, native resize and service modes for the rarer window commands, and a single focus gesture that walks Neovim splits, windows, and displays, all with System Integrity Protection left enabled.
+- tmux as the only split and window system, one session per project through sesh, so panes and running agents outlive a closed Ghostty window.
+- A single Carbonfox palette applied across Ghostty, tmux, starship, btop, Neovim, fzf, `LS_COLORS`, and JankyBorders.
+- Ghostty with command key bindings that drive tmux splits, windows, and sessions, a vendored cursor warp shader, and a background at 0.85 opacity with blur.
+- Neovim on the built-in `vim.pack` with 36 plugins pinned by a committed lockfile, a braille dashboard, an nvim-tree sidebar, a transparent UI with noice, smear-cursor, tiny-inline-diagnostic, and bufferline, a review loop for agent changes through gitsigns, codediff.nvim, and lazygit, Carbonfox through nightfox.nvim as the colorscheme, and a space leader.
+- AeroSpace tiling with display-pinned workspaces, native resize and service modes for the rarer window commands, and a single focus gesture that walks Neovim splits, tmux panes, windows, and displays, all with System Integrity Protection left enabled.
 - JankyBorders window borders driven from the same palette, with Raycast as the launcher.
 - A core `Brewfile` holding the dependencies the configurations need, including `stow` itself, alongside the development toolchain wanted on any machine, and a `Brewfile.personal` layer of desktop applications and extras that is not installed by default.
 - Secret scanning and shellcheck in CI, with gitleaks rules for age, SOPS, and SSH private keys.
@@ -68,7 +69,7 @@ The one-command path for any machine is `make bootstrap`, which installs the cor
 
 ```
 brew bundle
-stow -t ~ ghostty starship btop fastfetch nvim zsh aerospace borders lazygit
+stow -t ~ ghostty tmux starship btop fastfetch nvim zsh aerospace borders lazygit
 ```
 
 Both manifests are deliberately a subset of what the machine has installed, so never run `brew bundle cleanup` against either one. Cleanup treats anything missing from the file as unwanted and uninstalls it, which here means every untracked package.
@@ -83,22 +84,23 @@ To remove a package, run `stow -D -t ~ <package>`. To relink after adding files,
 
 After stowing, the configuration is live. Open a new shell to pick up `.zshrc`.
 
-One grammar runs through every layer, so a binding is derived rather than memorised. The modifier names the layer: `cmd` acts inside the current application (Ghostty tabs and splits, close, save), `alt` acts on windows and workspaces (`alt` moves, `alt shift` focuses), `alt shift r` and `alt shift ;` open the resize and service modes for the rarer window operations, `cmd space` opens Raycast to launch, and inside Neovim space leads commands while `ctrl` moves between splits. Directions are always `h j k l`, workspaces and tabs are always digits, `r` always enters a resize mode with the same keys inside, and `b` always balances.
+One grammar runs through every layer, so a binding is derived rather than memorised. The modifier names the layer: `cmd` acts inside the current application (tmux splits and windows through Ghostty, close, save), `alt` acts on windows and workspaces (`alt` moves, `alt shift` focuses), `alt shift r` and `alt shift ;` open the resize and service modes for the rarer window operations, `cmd space` opens Raycast to launch, and inside Neovim space leads commands while `ctrl` moves between splits and tmux panes. Directions are always `h j k l`, workspaces and tmux windows are always digits, `r` always enters a resize mode with the same keys inside, and `b` always balances.
 
-### Ghostty
+### Ghostty and tmux
 
-Splits and tabs are bound to the command key, and split navigation follows vim directions.
+Every Ghostty window runs tmux, and Ghostty sends tmux commands for the command key, so splits and windows are tmux panes and windows rather than Ghostty ones. A new window attaches to the session named after its folder, or `home` in the home folder, and creates it if missing. Closing a Ghostty window with `⌘` `⇧` `w` detaches, and the session keeps running. The tmux prefix is the default `ctrl` `b`. Nothing is restored after a reboot; `claude --continue` reopens a conversation.
 
 | Keybinding | Action |
 |-----------|--------|
-| `⌘` `t` | New tab |
+| `⌘` `t` | New tmux window |
 | `⌘` `n` | New window |
-| `⌘` `w` | Close surface |
-| `⌘` `1` to `⌘` `9` | Go to tab by number |
-| `⌘` `d` | Split right |
-| `⌘` `⇧` `d` | Split down |
-| `⌘` `⇧` `e` | Equalize splits |
-| `⌘` `h` `j` `k` `l` | Go to split left, down, up, right |
+| `⌘` `w` | Close pane |
+| `⌘` `1` to `⌘` `9` | Go to tmux window by number |
+| `⌘` `d` | Split pane right |
+| `⌘` `⇧` `d` | Split pane down |
+| `⌘` `⇧` `e` | Even out pane sizes |
+| `⌘` `p` | Session picker (sesh) |
+| `⌘` `h` `j` `k` `l` | Go to pane left, down, up, right, same as `ctrl` `h` `j` `k` `l` |
 | `⌘` `` ` `` | Toggle quick terminal |
 | `⌘` `i` | Toggle inspector |
 
@@ -116,8 +118,8 @@ The leader key is space, and `which-key` lists every group at runtime. The core 
 | `<leader>ft` / `<leader>fk` | Find todos, show keymaps |
 | `<leader>e` / `<leader>E` | Toggle the nvim-tree sidebar, or open it at the current file |
 | `-` | Oil at the parent directory |
-| `<C-h>` `<C-j>` `<C-k>` `<C-l>` | Move between windows |
-| `<C-Up>` `<C-Down>` `<C-Left>` `<C-Right>` | Resize the window |
+| `<C-h>` `<C-j>` `<C-k>` `<C-l>` | Move between Neovim splits and tmux panes through smart-splits, stopping at the edge |
+| `<C-Up>` `<C-Down>` `<C-Left>` `<C-Right>` | Resize the split or pane through smart-splits |
 | `<leader>sv` / `<leader>sh` | Split vertically or horizontally |
 | `<leader>se` / `<leader>sx` | Equalize splits, close split |
 | `<leader>sm` / `<leader>z` | Zoom a split, zen mode |
@@ -135,7 +137,7 @@ The leader key is space, and `which-key` lists every group at runtime. The core 
 | `<leader>ut` | Toggle light and dark theme |
 | `<C-/>` | Toggle comment |
 
-Reviewing changes made by an agent in the neighbouring Ghostty split uses the git and yank groups. Neovim's default `autoread` reloads unmodified buffers when Neovim regains focus.
+Reviewing changes made by an agent in the neighbouring tmux pane uses the git and yank groups. Neovim's default `autoread` reloads unmodified buffers when Neovim regains focus.
 
 | Keybinding | Action |
 |-----------|--------|
@@ -161,7 +163,7 @@ AeroSpace tiles windows into virtual workspaces, and its own bindings hold the w
 | Keybinding | Action |
 |-----------|--------|
 | `alt` `h` `j` `k` `l` | Move the window through the layout |
-| `alt` `⇧` `h` `j` `k` `l` | Focus left, down, up, right, across Neovim splits, windows, and displays |
+| `alt` `⇧` `h` `j` `k` `l` | Focus left, down, up, right, across Neovim splits, tmux panes, windows, and displays |
 | `alt` `1` to `alt` `8` | Focus a workspace |
 | `alt` `⇧` `1` to `alt` `⇧` `8` | Send the window to a workspace |
 | `alt` `⇥` | Return to the previous workspace |
@@ -171,7 +173,7 @@ AeroSpace tiles windows into virtual workspaces, and its own bindings hold the w
 
 Resize mode maps `h` `j` `k` `l` to resize the focused window, `-` and `=` to resize smart, `b` to balance, and `enter` or `esc` to return to the main mode. Service mode offers join (`h` `j` `k` `l` join with that direction), layout (`t` tiles, `a` accordion, `s` floating), fullscreen (`f`), balance (`b`), flatten (`r`), and config reload (`c`), staying active until `enter` or `esc` returns to the main mode.
 
-Workspaces exist lazily and are pinned to displays in two even halves, 1 to 4 on the display carrying the menu bar and 5 to 8 on the other, so a workspace number always means the same screen. The pins name no monitor, only AeroSpace's `main` and `secondary` patterns, so the same halves apply to a laptop panel with one external and to two externals with the lid closed. Which physical display holds 1 to 4 is chosen by dragging the menu bar in System Settings, Displays. With a single display connected `secondary` matches nothing and every workspace opens on the one screen. Focus movement crosses Neovim split boundaries through a small RPC bridge, `nvim/.config/nvim/lua/config/aerospace-focus.lua` and `aerospace/.config/aerospace/scripts/focus.sh`, so one gesture walks from a split to the next window to the other display.
+Workspaces exist lazily and are pinned to displays in two even halves, 1 to 4 on the display carrying the menu bar and 5 to 8 on the other, so a workspace number always means the same screen. The pins name no monitor, only AeroSpace's `main` and `secondary` patterns, so the same halves apply to a laptop panel with one external and to two externals with the lid closed. Which physical display holds 1 to 4 is chosen by dragging the menu bar in System Settings, Displays. With a single display connected `secondary` matches nothing and every workspace opens on the one screen. Focus movement crosses Neovim split and tmux pane boundaries through a small bridge, `nvim/.config/nvim/lua/config/aerospace-focus.lua` and `aerospace/.config/aerospace/scripts/focus.sh`, so one gesture walks from a Neovim split to a tmux pane to the next window to the other display. The tmux step runs only while Ghostty is focused, and a zoomed pane or a pane at the edge hands off to AeroSpace. Literal `ctrl` `h` `j` `k` `l` in a shell pane move panes; prefix then the key sends it through.
 
 AeroSpace needs Accessibility permission, granted through System Settings. The command and option swap for the external keyboard lives in System Settings, Keyboard, Modifier Keys.
 
@@ -189,6 +191,7 @@ JankyBorders draws a rounded border around the focused window and runs as a back
 
 ```
 ghostty/           Ghostty config, ANSI palette, and cursor warp shader
+tmux/              tmux config, vendored Carbonfox status theme, and checks
 aerospace/         AeroSpace tiling, workspace pins, gaps, and the focus bridge script
 starship/          starship prompt and Carbonfox palette
 btop/              btop config and Carbonfox theme
