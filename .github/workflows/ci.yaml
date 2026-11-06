@@ -27,7 +27,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - run: |
-          shellcheck -x -e SC1091 \
-            borders/.config/borders/bordersrc \
-            aerospace/.config/aerospace/scripts/focus.sh
+      - run: make lint
