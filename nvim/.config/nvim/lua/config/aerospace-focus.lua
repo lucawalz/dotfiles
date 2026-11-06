@@ -1,6 +1,7 @@
 local M = {}
 
 local lock = vim.fn.stdpath("state") .. "/aerospace-focus.lock"
+local focus_script = vim.fn.expand("~/.config/aerospace/scripts/focus.sh")
 local keys = { left = "h", down = "j", up = "k", right = "l" }
 
 function M.focus(direction)
@@ -12,15 +13,7 @@ function M.focus(direction)
     local before = vim.api.nvim_get_current_win()
     vim.cmd.wincmd(key)
     if vim.api.nvim_get_current_win() == before then
-      vim.system({
-        "aerospace",
-        "focus",
-        "--boundaries",
-        "all-monitors-outer-frame",
-        "--boundaries-action",
-        "wrap-around-all-monitors",
-        direction,
-      })
+      vim.system({ focus_script, "--pane", vim.env.TMUX_PANE or "", direction })
     end
   end)
   return 0
