@@ -20,7 +20,7 @@ The environment is Ghostty as the terminal, zsh with starship as the shell, and 
 - Stow-deployed packages: editing a file in the repository edits the live configuration, so the two cannot drift apart.
 - A single Carbonfox palette applied across Ghostty, starship, btop, Neovim, fzf, `LS_COLORS`, and JankyBorders.
 - Ghostty with split and tab keybindings on the command key, a vendored cursor warp shader, and a background at 0.85 opacity with blur.
-- Neovim on lazy.nvim with 46 plugin specification files, Carbonfox through nightfox.nvim as the colorscheme, and a space leader.
+- Neovim on the built-in `vim.pack` with 35 plugins pinned by a committed lockfile, a braille dashboard, an nvim-tree sidebar, a transparent UI with noice, smear-cursor, tiny-inline-diagnostic, and bufferline, a review loop for agent changes through gitsigns, codediff.nvim, and lazygit, Carbonfox through nightfox.nvim as the colorscheme, and a space leader.
 - AeroSpace tiling with display-pinned workspaces, native resize and service modes for the rarer window commands, and a single focus gesture that walks Neovim splits, windows, and displays, all with System Integrity Protection left enabled.
 - JankyBorders window borders driven from the same palette, with Raycast as the launcher.
 - A core `Brewfile` holding the dependencies the configurations need, including `stow` itself, alongside the development toolchain wanted on any machine, and a `Brewfile.personal` layer of desktop applications and extras that is not installed by default.
@@ -68,14 +68,14 @@ The one-command path for any machine is `make bootstrap`, which installs the cor
 
 ```
 brew bundle
-stow -t ~ ghostty starship btop fastfetch nvim zsh aerospace borders
+stow -t ~ ghostty starship btop fastfetch nvim zsh aerospace borders lazygit
 ```
 
 Both manifests are deliberately a subset of what the machine has installed, so never run `brew bundle cleanup` against either one. Cleanup treats anything missing from the file as unwanted and uninstalls it, which here means every untracked package.
 
 Stow refuses to overwrite a real file that already exists at a target path. Move or delete any pre-existing configuration first, then restow. Verify a link with `ls -l ~/.config/ghostty`, which should resolve into the clone.
 
-Neovim installs its plugins on first launch through lazy.nvim, pinned by [`nvim/.config/nvim/lazy-lock.json`](nvim/.config/nvim/lazy-lock.json).
+Neovim installs its plugins on first launch through `vim.pack`, pinned by [`nvim/.config/nvim/nvim-pack-lock.json`](nvim/.config/nvim/nvim-pack-lock.json). The choice is recorded in [ADR 0011](docs/adr/0011-manage-neovim-plugins-with-vim-pack.md).
 
 To remove a package, run `stow -D -t ~ <package>`. To relink after adding files, run `stow -R -t ~ <package>`.
 
@@ -104,25 +104,55 @@ Splits and tabs are bound to the command key, and split navigation follows vim d
 
 ### Neovim
 
-The leader key is space. A selection of the core maps:
+The leader key is space, and `which-key` lists every group at runtime. The core and navigation maps:
 
 | Keybinding | Action |
 |-----------|--------|
 | `jj` or `jk` | Exit insert mode |
 | `<Esc>` | Clear search highlight |
 | `<C-s>` | Save file |
-| `<C-p>` | Find files with Telescope |
+| `<C-p>` or `<leader>ff` | Find files |
+| `<leader>fr` / `<leader>fs` / `<leader>fc` | Recent files, grep, grep word under cursor |
+| `<leader>ft` / `<leader>fk` | Find todos, show keymaps |
+| `<leader>e` / `<leader>E` | Toggle the nvim-tree sidebar, or open it at the current file |
+| `-` | Oil at the parent directory |
 | `<C-h>` `<C-j>` `<C-k>` `<C-l>` | Move between windows |
+| `<C-Up>` `<C-Down>` `<C-Left>` `<C-Right>` | Resize the window |
 | `<leader>sv` / `<leader>sh` | Split vertically or horizontally |
-| `<leader>sx` | Close split |
-| `<leader>sr` | Resize mode: `h` `j` `k` `l` resize, `b` balances, `esc` leaves |
+| `<leader>se` / `<leader>sx` | Equalize splits, close split |
+| `<leader>sm` / `<leader>z` | Zoom a split, zen mode |
 | `<S-h>` / `<S-l>` | Previous or next buffer |
-| `<leader>bd` | Delete buffer |
+| `<leader>bd` / `<leader>bb` | Delete buffer, switch to the other buffer |
+| `<leader>H` / `<C-e>` | Harpoon add file, harpoon menu |
+| `<leader>xw` `xd` `xq` `xl` `xt` | Trouble: workspace and document diagnostics, quickfix, location list, todos |
+| `<leader>r` | Replace the motion or visual selection with the register |
+| `<leader>rr` / `<leader>R` | Replace the line, replace to the end of the line |
+| `<leader>rf` | Find and replace in files |
+| `<leader>cf` / `<leader>cl` | Format, lint the current file |
+| `<leader>wr` / `<leader>ws` | Restore or save the session |
 | `<leader>q` / `<leader>Q` | Quit window or quit all |
+| `ZR` | Write all and restart Neovim |
 | `<leader>ut` | Toggle light and dark theme |
 | `<C-/>` | Toggle comment |
 
-Plugin-specific maps live next to their specifications under `nvim/.config/nvim/lua/config/plugins/`, and `which-key` lists them at runtime.
+Reviewing changes made by an agent in the neighbouring Ghostty split uses the git and yank groups. Neovim's default `autoread` reloads unmodified buffers when Neovim regains focus.
+
+| Keybinding | Action |
+|-----------|--------|
+| `<leader>gv` | Toggle CodeDiff for the whole change set |
+| `<leader>gh` / `<leader>gH` | File history, repository history |
+| `<leader>gp` | Pick from git diff hunks |
+| `<leader>gg` or `<C-g>` | Open lazygit in a float |
+| `]h` / `[h` | Next or previous hunk (`]c` and `[c` stay treesitter class motions) |
+| `<leader>hs` / `<leader>hr` | Stage or reset hunk, also in visual mode |
+| `<leader>hS` / `<leader>hR` | Stage or reset buffer |
+| `<leader>hp` / `<leader>hi` | Preview hunk, preview inline |
+| `<leader>hb` / `<leader>hB` | Blame line, toggle line blame |
+| `<leader>hd` / `<leader>hD` | Diff against the index or against `~` |
+| `<leader>yf` / `<leader>yp` | Yank relative or absolute path with the line number |
+| `<leader>cc` | In visual mode, yank the selection as a fenced block with file and line range |
+
+Plugin setup lives under `nvim/.config/nvim/lua/config/plugins/`, grouped by area, and the shared maps live in `nvim/.config/nvim/lua/config/core/keymaps.lua`.
 
 ### Windows
 
@@ -163,9 +193,10 @@ aerospace/         AeroSpace tiling, workspace pins, gaps, and the focus bridge 
 starship/          starship prompt and Carbonfox palette
 btop/              btop config and Carbonfox theme
 fastfetch/         fastfetch config and dragon logo
-nvim/              Neovim config, lazy.nvim plugin specs, and lockfile
+nvim/              Neovim config, vim.pack plugin setup, and lockfile
 zsh/               zsh config, aliases, and tool initialisation
 borders/           JankyBorders window border config
+lazygit/           lazygit config with the delta pager
 Makefile           orchestrates brew, stow, and the bootstrap reminders
 Brewfile           core Homebrew dependencies for every package above
 Brewfile.personal  personal machine layer, installed with make brew-personal

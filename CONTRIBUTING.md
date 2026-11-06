@@ -14,7 +14,7 @@ Clone the repository to a stable path, install the dependencies, and link the pa
 git clone https://github.com/lucawalz/dotfiles.git ~/code/dotfiles
 cd ~/code/dotfiles
 brew bundle
-stow -t ~ ghostty starship btop fastfetch nvim zsh aerospace borders
+stow -t ~ ghostty starship btop fastfetch nvim zsh aerospace borders lazygit
 ```
 
 Stow refuses to overwrite an existing real file. Move any pre-existing configuration out of the way before linking.
@@ -32,6 +32,8 @@ ls -l ~/.config/<package>
 ```
 
 Then restart or reload the affected tool and confirm the change took effect. Ghostty reloads its config with `⌘` `⇧` `,`, zsh needs a new shell, and Neovim needs a restart for plugin changes.
+
+The Neovim package has a headless smoke test that loads every plugin module, checks the expected mappings, and enforces the plugin cap. Run it with `make check-nvim` after changing the Neovim config.
 
 Shell scripts are linted with shellcheck, which CI runs on every push:
 
@@ -66,7 +68,7 @@ dotfiles follows [Conventional Commits](https://www.conventionalcommits.org/).
 **Format**: `<type>[optional scope]: <description>`
 
 - Description: brief, imperative, lowercase, 7-12 words
-- Scope: package name (`ghostty`, `nvim`, `zsh`, `starship`, `btop`, `fastfetch`, `aerospace`, `borders`, …)
+- Scope: package name (`ghostty`, `nvim`, `zsh`, `starship`, `btop`, `fastfetch`, `aerospace`, `borders`, `lazygit`)
 - No period at end of subject line
 - Subject line only, no body, no bullet points
 
@@ -77,7 +79,7 @@ dotfiles follows [Conventional Commits](https://www.conventionalcommits.org/).
 ```
 feat(ghostty): use the bundled carbonfox theme
 fix(zsh): source fzf-tab before setting completion styles
-chore(nvim): bump lazy-lock plugin revisions
+chore(nvim): bump nvim-pack-lock plugin revisions
 ```
 
 ## Code quality
