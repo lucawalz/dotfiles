@@ -28,3 +28,17 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: make lint
+
+  notify:
+    needs: [secret-scan, lint]
+    if: failure() && github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - run: |
+          gh pr edit "$PR_URL" --add-assignee lucawalz
+          gh pr comment "$PR_URL" --edit-last --create-if-none --body "Dependabot update failed CI - manual review required."
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
