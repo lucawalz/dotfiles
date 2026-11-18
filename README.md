@@ -206,9 +206,28 @@ Brewfile.personal  personal machine layer, installed with make brew-personal
 docs/adr/          architecture decision records
 ```
 
+## Testing
+
+There is no test suite. A change is verified by relinking the package and exercising the tool it configures:
+
+```
+stow -R -t ~ <package>
+ls -l ~/.config/<package>
+```
+
+Then restart or reload the affected tool. Ghostty reloads its config with `⌘` `⇧` `,`, zsh needs a new shell, and Neovim needs a restart for plugin changes.
+
+The Neovim package has a headless smoke test that loads every plugin module, checks the expected mappings, and enforces the plugin cap. `make check-nvim` runs it. `make check-tmux`, `make check-focus`, and `make check-ghostty` do the same for the tmux settings, the AeroSpace focus script, and the Ghostty keybindings. `make lint` runs shellcheck over the shell scripts, as CI does on every push.
+
+Adding a tool means adding a Stow package whose interior mirrors the target path under `~`, adding its dependency to the `Brewfile`, and listing it in the repository layout. Significant design choices are recorded as ADRs in [`docs/adr/`](docs/adr/).
+
+## Secrets
+
+No secret is committed. The shell configuration prepends tool directories to `PATH` but references no keys or credentials, and machine-local values such as API tokens and age keys stay outside the repository. `.gitignore` excludes keys, credential files, and history, and `.gitleaks.toml` adds rules for age secret keys, SOPS keys, and SSH private keys on top of the gitleaks defaults. CI scans every push.
+
 ## Contributing
 
-This is a personal configuration, but corrections and suggestions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the setup, branch, and commit conventions. In short: stow the package being changed, verify it against the running tool, then open a PR against `main`; CI scans the tree for secrets.
+This is a personal configuration, but corrections and suggestions are welcome. The shared contributing guide, branch and commit conventions, and security policy of the lucawalz account apply. In short: stow the package being changed, verify it against the running tool, then open a PR against `main`.
 
 ## Support
 

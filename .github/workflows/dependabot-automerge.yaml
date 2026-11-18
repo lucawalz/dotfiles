@@ -7,25 +7,7 @@ permissions:
 
 jobs:
   automerge:
-    if: github.event.pull_request.user.login == 'dependabot[bot]'
-    runs-on: ubuntu-latest
+    uses: lucawalz/.github/.github/workflows/dependabot-automerge.yml@512d402b682a017ae2629ee41f794686a8d1468c # v0.1.0
     permissions:
       contents: write
       pull-requests: write
-    steps:
-      - id: meta
-        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.meta.outputs.update-type == 'version-update:semver-minor' || steps.meta.outputs.update-type == 'version-update:semver-patch'
-        run: gh pr merge --auto --squash "$PR_URL"
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.meta.outputs.update-type == 'version-update:semver-major'
-        run: |
-          gh pr edit "$PR_URL" --add-assignee lucawalz
-          gh pr comment "$PR_URL" --edit-last --create-if-none --body "Major version bump - auto-merge skipped, manual review required."
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
