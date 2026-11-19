@@ -49,14 +49,16 @@ flowchart LR
   ports -->|terminal ANSI| inherit[bat / delta / eza / fastfetch]
 ```
 
-## Requirements
+## Installation
+
+### Requirements
 
 - macOS on Apple Silicon. The configuration is developed against macOS Tahoe and is not portable to Linux as written. `zsh/.zshrc` and `aerospace/.config/aerospace/scripts/focus.sh` name the `/opt/homebrew` prefix directly, so Apple Silicon is a requirement rather than a default.
 - [Homebrew](https://brew.sh), which installs most dependencies through the core [`Brewfile`](Brewfile), including the Raycast cask. [`Brewfile.personal`](Brewfile.personal) adds the personal machine layer and stays out of the default install.
 - GNU Stow, installed by the Brewfile, for deployment.
 - A Nerd Font. The Ghostty config asks for JetBrainsMonoNL Nerd Font, and starship and fastfetch depend on the glyphs.
 
-## Installation
+### Install
 
 Clone the repository to a stable path, since Stow creates symlinks that point back into it and moving it later breaks them.
 
@@ -88,21 +90,21 @@ One grammar runs through every layer, so a binding is derived rather than memori
 
 ### Ghostty and tmux
 
-Every Ghostty window runs tmux, and Ghostty sends tmux commands for the command key, so splits and windows are tmux panes and windows rather than Ghostty ones. A new window attaches to the session named after its folder, or `home` in the home folder, and creates it if missing. Closing a Ghostty window with `⌘` `⇧` `w` detaches, and the session keeps running. The tmux prefix is the default `ctrl` `b`. Nothing is restored after a reboot; `claude --continue` reopens a conversation. A literal `ctrl` `h` `j` `k` `l` in a shell pane moves panes; prefix then the key sends it through.
+Every Ghostty window runs tmux, and Ghostty sends tmux commands for the command key, so splits and windows are tmux panes and windows rather than Ghostty ones. A new window attaches to the session named after its folder, or `home` in the home folder, and creates it if missing. Closing a Ghostty window with `Cmd` `Shift` `w` detaches, and the session keeps running. The tmux prefix is the default `ctrl` `b`. Nothing is restored after a reboot; `claude --continue` reopens a conversation. A literal `ctrl` `h` `j` `k` `l` in a shell pane moves panes; prefix then the key sends it through.
 
 | Keybinding | Action |
 |-----------|--------|
-| `⌘` `t` | New tmux window |
-| `⌘` `n` | New window |
-| `⌘` `w` | Close pane |
-| `⌘` `1` to `⌘` `9` | Go to tmux window by number |
-| `⌘` `d` | Split pane right |
-| `⌘` `⇧` `d` | Split pane down |
-| `⌘` `⇧` `e` | Even out pane sizes |
-| `⌘` `p` | Session picker (sesh) |
-| `⌘` `h` `j` `k` `l` | Go to pane left, down, up, right, same as `ctrl` `h` `j` `k` `l` |
-| `⌘` `` ` `` | Toggle quick terminal |
-| `⌘` `i` | Toggle inspector |
+| `Cmd` `t` | New tmux window |
+| `Cmd` `n` | New window |
+| `Cmd` `w` | Close pane |
+| `Cmd` `1` to `Cmd` `9` | Go to tmux window by number |
+| `Cmd` `d` | Split pane right |
+| `Cmd` `Shift` `d` | Split pane down |
+| `Cmd` `Shift` `e` | Even out pane sizes |
+| `Cmd` `p` | Session picker (sesh) |
+| `Cmd` `h` `j` `k` `l` | Go to pane left, down, up, right, same as `ctrl` `h` `j` `k` `l` |
+| `Cmd` `` ` `` | Toggle quick terminal |
+| `Cmd` `i` | Toggle inspector |
 
 ### Neovim
 
@@ -163,13 +165,13 @@ AeroSpace tiles windows into virtual workspaces, and its own bindings hold the w
 | Keybinding | Action |
 |-----------|--------|
 | `alt` `h` `j` `k` `l` | Move the window through the layout |
-| `alt` `⇧` `h` `j` `k` `l` | Focus left, down, up, right, across Neovim splits, tmux panes, windows, and displays |
+| `alt` `Shift` `h` `j` `k` `l` | Focus left, down, up, right, across Neovim splits, tmux panes, windows, and displays |
 | `alt` `1` to `alt` `8` | Focus a workspace |
-| `alt` `⇧` `1` to `alt` `⇧` `8` | Send the window to a workspace |
-| `alt` `⇥` | Return to the previous workspace |
-| `alt` `⇧` `r` | Resize mode |
-| `alt` `⇧` `;` | Service mode |
-| `⌘` `space` | Open Raycast to launch |
+| `alt` `Shift` `1` to `alt` `Shift` `8` | Send the window to a workspace |
+| `alt` `Tab` | Return to the previous workspace |
+| `alt` `Shift` `r` | Resize mode |
+| `alt` `Shift` `;` | Service mode |
+| `Cmd` `space` | Open Raycast to launch |
 
 Resize mode maps `h` `j` `k` `l` to resize the focused window, `-` and `=` to resize smart, `b` to balance, and `enter` or `esc` to return to the main mode. Service mode offers join (`h` `j` `k` `l` join with that direction), layout (`t` tiles, `a` accordion, `s` floating), fullscreen (`f`), balance (`b`), flatten (`r`), and config reload (`c`), staying active until `enter` or `esc` returns to the main mode.
 
@@ -215,7 +217,7 @@ stow -R -t ~ <package>
 ls -l ~/.config/<package>
 ```
 
-Then restart or reload the affected tool. Ghostty reloads its config with `⌘` `⇧` `,`, zsh needs a new shell, and Neovim needs a restart for plugin changes.
+Then restart or reload the affected tool. Ghostty reloads its config with `Cmd` `Shift` `,`, zsh needs a new shell, and Neovim needs a restart for plugin changes.
 
 The Neovim package has a headless smoke test that loads every plugin module, checks the expected mappings, and enforces the plugin cap. `make check-nvim` runs it. `make check-tmux`, `make check-focus`, and `make check-ghostty` do the same for the tmux settings, the AeroSpace focus script, and the Ghostty keybindings. `make lint` runs shellcheck over the shell scripts, as CI does on every push.
 
@@ -225,13 +227,13 @@ Adding a tool means adding a Stow package whose interior mirrors the target path
 
 No secret is committed. The shell configuration prepends tool directories to `PATH` but references no keys or credentials, and machine-local values such as API tokens and age keys stay outside the repository. `.gitignore` excludes keys, credential files, and history, and `.gitleaks.toml` adds rules for age secret keys, SOPS keys, and SSH private keys on top of the gitleaks defaults. CI scans every push.
 
-## Contributing
-
-This is a personal configuration, but corrections and suggestions are welcome. The shared contributing guide, branch and commit conventions, and security policy of the lucawalz account apply. In short: stow the package being changed, verify it against the running tool, then open a PR against `main`.
-
 ## Support
 
-Open an issue on the [GitHub repository](https://github.com/lucawalz/dotfiles/issues).
+Open an issue on the [GitHub repository](https://github.com/lucawalz/dotfiles/issues). For questions, see the shared [support guide](https://github.com/lucawalz/.github/blob/main/SUPPORT.md). Report vulnerabilities privately as described in the [security policy](https://github.com/lucawalz/.github/blob/main/SECURITY.md).
+
+## Contributing
+
+This is a personal configuration, but corrections and suggestions are welcome. The shared [contributing guide](https://github.com/lucawalz/.github/blob/main/CONTRIBUTING.md), with its branch and commit conventions, the [code of conduct](https://github.com/lucawalz/.github/blob/main/CODE_OF_CONDUCT.md), and the [security policy](https://github.com/lucawalz/.github/blob/main/SECURITY.md) of the lucawalz account apply. In short: stow the package being changed, verify it against the running tool, then open a PR against `main`.
 
 ## Authors and acknowledgment
 
