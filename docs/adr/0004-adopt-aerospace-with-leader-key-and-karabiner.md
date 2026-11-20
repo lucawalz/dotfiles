@@ -1,14 +1,14 @@
 # 4. Adopt AeroSpace with Leader Key and Karabiner
 
-Superseded by [ADR 0005](0005-adopt-aerospace-with-raycast-and-sketchybar-via-sbarlua.md).
-
-Supersedes [ADR 0003](0003-tile-windows-with-yabai-without-the-scripting-addition.md).
-
 Date: 2026-07-16
 
 ## Status
 
 Superseded by [5. Adopt AeroSpace with Raycast and SketchyBar via SbarLua](0005-adopt-aerospace-with-raycast-and-sketchybar-via-sbarlua.md)
+
+Superseded by [ADR 0005](0005-adopt-aerospace-with-raycast-and-sketchybar-via-sbarlua.md).
+
+Supersedes [ADR 0003](0003-tile-windows-with-yabai-without-the-scripting-addition.md).
 
 ## Context
 

@@ -1,14 +1,14 @@
 # 5. Adopt AeroSpace with Raycast and SketchyBar via SbarLua
 
-Superseded by [ADR 0009](0009-remove-sketchybar-and-use-the-native-menu-bar.md).
-
-Supersedes [ADR 0004](0004-adopt-aerospace-with-leader-key-and-karabiner.md).
-
 Date: 2026-07-18
 
 ## Status
 
 Superseded by [9. Remove SketchyBar and use the native menu bar](0009-remove-sketchybar-and-use-the-native-menu-bar.md)
+
+Superseded by [ADR 0009](0009-remove-sketchybar-and-use-the-native-menu-bar.md).
+
+Supersedes [ADR 0004](0004-adopt-aerospace-with-leader-key-and-karabiner.md).
 
 ## Context
 

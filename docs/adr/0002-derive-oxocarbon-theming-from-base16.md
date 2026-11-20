@@ -1,12 +1,12 @@
 # 2. Derive Oxocarbon theming from the base16 palette
 
-Superseded by [ADR 0006](0006-adopt-carbonfox-theme.md).
-
 Date: 2026-07-16
 
 ## Status
 
 Superseded by [6. Adopt Carbonfox as the theme](0006-adopt-carbonfox-theme.md)
+
+Superseded by [ADR 0006](0006-adopt-carbonfox-theme.md).
 
 ## Context
 

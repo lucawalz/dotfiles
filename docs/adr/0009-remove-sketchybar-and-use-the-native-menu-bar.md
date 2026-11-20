@@ -1,12 +1,12 @@
 # 9. Remove SketchyBar and use the native menu bar
 
-Supersedes [ADR 0005](0005-adopt-aerospace-with-raycast-and-sketchybar-via-sbarlua.md).
-
 Date: 2026-09-01
 
 ## Status
 
 Accepted
+
+Supersedes [ADR 0005](0005-adopt-aerospace-with-raycast-and-sketchybar-via-sbarlua.md).
 
 ## Context
 
