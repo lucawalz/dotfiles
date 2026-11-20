@@ -86,9 +86,6 @@ keybind = super+ctrl+arrow_left=unbind
 keybind = super+ctrl+arrow_right=unbind
 keybind = super+ctrl+==unbind
 
-custom-shader = shaders/cursor_warp.glsl
-custom-shader-animation = true
-
 window-height = 41
 window-width = 149
 

@@ -36,7 +36,6 @@ home=$(mktemp -d)
 trap 'rm -rf "$home"' EXIT
 mkdir -p "$home/.config/ghostty"
 cp "$CONF" "$home/.config/ghostty/config"
-cp -R "$(dirname "$CONF")/shaders" "$home/.config/ghostty/" 2>/dev/null
 
 ghostty() { HOME=$home XDG_CONFIG_HOME=$home/.config "$GHOSTTY" "$@"; }
 

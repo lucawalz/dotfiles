@@ -20,7 +20,7 @@ The environment is Ghostty as the terminal with tmux for splits and windows, zsh
 - Stow-deployed packages: editing a file in the repository edits the live configuration, so the two cannot drift apart.
 - tmux as the only split and window system, one session per project through sesh, so panes and running agents outlive a closed Ghostty window.
 - A single Carbonfox palette applied across Ghostty, tmux, starship, btop, Neovim, fzf, `LS_COLORS`, and JankyBorders.
-- Ghostty with command key bindings that drive tmux splits, windows, and sessions, a vendored cursor warp shader, and a background at 0.85 opacity with blur.
+- Ghostty with command key bindings that drive tmux splits, windows, and sessions, and a background at 0.85 opacity with blur.
 - Neovim on the built-in `vim.pack` with 36 plugins pinned by a committed lockfile, a braille dashboard, an nvim-tree sidebar, a transparent UI with noice, smear-cursor, tiny-inline-diagnostic, and bufferline, a review loop for agent changes through gitsigns, codediff.nvim, and lazygit, Carbonfox through nightfox.nvim as the colorscheme, and a space leader.
 - AeroSpace tiling with display-pinned workspaces, native resize and service modes for the rarer window commands, and a single focus gesture that walks Neovim splits, tmux panes, windows, and displays, all with System Integrity Protection left enabled.
 - JankyBorders window borders driven from the same palette, with Raycast as the launcher.
@@ -192,7 +192,7 @@ JankyBorders draws a rounded border around the focused window and runs as a back
 ## Repository layout
 
 ```
-ghostty/           Ghostty config, ANSI palette, and cursor warp shader
+ghostty/           Ghostty config and ANSI palette
 tmux/              tmux config, vendored Carbonfox status theme, and checks
 aerospace/         AeroSpace tiling, workspace pins, gaps, and the focus bridge script
 starship/          starship prompt and Carbonfox palette
@@ -237,7 +237,7 @@ This is a personal configuration, but corrections and suggestions are welcome. T
 
 ## Authors and acknowledgment
 
-Built and maintained by Luca Walz. The theme is [Carbonfox](https://github.com/EdenEast/nightfox.nvim), the IBM Carbon inspired variant of nightfox.nvim by EdenEast, which supplies both the Neovim colorscheme and the matching terminal palette. The cursor warp shader is vendored from [sahaj-b/ghostty-cursor-shaders](https://github.com/sahaj-b/ghostty-cursor-shaders) under the MIT License, with the original license retained at [`ghostty/.config/ghostty/shaders/LICENSE`](ghostty/.config/ghostty/shaders/LICENSE).
+Built and maintained by Luca Walz. The theme is [Carbonfox](https://github.com/EdenEast/nightfox.nvim), the IBM Carbon inspired variant of nightfox.nvim by EdenEast, which supplies both the Neovim colorscheme and the matching terminal palette.
 
 ## License
 
