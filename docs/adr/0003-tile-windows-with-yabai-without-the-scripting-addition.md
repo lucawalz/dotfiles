@@ -1,11 +1,12 @@
----
-status: superseded by 0004
-date: 2026-07-16
----
-
-# 0003. Tile windows with yabai without the scripting addition
+# 3. Tile windows with yabai without the scripting addition
 
 Superseded by [ADR 0004](0004-adopt-aerospace-with-leader-key-and-karabiner.md).
+
+Date: 2026-07-16
+
+## Status
+
+Superseded by [4. Adopt AeroSpace with Leader Key and Karabiner](0004-adopt-aerospace-with-leader-key-and-karabiner.md)
 
 ## Context
 
@@ -19,6 +20,12 @@ The decisive question was therefore which yabai features survive with SIP enable
 
 The surviving set is therefore large enough that the addition buys only animations, opacity, and creating spaces from the keyboard.
 
+### Options considered
+
+- yabai with the scripting addition and SIP partially disabled, rejected for now. It is the only configuration that provides window animations, window opacity, and moving windows between spaces. It requires a recoveryOS boot, a reduced boot security policy, and a sudoers entry re-run after every yabai upgrade, on a machine holding infrastructure credentials. Its macOS 26 support is unresolved upstream. This record does not foreclose the change; it records that the price was not worth paying while the benefit is uncertain.
+- AeroSpace, rejected. It is SIP-safe, has a binding system built in, and needs no scripting addition, which makes it the cheaper option on paper. It has no binary space partitioning layout at all, only horizontal tiles, vertical tiles, and two accordions, so windows accumulate in a single row rather than partitioning the space. Testing confirmed eight windows produced a single row of eight columns. It also emulates workspaces by moving windows off-screen rather than using native spaces.
+- Retaining Raycast for window management, rejected. It snaps a window on request and maintains no layout, so it cannot reserve the bar strip. It was also the only remaining use of Raycast on this machine.
+
 ## Decision
 
 yabai tiles windows with the scripting addition absent and SIP left enabled, configured through `yabai/.config/yabai/yabairc` as a Stow package. `layout bsp` partitions the space, `external_bar main:42:0` reserves the SketchyBar strip, and `window_gap 8` with matching padding leaves gaps between windows and against the screen edges.
@@ -26,12 +33,6 @@ yabai tiles windows with the scripting addition absent and SIP left enabled, con
 skhd binds the keys, because yabai has no binding system of its own. The modifier is `alt`, since `cmd` collides with both macOS shortcuts and the Ghostty split bindings already in use.
 
 The configuration is limited to commands that were confirmed to function without the scripting addition: focus, warp, resize, fullscreen zoom, float toggle, rotate, mirror, balance, focusing a space, and moving a window to a space. Creating a space is absent, because it fails without the addition, so spaces are created through Mission Control and the bindings address the ones that exist.
-
-## Options considered
-
-- yabai with the scripting addition and SIP partially disabled, rejected for now. It is the only configuration that provides window animations, window opacity, and moving windows between spaces. It requires a recoveryOS boot, a reduced boot security policy, and a sudoers entry re-run after every yabai upgrade, on a machine holding infrastructure credentials. Its macOS 26 support is unresolved upstream. This record does not foreclose the change; it records that the price was not worth paying while the benefit is uncertain.
-- AeroSpace, rejected. It is SIP-safe, has a binding system built in, and needs no scripting addition, which makes it the cheaper option on paper. It has no binary space partitioning layout at all, only horizontal tiles, vertical tiles, and two accordions, so windows accumulate in a single row rather than partitioning the space. Testing confirmed eight windows produced a single row of eight columns. It also emulates workspaces by moving windows off-screen rather than using native spaces.
-- Retaining Raycast for window management, rejected. It snaps a window on request and maintains no layout, so it cannot reserve the bar strip. It was also the only remaining use of Raycast on this machine.
 
 ## Consequences
 

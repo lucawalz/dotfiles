@@ -1,9 +1,10 @@
----
-status: accepted
-date: 2026-11-05
----
+# 11. Manage Neovim plugins with vim.pack
 
-# 0011. Manage Neovim plugins with vim.pack
+Date: 2026-11-05
+
+## Status
+
+Accepted
 
 ## Context
 

@@ -1,13 +1,14 @@
----
-status: superseded by 0009
-date: 2026-07-18
----
-
-# 0005. Adopt AeroSpace with Raycast and SketchyBar via SbarLua
+# 5. Adopt AeroSpace with Raycast and SketchyBar via SbarLua
 
 Superseded by [ADR 0009](0009-remove-sketchybar-and-use-the-native-menu-bar.md).
 
 Supersedes [ADR 0004](0004-adopt-aerospace-with-leader-key-and-karabiner.md).
+
+Date: 2026-07-18
+
+## Status
+
+Superseded by [9. Remove SketchyBar and use the native menu bar](0009-remove-sketchybar-and-use-the-native-menu-bar.md)
 
 ## Context
 
@@ -19,6 +20,11 @@ SketchyBar had grown past what a shell configuration expresses cleanly. The bar 
 
 ADR 0003 rejected Raycast for window management and recorded that Raycast was no longer needed for anything. That reasoning held only while Raycast was being judged as a tiler. As a launcher on Cmd-Space it replaces the role Leader Key played for launching applications, so the earlier claim no longer describes the machine.
 
+### Options considered
+
+- Keep Leader Key and Karabiner, rejected. The DriverKit driver and the virtual keyboard are a large mechanism for a sequence launcher, and AeroSpace modes cover the same commands with no extra daemon.
+- Keep the SketchyBar shell configuration, rejected. The workspace, mode, and media logic outgrew what sketchybarrc expresses clearly, and SbarLua carries the same bar with real control flow.
+
 ## Decision
 
 AeroSpace continues to tile windows through the `aerospace` Stow package, with workspaces 1 to 5 pinned to displays and the top gap reserving the SketchyBar strip.
@@ -28,11 +34,6 @@ Window commands move onto AeroSpace native bindings. The global surface stays sm
 Raycast is the launcher, bound to Cmd-Space, installed as the `raycast` cask. Its settings are not stowed, so there is no Raycast Stow package.
 
 SketchyBar is configured in Lua through SbarLua, kept in the `sketchybar` package. The bar, its items, and its event handlers are Lua rather than shell.
-
-## Options considered
-
-- Keep Leader Key and Karabiner, rejected. The DriverKit driver and the virtual keyboard are a large mechanism for a sequence launcher, and AeroSpace modes cover the same commands with no extra daemon.
-- Keep the SketchyBar shell configuration, rejected. The workspace, mode, and media logic outgrew what sketchybarrc expresses clearly, and SbarLua carries the same bar with real control flow.
 
 ## Consequences
 

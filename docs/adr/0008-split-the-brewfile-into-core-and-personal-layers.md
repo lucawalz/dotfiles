@@ -1,9 +1,10 @@
----
-status: accepted
-date: 2026-09-01
----
+# 8. Split the Brewfile into core and personal layers
 
-# 0008. Split the Brewfile into core and personal layers
+Date: 2026-09-01
+
+## Status
+
+Accepted
 
 ## Context
 

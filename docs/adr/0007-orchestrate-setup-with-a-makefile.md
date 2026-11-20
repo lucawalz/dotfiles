@@ -1,9 +1,10 @@
----
-status: accepted
-date: 2026-07-18
----
+# 7. Orchestrate setup with a Makefile
 
-# 0007. Orchestrate setup with a Makefile
+Date: 2026-07-18
+
+## Status
+
+Accepted
 
 ## Context
 

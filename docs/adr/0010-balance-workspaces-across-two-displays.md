@@ -1,9 +1,10 @@
----
-status: accepted
-date: 2026-09-03
----
+# 10. Balance workspaces evenly across two displays
 
-# 0010. Balance workspaces evenly across two displays
+Date: 2026-09-03
+
+## Status
+
+Accepted
 
 ## Context
 

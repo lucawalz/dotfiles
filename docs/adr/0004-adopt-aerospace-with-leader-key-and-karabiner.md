@@ -1,13 +1,14 @@
----
-status: superseded by 0005
-date: 2026-07-16
----
-
-# 0004. Adopt AeroSpace with Leader Key and Karabiner
+# 4. Adopt AeroSpace with Leader Key and Karabiner
 
 Superseded by [ADR 0005](0005-adopt-aerospace-with-raycast-and-sketchybar-via-sbarlua.md).
 
 Supersedes [ADR 0003](0003-tile-windows-with-yabai-without-the-scripting-addition.md).
+
+Date: 2026-07-16
+
+## Status
+
+Superseded by [5. Adopt AeroSpace with Raycast and SketchyBar via SbarLua](0005-adopt-aerospace-with-raycast-and-sketchybar-via-sbarlua.md)
 
 ## Context
 
@@ -21,6 +22,13 @@ Two auxiliary tools complete the setup. Global hotkeys are a scarce resource, so
 
 Focus movement should not care whether the boundary being crossed is a Neovim split, a window, or a display. The only existing bridge, coxley/aerospace-focus.nvim, is an unmaintained two star plugin with a dead health check and no recovery from a stale RPC socket, and its default scheme surrenders ctrl h, j, k, and l globally, killing readline bindings in every application.
 
+### Options considered
+
+- Keep yabai, rejected. The border flicker and the macOS 26 regression tail are ongoing costs, and space creation still needs Mission Control.
+- yabai with the scripting addition, rejected for the reasons in ADR 0003, all of which still hold.
+- AeroSpace with the ctrl based navigation scheme from aerospace-focus.nvim, rejected. Binding ctrl h, j, k, and l globally destroys backspace, kill line, and clear screen in every application.
+- Adopting coxley/aerospace-focus.nvim as a dependency, rejected. The mechanism is sound but the project is unmaintained, spawns a headless Neovim per keypress, and fails open when the recorded socket is dead. Fifty lines of local code replace it.
+
 ## Decision
 
 AeroSpace tiles windows, configured through the `aerospace` Stow package. Workspaces 1 to 5 are pinned to displays through `workspace-to-monitor-force-assignment`. Gaps come from the `[gaps]` table, and the top gap reserves the SketchyBar strip, replacing yabai's `external_bar`.
@@ -32,13 +40,6 @@ Karabiner remaps Caps Lock to F19 as the Leader Key trigger and carries the comm
 Seamless focus is a local module rather than the plugin: around fifty lines in `nvim/.config/nvim/lua/config/aerospace-focus.lua` plus `aerospace/.config/aerospace/scripts/focus.sh`. A focused Neovim instance records its RPC socket in a lock file; the script forwards `alt` direction presses into it with `nvim --server --remote-expr`, and Neovim walks its splits first and falls back to `aerospace focus` at the edge. A stale lock self-heals, headless instances never claim the lock, and no ctrl key is sacrificed.
 
 The `yabai` and `skhd` packages are removed.
-
-## Options considered
-
-- Keep yabai, rejected. The border flicker and the macOS 26 regression tail are ongoing costs, and space creation still needs Mission Control.
-- yabai with the scripting addition, rejected for the reasons in ADR 0003, all of which still hold.
-- AeroSpace with the ctrl based navigation scheme from aerospace-focus.nvim, rejected. Binding ctrl h, j, k, and l globally destroys backspace, kill line, and clear screen in every application.
-- Adopting coxley/aerospace-focus.nvim as a dependency, rejected. The mechanism is sound but the project is unmaintained, spawns a headless Neovim per keypress, and fails open when the recorded socket is dead. Fifty lines of local code replace it.
 
 ## Consequences
 

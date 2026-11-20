@@ -1,11 +1,12 @@
----
-status: accepted
-date: 2026-07-18
----
-
-# 0006. Adopt Carbonfox as the theme
+# 6. Adopt Carbonfox as the theme
 
 Supersedes [ADR 0002](0002-derive-oxocarbon-theming-from-base16.md).
+
+Date: 2026-07-18
+
+## Status
+
+Accepted
 
 ## Context
 

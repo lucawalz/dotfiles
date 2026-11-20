@@ -1,9 +1,10 @@
----
-status: accepted
-date: 2026-11-06
----
+# 12. Adopt tmux for terminal splits
 
-# 0012. Adopt tmux for terminal splits
+Date: 2026-11-06
+
+## Status
+
+Accepted
 
 ## Context
 
