@@ -20,7 +20,7 @@ Plugins are managed with `vim.pack`, declared in a single `vim.pack.add` call in
 
 The set follows one tool per job and stays at 35 plugins, at a cap of 35 (raised to 36 by [ADR 0012](0012-adopt-tmux-for-terminal-splits.md) for smart-splits.nvim). The five mini modules come from the single `nvim-mini/mini.nvim` repository. snacks.nvim provides the picker, dashboard, indent guides, zoom, and lazygit float. nvim-tree is the sidebar file explorer on `<leader>e`, oil.nvim edits a directory as a buffer on `-`, blink.cmp the completion engine, and conform.nvim and nvim-lint handle formatting and linting.
 
-The visual plugins are kept for the owner's look: noice with nvim-notify and nui.nvim own the command line and messages, smear-cursor animates the cursor, tiny-inline-diagnostic draws diagnostics, and bufferline shows tabs. The built-in ui2 message layer is not used, and the snacks notifier is disabled so nvim-notify is the only notification view. Highlight backgrounds are cleared on every colorscheme change, which keeps the transparent UI without a transparency plugin.
+The visual plugins are kept for the interface look they give: noice with nvim-notify and nui.nvim own the command line and messages, smear-cursor animates the cursor, tiny-inline-diagnostic draws diagnostics, and bufferline shows tabs. The built-in ui2 message layer is not used, and the snacks notifier is disabled so nvim-notify is the only notification view. Highlight backgrounds are cleared on every colorscheme change, which keeps the transparent UI without a transparency plugin.
 
 The agent stays in its own Ghostty split. No in-editor agent plugin is added, because the split already works and the editor only needs to hand context to it.
 
